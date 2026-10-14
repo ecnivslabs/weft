@@ -1,0 +1,46 @@
+# Architecture
+
+The workspace separates the visual codec from source ingestion, browser playback and application storage.
+
+| Component | Responsibility |
+| :--- | :--- |
+| `crates/weft` | Glyph fitting, ASCII packets, reconstruction and bounded SCI reading. |
+| `crates/weft-media` | FFprobe metadata, FFmpeg ingestion, synchronized audio and archive writing. |
+| `crates/weft-cli` | Encode, inspect and reconstruct commands. |
+| `crates/weft-wasm` | Browser ABI for the Rust decoder. |
+| `website/web` | Public landing page, image previews, native SCI player and decoder workers. |
+| `website/server` | Local HTTP ranges, ingestion API and persistent catalog. |
+| `website/tests` | Browser agreement, ingestion, playback and benchmark runners. |
+| `formats` | SCI format specification. |
+
+## Ingestion
+
+FFprobe validates dimensions and timing. FFmpeg supplies source RGB and audio during preparation. The ASCII encoder partitions frames into spatial groups and fits their fixed glyph layers and colors.
+
+Fitting stages independently compressed frames. Delivery packing reconstructs those compositions, compares actual packet lengths and chooses independent or predicted packets. Renditions share seek boundaries. A boundary splits before any payload exceeds 16 MiB, preserving fitted output and source cadence. Each chunk begins independently.
+
+The writer adds timed Opus chunks, metadata and checksums. Temporary ASCII staging is limited to 64 GiB. Completed archives publish without overwriting an existing output.
+
+## Browser playback
+
+The reader fetches the header, metadata and index using HTTP byte ranges. It validates record bounds and loads visual and audio chunks on demand. Workers decode ASCII through Rust WebAssembly; CPU and WebGL2 renderers reconstruct the same glyphs.
+
+Audio drives the presentation clock when present. Seeking stops scheduled audio, resets references at an independent chunk, and reconstructs forward to the requested time. Resolution changes select another stored rendition while preserving playback position. Playback speed currently changes audio pitch.
+
+Presentation and in-flight reconstructed images share a 32 MiB budget, with at most eight frames and a 125 ms horizon. The compressed and decoded-audio cache is bounded separately. Decoder state, browser surfaces and graphics driver allocations are not included in the presentation budget. These are pipeline limits, not a total browser memory guarantee.
+
+The public website shows licensed animated WebP exports of actual SCI output. It has no full player, ingestion form, playlist or server API dependency. Its Pages artifact excludes the native player and decoder. The local Rust server serves a separate player page with real SCI decoding; Pages does not run Rust ingestion.
+
+## Local storage
+
+The local server retains source downloads in ignored `videos/` storage. Each library keeps ready archives in `videos/sci/LIBRARY_ID/` and its catalog in the selected data directory. Ready entries reuse stored SCI on restart; interrupted or obsolete profiles regenerate from retained sources.
+
+One process owns a data directory. Job revisions prevent a removed entry from being restored by an older preparation job. Original source files are ingestion inputs and are never served as visual playback.
+
+The local server binds to loopback by default and checks mutation origins and loopback hosts. It is intended for a trusted local library. Exposing its ingestion API requires an application's authentication, authorization, TLS and quotas. The public GitHub Pages build includes no ingestion service.
+
+## Compatibility
+
+SCI carries explicit presentation durations and timed seek records. Only internal container version 4, the scene-v1 codec and the fixed reflected ASCII font are supported. Historical containers, codecs and fonts fail explicitly. The local ingestion service regenerates obsolete archives from retained sources.
+
+The normative font is `crates/weft/src/glyphs.json`. Rust and browser tests require identical definitions and reconstruction. [SCI](../formats/SCI.md) is the format contract; [integration](integration.md) describes the API boundaries.

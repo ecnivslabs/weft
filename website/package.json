@@ -1,0 +1,21 @@
+{
+  "name": "weft-website",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-site.mjs",
+    "build:site": "node scripts/build-site.mjs",
+    "preview": "node scripts/preview-site.mjs",
+    "test": "node tests/renderer.test.mjs && node tests/sci.test.mjs && node tests/opus.test.mjs && node tests/wasm.test.mjs && node tests/worker.test.mjs && node tests/audio.test.mjs && node tests/delivery.test.mjs && node tests/decode-pool.test.mjs && node tests/cache.test.mjs && node tests/checksum.test.mjs && node tests/calibration.test.mjs && node tests/stream.test.mjs && node tests/frames.test.mjs && node tests/gpu.test.mjs && node tests/conventional.test.mjs && cargo test --manifest-path ../Cargo.toml --workspace",
+    "test:e2e": "node tests/e2e.mjs",
+    "test:site": "node tests/site.mjs",
+    "build:web": "node scripts/build-web.mjs",
+    "test:ingestion": "node tests/ingestion.mjs",
+    "test:native": "node tests/native-player.mjs"
+  },
+  "devDependencies": {
+    "marked": "18.1.1",
+    "playwright": "1.63.0"
+  }
+}

@@ -1,0 +1,13 @@
+[package]
+name = "weft-media"
+description = "FFmpeg ingestion and synchronized SCI archive encoding"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license-file.workspace = true
+repository.workspace = true
+
+[dependencies]
+weft.workspace = true
+serde_json.workspace = true
+crc32fast.workspace = true

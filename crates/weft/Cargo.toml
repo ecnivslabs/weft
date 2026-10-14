@@ -1,0 +1,18 @@
+[package]
+name = "weft"
+description = "ASCII video cells, reconstruction, and seekable SCI decoding"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license-file.workspace = true
+repository.workspace = true
+
+[dependencies]
+serde_json.workspace = true
+crc32fast.workspace = true
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+flate2.workspace = true
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+flate2 = { version = "=1.1.10", default-features = false, features = ["zlib-rs", "runtime_detection"] }

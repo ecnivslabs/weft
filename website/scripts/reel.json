@@ -1,0 +1,13 @@
+{
+  "title": "Mixed detail study, 1080p60",
+  "seconds": 120,
+  "fps": 60,
+  "license": "CC-BY-SA-4.0",
+  "sources": [
+    {"file":"OfficeWalk.mp4","url":"https://ultravideo.fi/UVG-VCM/OfficeWalk/OfficeWalk.mp4","sha256":"f5782245401781cd358727a382a74f3e7763880cc855811a716159899cfb41a1","bytes":131416375,"start":0,"loop":true,"audio":false},
+    {"file":"WinterDrive.mp4","url":"https://ultravideo.fi/UVG-VCM/WinterDrive/WinterDrive.mp4","sha256":"17d2ba606e72e8552cdffc8613fc46858387e772d4c33266d400fa0a67a5d83a","bytes":65393323,"start":0,"loop":true,"audio":false},
+    {"file":"FloorballGame.mp4","url":"https://ultravideo.fi/UVG-VCM/FloorballGame/FloorballGame.mp4","sha256":"e68fce59944a9099df25dc81b145f871f2c370f21fa7b6c81e43fc7d9bceca00","bytes":66366223,"start":0,"loop":true,"audio":false},
+    {"file":"Freedoom.webm","url":"https://upload.wikimedia.org/wikipedia/commons/3/3e/Freedoom_-_Short_gameplay.webm","sha256":"67a801b824994bb5944e7f89de60daf42926909f3ae121dd256e0c3b31b80edb","bytes":98444464,"start":30,"loop":false,"audio":true},
+    {"file":"SyntheticCity.mp4","url":"https://ultravideo.fi/UVG-VCM/SyntheticCity/SyntheticCity.mp4","sha256":"cfa67753f167b4e14a4d9365d2a6e73d81e7109d60f3b8e776b438be142b3425","bytes":16516163,"start":0,"loop":true,"audio":false}
+  ]
+}

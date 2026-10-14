@@ -1,0 +1,63 @@
+{
+  "recipe": "website/media/sample.json",
+  "title": "Fossils",
+  "creator": "Piti Yindee",
+  "sourceUrl": "https://archive.org/download/youtube-27lZiillddg/20210603-27lZiillddg-Original_Short_Film_-_Fossils.webm",
+  "licenseEvidence": "https://archive.org/download/youtube-27lZiillddg/20210603-27lZiillddg-Original_Short_Film_-_Fossils.description",
+  "sourceStartSeconds": 24,
+  "sourceFrameSha256": "10527b0d168a5a9823ce745cfb596d1c903660a664064d7e18aa45e0d9bb9605",
+  "sourcePath": "videos/fossils-sample/source.nut",
+  "archivePath": "videos/fossils-sample/maximum.sci",
+  "mediaLicense": "CC0-1.0",
+  "frames": 96,
+  "duration": 4,
+  "width": 1920,
+  "height": 1080,
+  "fps": 24,
+  "fpsNumerator": 24,
+  "fpsDenominator": 1,
+  "layers": 4,
+  "colorBits": 8,
+  "bytePenalty": 0,
+  "audio": {
+    "channels": 2,
+    "codec": "opus",
+    "sampleRate": 48000
+  },
+  "stillFrame": 24,
+  "stillTimeSeconds": 1,
+  "previewWidth": 400,
+  "previewHeight": 225,
+  "previewFps": 24,
+  "previewFormat": "lossless animated WebP",
+  "previewDurationMs": 3999,
+  "archiveBytes": 79723143,
+  "archiveSha256": "dc0416c2d788d12e35d36c72b1f127caada19e9cfe55557c70aa3b54c51be0a0",
+  "sourceSha256": "376e5f3a18f1925fb37b7201c83656f118408f92bf17ec1d1a9bd847f04c75d8",
+  "assets": {
+    "source-preview.webp": {
+      "bytes": 4963478,
+      "sha256": "3091d29f8207444f38b4f2453f46e93b3a042335859fa90dd0dec075439ac58d"
+    },
+    "weft-preview.webp": {
+      "bytes": 5137138,
+      "sha256": "347438ad616eb9e77afeb549f3285af7f9a0cf008f351fc11c7a55ffa7029c75"
+    },
+    "source-1080.png": {
+      "bytes": 1472336,
+      "sha256": "e6f36c430c58d04a099940ee4d9aa53023d1fbe2d03f98fe5352e7adfac3f5e8"
+    },
+    "weft-1080.png": {
+      "bytes": 1326590,
+      "sha256": "522473c0617461a04eac187b81d02761988f2f979342cf73679afa18a5770679"
+    },
+    "source-poster.png": {
+      "bytes": 103089,
+      "sha256": "d33900d753a652d5d6c32cfd83cb65eb99d215d7a58e8a3883b1077c18cc90c7"
+    },
+    "weft-poster.png": {
+      "bytes": 102475,
+      "sha256": "8c9c52c9c19d3c714616726f3d292c7599ca0adc3e267f509ae6edf673aece3f"
+    }
+  }
+}

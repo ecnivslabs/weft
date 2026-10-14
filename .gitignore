@@ -1,0 +1,17 @@
+/target/
+/website/web/decoder.wasm
+/website/web/glyphs.json
+/website/dist/
+**/node_modules/
+/data/
+/videos/
+.venv/
+__pycache__/
+*.egg-info/
+.ruff_cache/
+.taste-skill/
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example

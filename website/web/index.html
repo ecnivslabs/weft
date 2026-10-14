@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Video, written in ASCII. Weft is a video codec from ecnivs, with picture, sound and seeking in a .sci file.">
+  <meta name="theme-color" content="#0f0d0e">
+  <title>Weft</title>
+  <link rel="canonical" href="https://weft.ecnivs.com/">
+  <meta property="og:title" content="Weft">
+  <meta property="og:description" content="Video, written in ASCII. A product of ecnivs.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://weft.ecnivs.com/">
+  <meta property="og:image" content="https://weft.ecnivs.com/assets/banner.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/landing.css">
+  <link rel="stylesheet" href="/site.css">
+  <script type="module" src="/preview.js"></script>
+  <script type="module" src="/hero.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header page-width">
+    <a class="wordmark" href="/" aria-label="Weft home"><span class="brand-pixels" aria-hidden="true"></span>Weft</a>
+    <nav aria-label="Main navigation">
+      <a href="/docs/">Docs</a>
+      <a class="badge" href="https://github.com/ecnivslabs/weft">GitHub <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+  <main id="main">
+    <section class="hero-region" aria-labelledby="intro-title">
+      <div class="hero-layout page-width">
+        <div class="hero-copy">
+          <h1 id="intro-title">Video, written<br>in <span class="hero-payoff">ASCII</span></h1>
+          <div class="hero-summary">
+            <p class="hero-description">A video codec built around colored ASCII symbols. Encode a clip and keep its picture, sound and timing together in a .sci file.</p>
+            <a class="button primary" href="/docs/encoding/">Start encoding <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <figure class="hero-art" data-glyph-art role="img" aria-label="The same woven knot changes from visible ASCII characters into detailed Weft glyphs and back">
+          <canvas width="960" height="720" aria-hidden="true"></canvas>
+          <img src="/assets/hero-knot.png" crossorigin="anonymous" width="960" height="720" alt="" aria-hidden="true">
+        </figure>
+      </div>
+    </section>
+    <section id="watch" class="comparison-section page-width" aria-labelledby="comparison-title">
+      <div class="section-heading"><h2 id="comparison-title">Guess which one is Weft</h2><p>One source, one encoded with Weft. Click a clip to find out.</p></div>
+      <div class="comparison" data-comparison data-media="">
+        <div class="comparison-grid">
+          <button type="button" class="guess-option" data-choice="0" aria-label="Choose clip A as Weft" disabled>
+            <picture><source media="(prefers-reduced-motion: reduce)" srcset="/assets/source-poster.png"><img src="/assets/source-preview.webp" width="400" height="225" alt="Source animation"></picture>
+            <span class="clip-label"><span data-label>Clip A</span><span data-picked hidden>Your pick</span></span>
+          </button>
+          <button type="button" class="guess-option" data-choice="1" aria-label="Choose clip B as Weft" disabled>
+            <picture><source media="(prefers-reduced-motion: reduce)" srcset="/assets/weft-poster.png"><img src="/assets/weft-preview.webp" width="400" height="225" alt="Weft animation"></picture>
+            <span class="clip-label"><span data-label>Clip B</span><span data-picked hidden>Your pick</span></span>
+          </button>
+        </div>
+        <p class="comparison-status" role="status" aria-live="polite">Choose the clip you think is Weft</p>
+        <noscript><p>The source is on the left; Weft is on the right. Enable JavaScript to try the comparison.</p></noscript>
+      </div>
+    </section>
+    <div class="product-region">
+      <section class="product-section page-width" aria-labelledby="product-title">
+        <h2 id="product-title">Inside .sci</h2>
+        <div class="feature-grid">
+          <div><h3>ASCII picture</h3><p>Each frame is a composition of colored glyphs. The decoder draws those symbols to produce the picture.</p></div>
+          <div><h3>Sound and seeking</h3><p>Audio, frame timing and seek points share the archive. A player can read it progressively and move through the timeline.</p></div>
+          <div><h3>Your stack</h3><p>Use the Rust libraries or CLI. The same decoder runs in browser workers through WebAssembly.</p></div>
+        </div>
+      </section>
+    </div>
+    <section id="build" class="build-section page-width" aria-labelledby="build-title">
+      <div class="build-copy"><h2 id="build-title">Encode your first clip</h2><p class="section-copy">Prepare a video from the command line, then use the archive in your application.</p><div class="build-links"><a class="button primary" href="/docs/encoding/">Encoding guide <span aria-hidden="true">↗</span></a><a class="editorial-link" href="/docs/integration/">Integration guide</a></div></div>
+      <div class="command-window"><pre><code>weft encode input.mp4 output.sci
+weft inspect output.sci</code></pre><a class="editorial-link" href="/docs/sci/">Read the format specification <span aria-hidden="true">↗</span></a></div>
+    </section>
+  </main>
+  <footer class="site-footer page-width">
+    <div class="footer-top"><div><a class="wordmark" href="#main"><span class="brand-pixels" aria-hidden="true"></span>Weft</a><p>A product of <a href="https://ecnivs.com">ecnivs</a>.</p></div><nav aria-label="Footer navigation"><a href="/docs/">Documentation</a><a href="https://github.com/ecnivslabs/weft">GitHub</a><a href="https://github.com/ecnivslabs/weft/blob/master/LICENSE">License</a></nav></div>
+  </footer>
+</body>
+</html>

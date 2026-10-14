@@ -1,0 +1,18 @@
+[package]
+name = "weft-cli"
+description = "Encode, inspect, and reconstruct SCI ASCII video archives"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license-file.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "weft"
+path = "src/main.rs"
+doc = false
+
+[dependencies]
+weft.workspace = true
+weft-media.workspace = true
+serde_json.workspace = true

@@ -1,0 +1,9 @@
+{
+  "recipe": "website/scripts/prepare-hero.mjs",
+  "width": 960,
+  "height": 720,
+  "sourceSha256": "cf8223023508b9048b741f59bb88b70429d898df0cb62359e25fdc28a7b79abb",
+  "archiveSha256": "307b7409937e6bafb1cd1bf4087613e2c9b8b52391a3b2cd562d98e7f0d2da8e",
+  "image": "hero-knot.png",
+  "imageSha256": "434fc1ed532e9e237b119e00937598ac9883215cdb37cd8a4d3a072a022c082b"
+}

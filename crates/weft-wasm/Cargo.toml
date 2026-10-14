@@ -1,0 +1,14 @@
+[package]
+name = "weft-wasm"
+description = "Bounded WebAssembly SCI packet decoding and ASCII reconstruction"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license-file.workspace = true
+repository.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+weft.workspace = true
