@@ -77,6 +77,10 @@ Three separate Chromium loopback trials per tier request ten source seconds at 2
 
 Every trial reaches the requested source frontier, but the strict all-tier gate fails. At 1080p, advancing ten source seconds takes 20.38 through 20.58 wall seconds, with 14.66 through 14.85 seconds of sampled buffering. First-frame startup is 839 through 948 ms, followed by 174 through 198 ms of separate play preparation. The report retains actual transferred bytes, source consumption, memory reservations and decoder, reconstruction and worker-delivery timings. No paired version 4 playback comparison was run in this batch, so these absolute results do not establish a streaming-speed improvement. They directly contradict uninterrupted maximum-speed playback on this host.
 
+CPU sampling of the first 60 events attributes 49.21 percent of sampled time to zlib inflation and checksums, 23.38 percent to composition-field decoding and 4.21 percent to cell validation. This Node run includes warm-up, CRC, output hashing and file reads; it excludes audio, Canvas, bitmap transfer and visible presentation. It diagnoses the cell path without attributing the full browser stall to one function.
+
+A 12-event Chromium comparison verifies identical CPU and WebGL pixels through WASM and browser-native inflation. Native inflation increases median CPU reconstruction cost from 29.09 to 31.15 ms per event on this sample. Its GPU-path timings vary substantially across three passes. The raw diagnostic runs remain in the packing report. WASM inflation remains the default.
+
 The implementation adds no dependency, copied third-party implementation, media asset or font. These packing results do not establish a patent clearance, indistinguishable source fidelity, uninterrupted playback or superiority over H.266.
 
 ## H.266 in MP4 comparison
