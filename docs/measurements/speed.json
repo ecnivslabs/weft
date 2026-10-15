@@ -6966,5 +6966,4796 @@
       }
     },
     "rustPassedTestsIncludingDoctests": 51
+  },
+  "planePrediction": {
+    "recordedUtc": "2026-10-15T15:05:50.182436+00:00",
+    "baselineRevision": "8afd080e96364bf9bb79c1e5707130d91f5ab785",
+    "scope": "Lossless plane prediction. SCI versions, fitted ASCII attributes, audio, seek boundaries, quality, and delivery budgets are unchanged.",
+    "conditions": {
+      "host": "Linux-7.2.9-arch1-1-x86_64-with-glibc2.44",
+      "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
+      "benchmarksSequential": true,
+      "cpuAffinityPinned": false,
+      "cpuFrequencyPinned": false,
+      "otherUserApplicationsStopped": false,
+      "browserWarmupTrials": 0,
+      "browserIterations": 3,
+      "decodeWarmupsPerBatch": 1,
+      "decodeMeasuredPassesPerBatch": 5,
+      "encodingWarmups": 1,
+      "encodingMeasuredPasses": 3,
+      "medianConvention": "Upper middle order statistic, matching the benchmark runners."
+    },
+    "identities": {
+      "baselineWasm": {
+        "path": "/tmp/weft-decode-W9M59b/baseline-web/decoder.wasm",
+        "bytes": 168443,
+        "sha256": "782315dca9548e4f28f5903d050d0a4ab2d00ae5b97e530f7df2a0b4cb5c8037"
+      },
+      "candidateWasm": {
+        "path": "/home/izel/dev/weft/player/web/decoder.wasm",
+        "bytes": 169044,
+        "sha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3"
+      },
+      "thresholdOnlyWasm": {
+        "path": "/tmp/weft-decode-W9M59b/threshold.wasm",
+        "bytes": 168412,
+        "sha256": "b727673bcfb4fe4ed7f87e1f255911b80610798af095973d26bad4fb16c26940"
+      },
+      "baselineCli": {
+        "path": "/tmp/weft-decode-W9M59b/weft-before",
+        "bytes": 1247000,
+        "sha256": "1a59a83993f77b37ae55bfdd6445fce78a987f9ef5529f75ce53ab9f335a4b2b"
+      },
+      "candidateCli": {
+        "path": "/home/izel/dev/weft/target/release/weft",
+        "bytes": 1249576,
+        "sha256": "901d261ee2bf95810d33a0ecdd8635f80314c7d17cc9a83329ba3fbbdbabaa90"
+      },
+      "candidateSource": {
+        "path": "/home/izel/dev/weft/crates/weft/src/scene/planes.rs",
+        "bytes": 14534,
+        "sha256": "d4345ca3ebb6ce27ec825d7a9dbf1d141f64cc76ecbbbb6c371370a208bc64c9"
+      },
+      "cartoonSource": {
+        "path": "/home/izel/dev/weft/videos/cartoon-sample/source.nut",
+        "bytes": 125682769,
+        "sha256": "822135dd195869f73c83de4f42b43c40c367d054ee501734ab42a4b023f30683"
+      },
+      "fossilsSource": {
+        "path": "/home/izel/dev/weft/videos/fossils-sample/source.nut",
+        "bytes": 91266141,
+        "sha256": "376e5f3a18f1925fb37b7201c83656f118408f92bf17ec1d1a9bd847f04c75d8"
+      },
+      "detailPrefix": {
+        "path": "/home/izel/dev/weft/videos/speed-comparison/detail-prefix.sci",
+        "bytes": 2872063351,
+        "sha256": "8869a4366c040f6157d0d1a370c6da302cf473552519ea83a96d341880187a0b"
+      },
+      "cartoonArchive": {
+        "path": "/home/izel/dev/weft/videos/vvc-comparison/cartoon.sci",
+        "bytes": 27565975,
+        "sha256": "de06a9c12ae82beccc2a17f42ad8549cd62fac68189cbdf81a936a39f0079f40"
+      },
+      "fossilsArchive": {
+        "path": "/home/izel/dev/weft/videos/vvc-comparison/fossils.sci",
+        "bytes": 68155149,
+        "sha256": "bda684dc6d8591fd07d5af28c00e512e3b9e52da254df814602f0def48897547"
+      }
+    },
+    "encoding": {
+      "cartoon": {
+        "height": 360,
+        "warmups": 1,
+        "measuredIterations": 3,
+        "presentationSha256": "b9fc9525e40bb1f1536c174b9bafed472ad05eeea1b8c6013f6096ffdb4deb23",
+        "timeline": [
+          639,
+          360,
+          96,
+          24000,
+          1001,
+          4.004
+        ],
+        "results": [
+          {
+            "binary": "/tmp/weft-decode-W9M59b/weft-before",
+            "seconds": [
+              10.868579055000001,
+              10.537115610999994,
+              10.311951574000005
+            ],
+            "bytes": 3883512,
+            "medianSeconds": 10.537115610999994
+          },
+          {
+            "binary": "/home/izel/dev/weft/target/release/weft",
+            "seconds": [
+              11.253728069999998,
+              10.547402256999995,
+              10.569313227999999
+            ],
+            "bytes": 3883512,
+            "medianSeconds": 10.569313227999999
+          }
+        ]
+      },
+      "fossils": {
+        "height": 360,
+        "warmups": 1,
+        "measuredIterations": 3,
+        "presentationSha256": "fb684d297bff01cb1028c465d649944855d0af0cbbc891eefd7d9a0ac242cd83",
+        "timeline": [
+          639,
+          360,
+          96,
+          24,
+          1,
+          4
+        ],
+        "results": [
+          {
+            "binary": "/tmp/weft-decode-W9M59b/weft-before",
+            "seconds": [
+              10.572461833000002,
+              10.540576575,
+              11.128915364999994
+            ],
+            "bytes": 9179865,
+            "medianSeconds": 10.572461833000002
+          },
+          {
+            "binary": "/home/izel/dev/weft/target/release/weft",
+            "seconds": [
+              11.112135082,
+              10.241216324000002,
+              10.565230406999996
+            ],
+            "bytes": 9179865,
+            "medianSeconds": 10.565230406999996
+          }
+        ]
+      },
+      "interpretation": "No meaningful end-to-end encoding improvement measured. Both complete output byte counts and every reconstructed pixel and presentation timestamp match. The encoder runner validates audio but does not compare its encoded hash."
+    },
+    "decoding": {
+      "detailFirst60Events": {
+        "height": 1080,
+        "width": 1920,
+        "frames": 60,
+        "warmups": 1,
+        "measuredIterations": 5,
+        "pixelSha256": "f06851538fdc8ffdda1ae4426025ecfd37cb56d18314f7b0a627ffaeff650848",
+        "results": [
+          {
+            "module": "/tmp/weft-decode-W9M59b/baseline-web/decoder.wasm",
+            "nativeInflation": false,
+            "cellsOnly": false,
+            "milliseconds": [
+              2442.385516999999,
+              2400.2138040000045,
+              2424.972368999999,
+              2411.1474449999987,
+              2411.1092319999952
+            ],
+            "medianMillisecondsPerFrame": 40.18579074999998
+          },
+          {
+            "module": "player/web/decoder.wasm",
+            "nativeInflation": false,
+            "cellsOnly": false,
+            "milliseconds": [
+              2249.1960179999987,
+              2236.488234999997,
+              2230.2830829999984,
+              2243.860372999974,
+              2243.265632999952
+            ],
+            "medianMillisecondsPerFrame": 37.38776054999919
+          },
+          {
+            "module": "/tmp/weft-decode-W9M59b/threshold.wasm",
+            "nativeInflation": false,
+            "cellsOnly": false,
+            "milliseconds": [
+              2242.315587000009,
+              2258.5012820000193,
+              2222.4321659999987,
+              2242.9849560000002,
+              2214.1954689999548
+            ],
+            "medianMillisecondsPerFrame": 37.37192645000015
+          }
+        ]
+      },
+      "detailThresholdAblation": {
+        "height": 1080,
+        "width": 1920,
+        "frames": 60,
+        "warmups": 1,
+        "measuredIterations": 5,
+        "pixelSha256": "f06851538fdc8ffdda1ae4426025ecfd37cb56d18314f7b0a627ffaeff650848",
+        "cellSha256": "d6557e467b3149b5e31a035ce27f7c5d2217363a9fd0ea6c88fbcf0c22b1f681",
+        "results": [
+          {
+            "module": "/tmp/weft-decode-W9M59b/baseline-web/decoder.wasm",
+            "nativeInflation": false,
+            "cellsOnly": false,
+            "milliseconds": [
+              2477.8054640000028,
+              2484.1359830000147,
+              2496.4457310000216,
+              2449.70559900003,
+              2455.980040000053
+            ],
+            "medianMillisecondsPerFrame": 41.29675773333338
+          },
+          {
+            "module": "player/web/decoder.wasm",
+            "nativeInflation": false,
+            "cellsOnly": false,
+            "milliseconds": [
+              2306.3952279999958,
+              2316.040383000003,
+              2307.789027000006,
+              2304.5464809999758,
+              2342.073722000052
+            ],
+            "medianMillisecondsPerFrame": 38.4631504500001
+          },
+          {
+            "module": "/tmp/weft-decode-W9M59b/baseline-web/decoder.wasm",
+            "nativeInflation": false,
+            "cellsOnly": true,
+            "milliseconds": [
+              1933.3497519999928,
+              1928.1942040000067,
+              1922.4391119999855,
+              1955.498249000033,
+              1915.3178069999922
+            ],
+            "medianMillisecondsPerFrame": 32.13657006666678
+          },
+          {
+            "module": "player/web/decoder.wasm",
+            "nativeInflation": false,
+            "cellsOnly": true,
+            "milliseconds": [
+              1752.6193510000194,
+              1748.3730140000225,
+              1736.2829619999975,
+              1753.0631660000217,
+              1728.0242350000117
+            ],
+            "medianMillisecondsPerFrame": 29.139550233333708
+          }
+        ]
+      },
+      "cartoonFirstBatch": {
+        "host": {
+          "platform": "linux",
+          "arch": "x64",
+          "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+          "node": "v26.11.1"
+        },
+        "height": 1080,
+        "mode": "pixels",
+        "warmups": 1,
+        "measuredIterations": 5,
+        "frames": 96,
+        "timeline": [
+          1920,
+          1080,
+          96,
+          4.004,
+          24000,
+          1001
+        ],
+        "outputAndTimingSha256": "212b27c0577550988eda192fb2292dfb1d071022423d579097512b9e7076d794",
+        "audioAndTimingSha256": "5030193ef92266b0d70bc2d8d465b9435b68fc43f72b6d6f00282eb52df6d171",
+        "results": [
+          {
+            "path": "videos/vvc-comparison/cartoon.sci",
+            "version": 5,
+            "moduleSha256": "782315dca9548e4f28f5903d050d0a4ab2d00ae5b97e530f7df2a0b4cb5c8037",
+            "archiveBytes": 27565975,
+            "transferredMediaBytes": 27562731,
+            "tags": {
+              "5": 63,
+              "7": 22,
+              "8": 5,
+              "9": 6
+            },
+            "milliseconds": [
+              915.2174889999974,
+              929.5294319999985,
+              1078.6520419999888,
+              965.0242759999837,
+              1000.3712520000026
+            ],
+            "p95Milliseconds": [
+              29.209005000000616,
+              26.19166899999982,
+              32.17243299999973,
+              28.137579999998707,
+              30.33701099999962
+            ],
+            "medianMillisecondsPerFrame": 10.052336208333164,
+            "medianP95Milliseconds": 29.209005000000616,
+            "medianFirstFrameMilliseconds": 53.89577700000018
+          },
+          {
+            "path": "videos/vvc-comparison/cartoon.sci",
+            "version": 5,
+            "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+            "archiveBytes": 27565975,
+            "transferredMediaBytes": 27562731,
+            "tags": {
+              "5": 63,
+              "7": 22,
+              "8": 5,
+              "9": 6
+            },
+            "milliseconds": [
+              864.4819640000019,
+              1058.0281729999979,
+              1110.8600429999951,
+              999.9275820000003,
+              948.451849999994
+            ],
+            "p95Milliseconds": [
+              25.050559999999678,
+              30.915656000000126,
+              31.542837999999392,
+              33.90582800000084,
+              27.989008999998987
+            ],
+            "medianMillisecondsPerFrame": 10.415912312500003,
+            "medianP95Milliseconds": 30.915656000000126,
+            "medianFirstFrameMilliseconds": 43.40542899999855
+          }
+        ],
+        "transferredBytesSavedPercent": 0,
+        "medianDecodeChangePercent": 3.6168319148084382,
+        "p95DecodeChangePercent": 5.842893313207598
+      },
+      "cartoonRepeatBatch": {
+        "host": {
+          "platform": "linux",
+          "arch": "x64",
+          "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+          "node": "v26.11.1"
+        },
+        "height": 1080,
+        "mode": "pixels",
+        "warmups": 1,
+        "measuredIterations": 5,
+        "frames": 96,
+        "timeline": [
+          1920,
+          1080,
+          96,
+          4.004,
+          24000,
+          1001
+        ],
+        "outputAndTimingSha256": "212b27c0577550988eda192fb2292dfb1d071022423d579097512b9e7076d794",
+        "audioAndTimingSha256": "5030193ef92266b0d70bc2d8d465b9435b68fc43f72b6d6f00282eb52df6d171",
+        "results": [
+          {
+            "path": "videos/vvc-comparison/cartoon.sci",
+            "version": 5,
+            "moduleSha256": "782315dca9548e4f28f5903d050d0a4ab2d00ae5b97e530f7df2a0b4cb5c8037",
+            "archiveBytes": 27565975,
+            "transferredMediaBytes": 27562731,
+            "tags": {
+              "5": 63,
+              "7": 22,
+              "8": 5,
+              "9": 6
+            },
+            "milliseconds": [
+              1348.2100180000034,
+              1092.9913220000062,
+              1087.322209999993,
+              1028.0609950000016,
+              1404.6325089999955
+            ],
+            "p95Milliseconds": [
+              35.452658000000156,
+              28.850617999999486,
+              32.57931400000052,
+              28.698576000000685,
+              34.099151000002166
+            ],
+            "medianMillisecondsPerFrame": 11.385326270833398,
+            "medianP95Milliseconds": 32.57931400000052,
+            "medianFirstFrameMilliseconds": 55.844562000000224
+          },
+          {
+            "path": "videos/vvc-comparison/cartoon.sci",
+            "version": 5,
+            "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+            "archiveBytes": 27565975,
+            "transferredMediaBytes": 27562731,
+            "tags": {
+              "5": 63,
+              "7": 22,
+              "8": 5,
+              "9": 6
+            },
+            "milliseconds": [
+              898.734190999995,
+              1065.0771169999925,
+              1023.1595339999931,
+              1133.8866909999979,
+              1069.8108539999976
+            ],
+            "p95Milliseconds": [
+              24.526879999999892,
+              31.80854299999919,
+              28.214963999998872,
+              33.56970399999955,
+              29.324789000000237
+            ],
+            "medianMillisecondsPerFrame": 11.094553302083256,
+            "medianP95Milliseconds": 29.324789000000237,
+            "medianFirstFrameMilliseconds": 41.79983700000048
+          }
+        ],
+        "transferredBytesSavedPercent": 0,
+        "medianDecodeChangePercent": -2.5539274135255585,
+        "p95DecodeChangePercent": -9.98954428567843
+      },
+      "fossils": {
+        "host": {
+          "platform": "linux",
+          "arch": "x64",
+          "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+          "node": "v26.11.1"
+        },
+        "height": 1080,
+        "mode": "pixels",
+        "warmups": 1,
+        "measuredIterations": 5,
+        "frames": 96,
+        "timeline": [
+          1920,
+          1080,
+          96,
+          4,
+          24,
+          1
+        ],
+        "outputAndTimingSha256": "6d812aa18826371a47cfdddd0e41c71b9b750b12c9c8958cf51ea29d65e9bd80",
+        "audioAndTimingSha256": "c9356fbd9f3905e0f743fc7a6535aebc7fd73e6f4f2867ee45694d510a80fd40",
+        "results": [
+          {
+            "path": "videos/vvc-comparison/fossils.sci",
+            "version": 5,
+            "moduleSha256": "782315dca9548e4f28f5903d050d0a4ab2d00ae5b97e530f7df2a0b4cb5c8037",
+            "archiveBytes": 68155149,
+            "transferredMediaBytes": 68151862,
+            "tags": {
+              "8": 5,
+              "9": 91
+            },
+            "milliseconds": [
+              1644.9699870000022,
+              1578.3596970000144,
+              1592.6349639999826,
+              1572.4754649999813,
+              1599.184391999981
+            ],
+            "p95Milliseconds": [
+              21.76964399999997,
+              20.94503700000132,
+              20.37351899999703,
+              21.142586000001756,
+              21.457407999998395
+            ],
+            "medianMillisecondsPerFrame": 16.589947541666486,
+            "medianP95Milliseconds": 21.142586000001756,
+            "medianFirstFrameMilliseconds": 37.012448999998014
+          },
+          {
+            "path": "videos/vvc-comparison/fossils.sci",
+            "version": 5,
+            "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+            "archiveBytes": 68155149,
+            "transferredMediaBytes": 68151862,
+            "tags": {
+              "8": 5,
+              "9": 91
+            },
+            "milliseconds": [
+              1639.621459999993,
+              1594.486288999995,
+              1585.8454639999964,
+              1585.460660000008,
+              1564.1496850000185
+            ],
+            "p95Milliseconds": [
+              22.091013000000203,
+              20.80092799999875,
+              20.79991599999994,
+              21.250842000001285,
+              20.023290000000998
+            ],
+            "medianMillisecondsPerFrame": 16.519223583333297,
+            "medianP95Milliseconds": 20.80092799999875,
+            "medianFirstFrameMilliseconds": 26.775445000000218
+          }
+        ],
+        "transferredBytesSavedPercent": 0,
+        "medianDecodeChangePercent": -0.42630609985693235,
+        "p95DecodeChangePercent": -1.6159707237467513
+      },
+      "cartoonCombinedTenPasses": {
+        "reason": "First five-pass batch showed a 5.84 percent p95 regression. A second full five-pass batch checked that concern; both batches are retained and combined, without discarding runs.",
+        "results": [
+          {
+            "medianMillisecondsPerFrame": 11.235958770833216,
+            "medianP95Milliseconds": 30.33701099999962
+          },
+          {
+            "medianMillisecondsPerFrame": 11.02112680208331,
+            "medianP95Milliseconds": 30.915656000000126
+          }
+        ],
+        "medianDecodeChangePercent": -1.9120038897577296,
+        "p95DecodeChangePercent": 1.9073896238509302
+      },
+      "detailScope": "First 60 presentation events of the retained 1080p60 prefix. Direct WASM output, excluding network, worker initialization, canvas presentation and audio scheduling. Exact complete pixel hashes match. The third result in the final detail comparison is the threshold-only ablation; the first two are baseline and final candidate.",
+      "thresholdAblationScope": "The initial paeth-comparison used the baseline and threshold-only WASM, including cell output. Its player/web/decoder.wasm path names the intermediate threshold-only build, not the final candidate. Final direct RGBA measurements are in detailFirst60Events."
+    },
+    "streaming": {
+      "started": "2026-10-15T14:51:40.730Z",
+      "finished": "2026-10-15T14:55:27.403Z",
+      "assetsUnchanged": true,
+      "host": {
+        "platform": "linux",
+        "arch": "x64",
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "logicalCpus": 16
+      },
+      "archive": {
+        "name": "detail-prefix.sci",
+        "bytes": 2872063351,
+        "metadata": {
+          "audio": {
+            "channels": 2,
+            "codec": "opus",
+            "sampleRate": 48000
+          },
+          "averageFps": 60.00199342170836,
+          "chunkFrames": 60,
+          "chunkSeconds": 1,
+          "chunks": 106,
+          "duration": 10.033,
+          "encoderProfile": "adaptive-layered-v2:360,480,720,1080:4:60/1:0:1000000",
+          "fps": 60,
+          "fpsDenominator": 1,
+          "fpsNumerator": 60,
+          "frames": 602,
+          "qualities": [
+            {
+              "columns": 639,
+              "deliveryBitrate": 151218335.49287352,
+              "height": 360,
+              "rows": 360,
+              "videoBytes": 189597547
+            },
+            {
+              "columns": 852,
+              "deliveryBitrate": 264891434.26691917,
+              "height": 480,
+              "rows": 480,
+              "videoBytes": 332157822
+            },
+            {
+              "columns": 1281,
+              "deliveryBitrate": 583489915.2795774,
+              "height": 720,
+              "rows": 720,
+              "videoBytes": 731720142
+            },
+            {
+              "columns": 1920,
+              "deliveryBitrate": 1290611254.8589654,
+              "height": 1080,
+              "rows": 1080,
+              "videoBytes": 1618538692
+            }
+          ],
+          "source": {
+            "firstPts": 0,
+            "height": 1080,
+            "selectionCeilingDenominator": 1,
+            "selectionCeilingNumerator": 60,
+            "width": 1920
+          },
+          "sourceFrames": 602,
+          "targetBitrate": 1000000,
+          "timebase": 1000000,
+          "version": 4,
+          "video": {
+            "cellBytes": 28,
+            "cellHeight": 4,
+            "cellWidth": 3,
+            "codec": "sci-ascii-scene-v1",
+            "font": "ascii-3x4-v2",
+            "glyphTransform": "reflect-xy-v1",
+            "mapper": "adaptive-layered-v2",
+            "packetFormat": "ascii-scene-zlib"
+          }
+        },
+        "headerMetadataIndexSha256": "9b6072aae37437931b560b3783554fa9e04f7a253ff3c76448d7d592c43fc5f3",
+        "intersectingRecords": [
+          {
+            "height": 360,
+            "sourceEventsFullyElapsedByRequestedTime": 600,
+            "firstFrame": 0,
+            "lastFrameExclusive": 602,
+            "start": 0,
+            "end": 10.033,
+            "frames": 602,
+            "visualBytes": 189597547,
+            "records": 106
+          },
+          {
+            "height": 480,
+            "sourceEventsFullyElapsedByRequestedTime": 600,
+            "firstFrame": 0,
+            "lastFrameExclusive": 602,
+            "start": 0,
+            "end": 10.033,
+            "frames": 602,
+            "visualBytes": 332157822,
+            "records": 106
+          },
+          {
+            "height": 720,
+            "sourceEventsFullyElapsedByRequestedTime": 600,
+            "firstFrame": 0,
+            "lastFrameExclusive": 602,
+            "start": 0,
+            "end": 10.033,
+            "frames": 602,
+            "visualBytes": 731720142,
+            "records": 106
+          },
+          {
+            "height": 1080,
+            "sourceEventsFullyElapsedByRequestedTime": 600,
+            "firstFrame": 0,
+            "lastFrameExclusive": 602,
+            "start": 0,
+            "end": 10.033,
+            "frames": 602,
+            "visualBytes": 1618538692,
+            "records": 106
+          }
+        ]
+      },
+      "modules": [
+        {
+          "name": "baseline",
+          "webSha256": "bcf7d4c5d2d1eab5249fc4c950ce20237edec89c39f273a0b08a4d2e56d24067",
+          "sharedWebSha256": "e773c17e1509858610de943f871525d5ebf989e404fcdf3d0f9cafe03565334b",
+          "wasmSha256": "782315dca9548e4f28f5903d050d0a4ab2d00ae5b97e530f7df2a0b4cb5c8037"
+        },
+        {
+          "name": "candidate",
+          "webSha256": "b6cb58d61ac77178b78f1c31bc9efaccdcc1ae49feadb76a35b7f7112e66e7c7",
+          "sharedWebSha256": "e773c17e1509858610de943f871525d5ebf989e404fcdf3d0f9cafe03565334b",
+          "wasmSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3"
+        }
+      ],
+      "driverSha256": "007831101c306e665b54e38729eb7cd07ad560068d1f88d6a1c899cdff8012cc",
+      "baselineCpuSupported": false,
+      "moduleOnly": true,
+      "candidateBudgets": {
+        "presentationBytes": 67108864,
+        "sourceEventQueue": 16,
+        "compressedAndAudioCacheBytes": 83886080,
+        "inflightRequestBytes": 50331648
+      },
+      "uninterruptedGate": {
+        "required": true,
+        "passed": false
+      },
+      "network": {
+        "latencyMilliseconds": 0,
+        "downloadBytesPerSecond": -1
+      },
+      "renderers": [
+        "default"
+      ],
+      "iterations": 3,
+      "maximumWallSecondsPerTrial": 30,
+      "requestedVideoSeconds": 10,
+      "includesAudio": true,
+      "includesTransport": true,
+      "includesPresentation": true,
+      "results": [
+        {
+          "uninterrupted": false,
+          "iteration": 0,
+          "variant": "baseline",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 360,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "360:105",
+            "0:105"
+          ],
+          "height": 360,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095833,
+          "observedVideoSeconds": 10.002,
+          "startupMilliseconds": 336.19999998807907,
+          "preparationMilliseconds": 65.2000000178814,
+          "playbackMilliseconds": 5099.5999999940395,
+          "bufferingMilliseconds": 136,
+          "waitingEvents": 1,
+          "samples": 469,
+          "maxQueueBytes": 11962080,
+          "maxReservedFrameBytes": 11962080,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 33719236,
+          "maxRequestBytes": 8651487,
+          "maxWorkers": 4,
+          "maxLeases": 36,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.002,
+          "maxUnclampedClockLeadSeconds": 0,
+          "decodedFramesConsumedBeforeObservationEnd": 601,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 306,
+            "consumed": 601,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 306,
+            "deferred": 296,
+            "painted": 175,
+            "decodeMilliseconds": 4813.500000208616,
+            "frameBytes": 11962080,
+            "decodeWallMilliseconds": 2398.5000000298023,
+            "decoderPreparationMilliseconds": 69.19999998807907,
+            "decoderMilliseconds": 2979.4999998807907,
+            "reconstructionMilliseconds": 732.900000244379,
+            "rendererInitializationMilliseconds": 1.2000000476837158,
+            "workerDeliveryMilliseconds": 760.8935546875,
+            "peakWorkerHeapBytes": 22544384,
+            "renderers": {
+              "canvas2d": 306
+            },
+            "presentationQueueMilliseconds": 76929.39965820312,
+            "visibleDrawMilliseconds": 8.80029296875
+          },
+          "readerMetrics": {
+            "cacheBytes": 33719236,
+            "requestBytes": 8651487,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 189617127,
+              "workerMilliseconds": 337.7999999821186,
+              "roundTripMilliseconds": 1045.5999998152256
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 2.1726666666666667,
+              "buffering": false,
+              "decoded": 144,
+              "queue": 13
+            },
+            {
+              "position": 4.37,
+              "buffering": false,
+              "decoded": 276,
+              "queue": 16
+            },
+            {
+              "position": 6.482000000000001,
+              "buffering": false,
+              "decoded": 403,
+              "queue": 14
+            },
+            {
+              "position": 8.615333333333334,
+              "buffering": false,
+              "decoded": 531,
+              "queue": 15
+            }
+          ],
+          "transferredSciBytes": 189693872
+        },
+        {
+          "uninterrupted": true,
+          "iteration": 0,
+          "variant": "candidate",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 360,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "360:105",
+            "0:105"
+          ],
+          "height": 360,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.8802395209581,
+          "observedVideoSeconds": 10.019333333333334,
+          "startupMilliseconds": 128.2999999821186,
+          "preparationMilliseconds": 65.59999999403954,
+          "playbackMilliseconds": 5043.199999988079,
+          "bufferingMilliseconds": 0,
+          "waitingEvents": 0,
+          "samples": 462,
+          "maxQueueBytes": 8281440,
+          "maxReservedFrameBytes": 8281440,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 33222455,
+          "maxRequestBytes": 3561678,
+          "maxWorkers": 4,
+          "maxLeases": 36,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.019333333333334,
+          "maxUnclampedClockLeadSeconds": 0,
+          "decodedFramesConsumedBeforeObservationEnd": 602,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 304,
+            "consumed": 602,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 303,
+            "deferred": 299,
+            "painted": 116,
+            "decodeMilliseconds": 3725.8999994695187,
+            "frameBytes": 8281440,
+            "decodeWallMilliseconds": 2008.7999998927116,
+            "decoderMilliseconds": 2265.9999999701977,
+            "reconstructionMilliseconds": 726.4000001549721,
+            "rendererInitializationMilliseconds": 1.1000000536441803,
+            "workerDeliveryMilliseconds": 465.5185546875,
+            "peakWorkerHeapBytes": 22544384,
+            "renderers": {
+              "canvas2d": 303
+            },
+            "decoderPreparationMilliseconds": 61.29999998211861,
+            "presentationQueueMilliseconds": 76922.19946289062,
+            "visibleDrawMilliseconds": 4.1982421875
+          },
+          "readerMetrics": {
+            "cacheBytes": 33222455,
+            "requestBytes": 7008087,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 189617127,
+              "workerMilliseconds": 384.7999999523163,
+              "roundTripMilliseconds": 904.200000077486
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 2.2113333333333336,
+              "buffering": false,
+              "decoded": 145,
+              "queue": 13
+            },
+            {
+              "position": 4.323333333333333,
+              "buffering": false,
+              "decoded": 276,
+              "queue": 16
+            },
+            {
+              "position": 6.520666666666667,
+              "buffering": false,
+              "decoded": 405,
+              "queue": 16
+            },
+            {
+              "position": 8.760666666666667,
+              "buffering": false,
+              "decoded": 540,
+              "queue": 14
+            }
+          ],
+          "transferredSciBytes": 189693872
+        },
+        {
+          "uninterrupted": true,
+          "iteration": 0,
+          "variant": "baseline",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 480,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "480:105",
+            "0:105"
+          ],
+          "height": 480,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095813,
+          "observedVideoSeconds": 10.019333333333334,
+          "startupMilliseconds": 244,
+          "preparationMilliseconds": 157.69999998807907,
+          "playbackMilliseconds": 5038.800000011921,
+          "bufferingMilliseconds": 0,
+          "waitingEvents": 0,
+          "samples": 347,
+          "maxQueueBytes": 19630080,
+          "maxReservedFrameBytes": 19630080,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 57792229,
+          "maxRequestBytes": 9049891,
+          "maxWorkers": 4,
+          "maxLeases": 35,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.019333333333334,
+          "maxUnclampedClockLeadSeconds": 0,
+          "decodedFramesConsumedBeforeObservationEnd": 600,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 336,
+            "consumed": 600,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 306,
+            "deferred": 296,
+            "painted": 130,
+            "decodeMilliseconds": 11007.100000053644,
+            "frameBytes": 19630080,
+            "decodeWallMilliseconds": 4449.300000220537,
+            "decoderPreparationMilliseconds": 131.59999999403954,
+            "decoderMilliseconds": 5593.000000447035,
+            "reconstructionMilliseconds": 2894.999999731779,
+            "rendererInitializationMilliseconds": 2.400000035762787,
+            "workerDeliveryMilliseconds": 2114.730712890625,
+            "peakWorkerHeapBytes": 35127296,
+            "renderers": {
+              "canvas2d": 306
+            },
+            "presentationQueueMilliseconds": 70307.0029296875,
+            "visibleDrawMilliseconds": 9.700927734375
+          },
+          "readerMetrics": {
+            "cacheBytes": 57792229,
+            "requestBytes": 14978942,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 332177402,
+              "workerMilliseconds": 676.0000001490116,
+              "roundTripMilliseconds": 1839.5000001192093
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 2.9153333333333333,
+              "buffering": false,
+              "decoded": 187,
+              "queue": 15
+            },
+            {
+              "position": 6.072666666666667,
+              "buffering": false,
+              "decoded": 378,
+              "queue": 14
+            },
+            {
+              "position": 9.038,
+              "buffering": false,
+              "decoded": 556,
+              "queue": 15
+            }
+          ],
+          "transferredSciBytes": 332254149
+        },
+        {
+          "uninterrupted": true,
+          "iteration": 0,
+          "variant": "candidate",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 480,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "480:105",
+            "0:105"
+          ],
+          "height": 480,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095807,
+          "observedVideoSeconds": 10.019333333333332,
+          "startupMilliseconds": 272.30000001192093,
+          "preparationMilliseconds": 279.59999999403954,
+          "playbackMilliseconds": 5028.4000000059605,
+          "bufferingMilliseconds": 0,
+          "waitingEvents": 0,
+          "samples": 334,
+          "maxQueueBytes": 17994240,
+          "maxReservedFrameBytes": 17994240,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 56927722,
+          "maxRequestBytes": 6912815,
+          "maxWorkers": 4,
+          "maxLeases": 36,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.019333333333332,
+          "maxUnclampedClockLeadSeconds": 0,
+          "decodedFramesConsumedBeforeObservationEnd": 600,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 340,
+            "consumed": 600,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 305,
+            "deferred": 297,
+            "painted": 122,
+            "decodeMilliseconds": 11765.700000226498,
+            "frameBytes": 17994240,
+            "decodeWallMilliseconds": 4616.499999910593,
+            "decoderPreparationMilliseconds": 183,
+            "decoderMilliseconds": 5284.600000202656,
+            "reconstructionMilliseconds": 3244.100000321865,
+            "rendererInitializationMilliseconds": 1.699999988079071,
+            "workerDeliveryMilliseconds": 2607.13525390625,
+            "peakWorkerHeapBytes": 36110336,
+            "renderers": {
+              "canvas2d": 305
+            },
+            "presentationQueueMilliseconds": 70423.09936523438,
+            "visibleDrawMilliseconds": 7.89892578125
+          },
+          "readerMetrics": {
+            "cacheBytes": 56927722,
+            "requestBytes": 15003064,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 332177402,
+              "workerMilliseconds": 711.9000000059605,
+              "roundTripMilliseconds": 2396.599999934435
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 3.2566666666666664,
+              "buffering": false,
+              "decoded": 209,
+              "queue": 16
+            },
+            {
+              "position": 6.414,
+              "buffering": false,
+              "decoded": 397,
+              "queue": 15
+            },
+            {
+              "position": 9.293999999999999,
+              "buffering": false,
+              "decoded": 573,
+              "queue": 15
+            }
+          ],
+          "transferredSciBytes": 332254149
+        },
+        {
+          "uninterrupted": false,
+          "iteration": 0,
+          "variant": "baseline",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 720,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "720:105",
+            "0:105"
+          ],
+          "height": 720,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095807,
+          "observedVideoSeconds": 10.005666666666666,
+          "startupMilliseconds": 601.8000000119209,
+          "preparationMilliseconds": 205.10000002384186,
+          "playbackMilliseconds": 9969.199999988079,
+          "bufferingMilliseconds": 4472.4000000059605,
+          "waitingEvents": 20,
+          "samples": 486,
+          "maxQueueBytes": 44271360,
+          "maxReservedFrameBytes": 44271360,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 83256547,
+          "maxRequestBytes": 42944480,
+          "maxWorkers": 4,
+          "maxLeases": 23,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.005666666666666,
+          "maxUnclampedClockLeadSeconds": 0.17533333333333445,
+          "decodedFramesConsumedBeforeObservationEnd": 601,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 393,
+            "consumed": 601,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 306,
+            "deferred": 296,
+            "painted": 120,
+            "decodeMilliseconds": 34600.59999972582,
+            "frameBytes": 44271360,
+            "decodeWallMilliseconds": 9453.799999892712,
+            "decoderPreparationMilliseconds": 283,
+            "decoderMilliseconds": 15054.200000196695,
+            "reconstructionMilliseconds": 9029.499999672174,
+            "rendererInitializationMilliseconds": 2.7999999821186066,
+            "workerDeliveryMilliseconds": 9500.777587890625,
+            "peakWorkerHeapBytes": 69992448,
+            "renderers": {
+              "canvas2d": 306
+            },
+            "presentationQueueMilliseconds": 86904.90673828125,
+            "visibleDrawMilliseconds": 9.199462890625
+          },
+          "readerMetrics": {
+            "cacheBytes": 83256547,
+            "requestBytes": 43055105,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 731739722,
+              "workerMilliseconds": 1990.799999922514,
+              "roundTripMilliseconds": 8682.099999934435
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 2.067,
+              "buffering": true,
+              "decoded": 140,
+              "queue": 15
+            },
+            {
+              "position": 4.167,
+              "buffering": true,
+              "decoded": 260,
+              "queue": 9
+            },
+            {
+              "position": 6.217666666666665,
+              "buffering": false,
+              "decoded": 384,
+              "queue": 12
+            },
+            {
+              "position": 8.210999999999999,
+              "buffering": false,
+              "decoded": 505,
+              "queue": 13
+            }
+          ],
+          "transferredSciBytes": 731816470
+        },
+        {
+          "uninterrupted": false,
+          "iteration": 0,
+          "variant": "candidate",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 720,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "720:105",
+            "0:105"
+          ],
+          "height": 720,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095813,
+          "observedVideoSeconds": 10.01233333333333,
+          "startupMilliseconds": 544.5999999940395,
+          "preparationMilliseconds": 219.5,
+          "playbackMilliseconds": 8926.299999982119,
+          "bufferingMilliseconds": 3559.300000101328,
+          "waitingEvents": 21,
+          "samples": 433,
+          "maxQueueBytes": 36892800,
+          "maxReservedFrameBytes": 36892800,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 82742545,
+          "maxRequestBytes": 29136172,
+          "maxWorkers": 4,
+          "maxLeases": 23,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.01233333333333,
+          "maxUnclampedClockLeadSeconds": 0.10466666666666713,
+          "decodedFramesConsumedBeforeObservationEnd": 599,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 411,
+            "consumed": 599,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 305,
+            "deferred": 297,
+            "painted": 100,
+            "decodeMilliseconds": 29978.19999998808,
+            "frameBytes": 36892800,
+            "decodeWallMilliseconds": 8424.500000059605,
+            "decoderPreparationMilliseconds": 332.7000000178814,
+            "decoderMilliseconds": 12726.199999392033,
+            "reconstructionMilliseconds": 7985.100000441074,
+            "rendererInitializationMilliseconds": 2.5,
+            "workerDeliveryMilliseconds": 7885.02880859375,
+            "peakWorkerHeapBytes": 72679424,
+            "renderers": {
+              "canvas2d": 305
+            },
+            "presentationQueueMilliseconds": 80489.60424804688,
+            "visibleDrawMilliseconds": 11.39990234375
+          },
+          "readerMetrics": {
+            "cacheBytes": 82742545,
+            "requestBytes": 33213621,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 731739722,
+              "workerMilliseconds": 2064,
+              "roundTripMilliseconds": 9502.699999630451
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 2.0810000000000004,
+              "buffering": false,
+              "decoded": 141,
+              "queue": 16
+            },
+            {
+              "position": 4.387666666666667,
+              "buffering": false,
+              "decoded": 276,
+              "queue": 14
+            },
+            {
+              "position": 6.866333333333334,
+              "buffering": false,
+              "decoded": 424,
+              "queue": 13
+            },
+            {
+              "position": 9.308333333333334,
+              "buffering": false,
+              "decoded": 569,
+              "queue": 13
+            }
+          ],
+          "transferredSciBytes": 731816470
+        },
+        {
+          "uninterrupted": false,
+          "iteration": 0,
+          "variant": "baseline",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 1080,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "0:68",
+            "0:69",
+            "1080:105",
+            "0:105"
+          ],
+          "height": 1080,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095813,
+          "observedVideoSeconds": 10.016333333333334,
+          "startupMilliseconds": 865.5,
+          "preparationMilliseconds": 216.89999997615814,
+          "playbackMilliseconds": 24562.70000001788,
+          "bufferingMilliseconds": 18851.300000041723,
+          "waitingEvents": 32,
+          "samples": 983,
+          "maxQueueBytes": 66355200,
+          "maxReservedFrameBytes": 66355200,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 82046955,
+          "maxRequestBytes": 49833656,
+          "maxWorkers": 4,
+          "maxLeases": 10,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.016333333333334,
+          "maxUnclampedClockLeadSeconds": 0.1619999999999977,
+          "decodedFramesConsumedBeforeObservationEnd": 600,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 369,
+            "consumed": 600,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 304,
+            "deferred": 298,
+            "painted": 132,
+            "decodeMilliseconds": 75052.70000010729,
+            "frameBytes": 66355200,
+            "decodeWallMilliseconds": 21679.900000095367,
+            "decoderPreparationMilliseconds": 419,
+            "decoderMilliseconds": 38118.10000047088,
+            "reconstructionMilliseconds": 16413.599999785423,
+            "rendererInitializationMilliseconds": 2.899999976158142,
+            "workerDeliveryMilliseconds": 18756.48046875,
+            "peakWorkerHeapBytes": 155254784,
+            "renderers": {
+              "canvas2d": 304
+            },
+            "presentationQueueMilliseconds": 158805.2978515625,
+            "visibleDrawMilliseconds": 13.1015625
+          },
+          "readerMetrics": {
+            "cacheBytes": 82046955,
+            "requestBytes": 49833656,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 1618558272,
+              "workerMilliseconds": 5000.600000023842,
+              "roundTripMilliseconds": 18814.300000041723
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 1.033,
+              "buffering": true,
+              "decoded": 70,
+              "queue": 7
+            },
+            {
+              "position": 1.967,
+              "buffering": false,
+              "decoded": 119,
+              "queue": 1
+            },
+            {
+              "position": 2.6,
+              "buffering": false,
+              "decoded": 173,
+              "queue": 16
+            },
+            {
+              "position": 4.027333333333334,
+              "buffering": false,
+              "decoded": 245,
+              "queue": 8
+            },
+            {
+              "position": 5.067,
+              "buffering": true,
+              "decoded": 313,
+              "queue": 8
+            },
+            {
+              "position": 6.017,
+              "buffering": true,
+              "decoded": 368,
+              "queue": 6
+            },
+            {
+              "position": 6.933,
+              "buffering": true,
+              "decoded": 431,
+              "queue": 14
+            },
+            {
+              "position": 7.967,
+              "buffering": true,
+              "decoded": 494,
+              "queue": 15
+            },
+            {
+              "position": 9.317,
+              "buffering": true,
+              "decoded": 560,
+              "queue": 0
+            }
+          ],
+          "transferredSciBytes": 1618635129
+        },
+        {
+          "uninterrupted": false,
+          "iteration": 0,
+          "variant": "candidate",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 1080,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "1080:105",
+            "0:105"
+          ],
+          "height": 1080,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095813,
+          "observedVideoSeconds": 10.016333333333334,
+          "startupMilliseconds": 548.5,
+          "preparationMilliseconds": 145.2999999821186,
+          "playbackMilliseconds": 15715.300000011921,
+          "bufferingMilliseconds": 10153.09999999404,
+          "waitingEvents": 27,
+          "samples": 810,
+          "maxQueueBytes": 66355200,
+          "maxReservedFrameBytes": 66355200,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 82692503,
+          "maxRequestBytes": 49881794,
+          "maxWorkers": 4,
+          "maxLeases": 8,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.016333333333334,
+          "maxUnclampedClockLeadSeconds": 0.10000000000000009,
+          "decodedFramesConsumedBeforeObservationEnd": 601,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 365,
+            "consumed": 601,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 303,
+            "deferred": 299,
+            "painted": 135,
+            "decodeMilliseconds": 45038.69999963045,
+            "frameBytes": 66355200,
+            "decodeWallMilliseconds": 12777.399999886751,
+            "decoderPreparationMilliseconds": 195.2000000178814,
+            "decoderMilliseconds": 24784.600000351667,
+            "reconstructionMilliseconds": 9926.800000160933,
+            "rendererInitializationMilliseconds": 1.800000011920929,
+            "workerDeliveryMilliseconds": 9272.724853515625,
+            "peakWorkerHeapBytes": 155254784,
+            "renderers": {
+              "canvas2d": 303
+            },
+            "presentationQueueMilliseconds": 102309.103515625,
+            "visibleDrawMilliseconds": 10.30029296875
+          },
+          "readerMetrics": {
+            "cacheBytes": 82692503,
+            "requestBytes": 49963229,
+            "requests": 7,
+            "integrity": {
+              "verifiedBytes": 1618558272,
+              "workerMilliseconds": 3503.3000000715256,
+              "roundTripMilliseconds": 9824.399999946356
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 1.25,
+              "buffering": true,
+              "decoded": 81,
+              "queue": 5
+            },
+            {
+              "position": 2.333,
+              "buffering": false,
+              "decoded": 156,
+              "queue": 15
+            },
+            {
+              "position": 3.467,
+              "buffering": true,
+              "decoded": 224,
+              "queue": 15
+            },
+            {
+              "position": 5,
+              "buffering": true,
+              "decoded": 310,
+              "queue": 9
+            },
+            {
+              "position": 6.0729999999999995,
+              "buffering": false,
+              "decoded": 372,
+              "queue": 12
+            },
+            {
+              "position": 7.333,
+              "buffering": true,
+              "decoded": 452,
+              "queue": 11
+            },
+            {
+              "position": 8.632333333333333,
+              "buffering": false,
+              "decoded": 529,
+              "queue": 13
+            },
+            {
+              "position": 9.910333333333334,
+              "buffering": false,
+              "decoded": 601,
+              "queue": 7
+            }
+          ],
+          "transferredSciBytes": 1618635129
+        },
+        {
+          "uninterrupted": true,
+          "iteration": 1,
+          "variant": "candidate",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 360,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "360:105",
+            "0:105"
+          ],
+          "height": 360,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095813,
+          "observedVideoSeconds": 10.019333333333334,
+          "startupMilliseconds": 120.90000000596046,
+          "preparationMilliseconds": 89.69999998807907,
+          "playbackMilliseconds": 5035.9000000059605,
+          "bufferingMilliseconds": 0,
+          "waitingEvents": 0,
+          "samples": 465,
+          "maxQueueBytes": 9201600,
+          "maxReservedFrameBytes": 9201600,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 33222455,
+          "maxRequestBytes": 9030108,
+          "maxWorkers": 4,
+          "maxLeases": 37,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.019333333333334,
+          "maxUnclampedClockLeadSeconds": 0,
+          "decodedFramesConsumedBeforeObservationEnd": 602,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 305,
+            "consumed": 602,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 303,
+            "deferred": 299,
+            "painted": 154,
+            "decodeMilliseconds": 4523.899999558926,
+            "frameBytes": 9201600,
+            "decodeWallMilliseconds": 2347.699999719858,
+            "decoderPreparationMilliseconds": 59.19999998807907,
+            "decoderMilliseconds": 2946.3000000417233,
+            "reconstructionMilliseconds": 836.0999996066093,
+            "rendererInitializationMilliseconds": 2.0000000596046448,
+            "workerDeliveryMilliseconds": 511.144775390625,
+            "peakWorkerHeapBytes": 22544384,
+            "renderers": {
+              "canvas2d": 303
+            },
+            "presentationQueueMilliseconds": 76428.60034179688,
+            "visibleDrawMilliseconds": 5.29931640625
+          },
+          "readerMetrics": {
+            "cacheBytes": 33222455,
+            "requestBytes": 9030108,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 189617127,
+              "workerMilliseconds": 376.8000001013279,
+              "roundTripMilliseconds": 1002.9999998211861
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 2.1900000000000004,
+              "buffering": false,
+              "decoded": 145,
+              "queue": 13
+            },
+            {
+              "position": 4.387333333333333,
+              "buffering": false,
+              "decoded": 277,
+              "queue": 13
+            },
+            {
+              "position": 6.5633333333333335,
+              "buffering": false,
+              "decoded": 409,
+              "queue": 16
+            },
+            {
+              "position": 8.696666666666667,
+              "buffering": false,
+              "decoded": 537,
+              "queue": 16
+            }
+          ],
+          "transferredSciBytes": 189693872
+        },
+        {
+          "uninterrupted": true,
+          "iteration": 1,
+          "variant": "baseline",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 360,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "360:105",
+            "0:105"
+          ],
+          "height": 360,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095807,
+          "observedVideoSeconds": 10.019333333333332,
+          "startupMilliseconds": 138.10000002384186,
+          "preparationMilliseconds": 74.7999999821186,
+          "playbackMilliseconds": 5032,
+          "bufferingMilliseconds": 0,
+          "waitingEvents": 0,
+          "samples": 447,
+          "maxQueueBytes": 10121760,
+          "maxReservedFrameBytes": 10121760,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 32945511,
+          "maxRequestBytes": 2040591,
+          "maxWorkers": 4,
+          "maxLeases": 36,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.019333333333332,
+          "maxUnclampedClockLeadSeconds": 0,
+          "decodedFramesConsumedBeforeObservationEnd": 600,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 302,
+            "consumed": 600,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 304,
+            "deferred": 298,
+            "painted": 103,
+            "decodeMilliseconds": 5618.600000023842,
+            "frameBytes": 10121760,
+            "decodeWallMilliseconds": 2677.3000001609325,
+            "decoderPreparationMilliseconds": 61.900000005960464,
+            "decoderMilliseconds": 3179.9999998807907,
+            "reconstructionMilliseconds": 1276.0000004768372,
+            "rendererInitializationMilliseconds": 0.6999999582767487,
+            "workerDeliveryMilliseconds": 895.33642578125,
+            "peakWorkerHeapBytes": 22544384,
+            "renderers": {
+              "canvas2d": 304
+            },
+            "presentationQueueMilliseconds": 74815.19750976562,
+            "visibleDrawMilliseconds": 5.300537109375
+          },
+          "readerMetrics": {
+            "cacheBytes": 32945511,
+            "requestBytes": 7008087,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 189617127,
+              "workerMilliseconds": 386.8999999463558,
+              "roundTripMilliseconds": 1096.8999998569489
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 2.318,
+              "buffering": false,
+              "decoded": 154,
+              "queue": 16
+            },
+            {
+              "position": 4.558000000000001,
+              "buffering": false,
+              "decoded": 286,
+              "queue": 12
+            },
+            {
+              "position": 6.840666666666667,
+              "buffering": false,
+              "decoded": 426,
+              "queue": 16
+            },
+            {
+              "position": 9.059333333333333,
+              "buffering": false,
+              "decoded": 557,
+              "queue": 16
+            }
+          ],
+          "transferredSciBytes": 189693872
+        },
+        {
+          "uninterrupted": true,
+          "iteration": 1,
+          "variant": "candidate",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 480,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "480:105",
+            "0:105"
+          ],
+          "height": 480,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095813,
+          "observedVideoSeconds": 10.019333333333332,
+          "startupMilliseconds": 178.40000000596046,
+          "preparationMilliseconds": 139.09999999403954,
+          "playbackMilliseconds": 5041.300000011921,
+          "bufferingMilliseconds": 0,
+          "waitingEvents": 0,
+          "samples": 433,
+          "maxQueueBytes": 14722560,
+          "maxReservedFrameBytes": 14722560,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 56945570,
+          "maxRequestBytes": 6073207,
+          "maxWorkers": 4,
+          "maxLeases": 35,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.019333333333332,
+          "maxUnclampedClockLeadSeconds": 0,
+          "decodedFramesConsumedBeforeObservationEnd": 602,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 306,
+            "consumed": 602,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 303,
+            "deferred": 299,
+            "painted": 131,
+            "decodeMilliseconds": 6688.600000113249,
+            "frameBytes": 14722560,
+            "decodeWallMilliseconds": 3399.7999998927116,
+            "decoderPreparationMilliseconds": 90.69999998807907,
+            "decoderMilliseconds": 4247.200000286102,
+            "reconstructionMilliseconds": 1362.3999997973442,
+            "rendererInitializationMilliseconds": 1.2999999821186066,
+            "workerDeliveryMilliseconds": 822.96533203125,
+            "peakWorkerHeapBytes": 37093376,
+            "renderers": {
+              "canvas2d": 303
+            },
+            "presentationQueueMilliseconds": 74954.50244140625,
+            "visibleDrawMilliseconds": 4.80078125
+          },
+          "readerMetrics": {
+            "cacheBytes": 57332039,
+            "requestBytes": 17849472,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 332177402,
+              "workerMilliseconds": 664.5999999940395,
+              "roundTripMilliseconds": 1255.8000000417233
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 2.3179999999999996,
+              "buffering": false,
+              "decoded": 154,
+              "queue": 15
+            },
+            {
+              "position": 4.686,
+              "buffering": false,
+              "decoded": 295,
+              "queue": 15
+            },
+            {
+              "position": 7.096666666666667,
+              "buffering": false,
+              "decoded": 440,
+              "queue": 14
+            },
+            {
+              "position": 9.357999999999999,
+              "buffering": false,
+              "decoded": 575,
+              "queue": 16
+            }
+          ],
+          "transferredSciBytes": 332254149
+        },
+        {
+          "uninterrupted": true,
+          "iteration": 1,
+          "variant": "baseline",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 480,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "480:105",
+            "0:105"
+          ],
+          "height": 480,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095813,
+          "observedVideoSeconds": 10.019333333333334,
+          "startupMilliseconds": 191.09999999403954,
+          "preparationMilliseconds": 135.2999999821186,
+          "playbackMilliseconds": 5034.5,
+          "bufferingMilliseconds": 0,
+          "waitingEvents": 0,
+          "samples": 408,
+          "maxQueueBytes": 17994240,
+          "maxReservedFrameBytes": 17994240,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 57293639,
+          "maxRequestBytes": 13235441,
+          "maxWorkers": 4,
+          "maxLeases": 36,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.019333333333334,
+          "maxUnclampedClockLeadSeconds": 0,
+          "decodedFramesConsumedBeforeObservationEnd": 602,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 304,
+            "consumed": 602,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 305,
+            "deferred": 297,
+            "painted": 105,
+            "decodeMilliseconds": 7752.699999630451,
+            "frameBytes": 17994240,
+            "decodeWallMilliseconds": 3797.6000000834465,
+            "decoderPreparationMilliseconds": 100.39999997615814,
+            "decoderMilliseconds": 4428.600000202656,
+            "reconstructionMilliseconds": 1690.7999997437,
+            "rendererInitializationMilliseconds": 0.7000000178813934,
+            "workerDeliveryMilliseconds": 1275.17041015625,
+            "peakWorkerHeapBytes": 35127296,
+            "renderers": {
+              "canvas2d": 305
+            },
+            "presentationQueueMilliseconds": 73655.50610351562,
+            "visibleDrawMilliseconds": 4.29833984375
+          },
+          "readerMetrics": {
+            "cacheBytes": 57332039,
+            "requestBytes": 16366884,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 332177402,
+              "workerMilliseconds": 613.2000000178814,
+              "roundTripMilliseconds": 1755.4000000953674
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 2.51,
+              "buffering": false,
+              "decoded": 166,
+              "queue": 16
+            },
+            {
+              "position": 5.112666666666667,
+              "buffering": false,
+              "decoded": 321,
+              "queue": 15
+            },
+            {
+              "position": 7.629999999999999,
+              "buffering": false,
+              "decoded": 472,
+              "queue": 14
+            },
+            {
+              "position": 9.87,
+              "buffering": false,
+              "decoded": 602,
+              "queue": 11
+            }
+          ],
+          "transferredSciBytes": 332254149
+        },
+        {
+          "uninterrupted": false,
+          "iteration": 1,
+          "variant": "candidate",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 720,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "720:105",
+            "0:105"
+          ],
+          "height": 720,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095813,
+          "observedVideoSeconds": 10.005666666666666,
+          "startupMilliseconds": 379.40000000596046,
+          "preparationMilliseconds": 192,
+          "playbackMilliseconds": 6904.600000023842,
+          "bufferingMilliseconds": 1848.5999999940395,
+          "waitingEvents": 11,
+          "samples": 399,
+          "maxQueueBytes": 29514240,
+          "maxReservedFrameBytes": 33203520,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 83256547,
+          "maxRequestBytes": 50203976,
+          "maxWorkers": 4,
+          "maxLeases": 23,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.005666666666666,
+          "maxUnclampedClockLeadSeconds": 0.085666666666667,
+          "decodedFramesConsumedBeforeObservationEnd": 600,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 370,
+            "consumed": 600,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 303,
+            "deferred": 299,
+            "painted": 109,
+            "decodeMilliseconds": 22667.600000053644,
+            "frameBytes": 29514240,
+            "decodeWallMilliseconds": 6740.600000053644,
+            "decoderPreparationMilliseconds": 21,
+            "decoderMilliseconds": 10032.400000333786,
+            "reconstructionMilliseconds": 5877.400000184774,
+            "rendererInitializationMilliseconds": 1.9999999403953552,
+            "workerDeliveryMilliseconds": 6245.875732421875,
+            "peakWorkerHeapBytes": 72155136,
+            "renderers": {
+              "canvas2d": 303
+            },
+            "presentationQueueMilliseconds": 70355.20141601562,
+            "visibleDrawMilliseconds": 5.599853515625
+          },
+          "readerMetrics": {
+            "cacheBytes": 83256547,
+            "requestBytes": 50203976,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 731739722,
+              "workerMilliseconds": 1470.9000000357628,
+              "roundTripMilliseconds": 6113.399999856949
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 2.4419999999999993,
+              "buffering": false,
+              "decoded": 160,
+              "queue": 13
+            },
+            {
+              "position": 5.114333333333333,
+              "buffering": false,
+              "decoded": 321,
+              "queue": 15
+            },
+            {
+              "position": 7.652333333333334,
+              "buffering": false,
+              "decoded": 467,
+              "queue": 7
+            }
+          ],
+          "transferredSciBytes": 731816470
+        },
+        {
+          "uninterrupted": false,
+          "iteration": 1,
+          "variant": "baseline",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 720,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "720:105",
+            "0:105"
+          ],
+          "height": 720,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095807,
+          "observedVideoSeconds": 10.004333333333333,
+          "startupMilliseconds": 341.60000002384186,
+          "preparationMilliseconds": 167.40000000596046,
+          "playbackMilliseconds": 6810.199999988079,
+          "bufferingMilliseconds": 1652.0999999642372,
+          "waitingEvents": 15,
+          "samples": 367,
+          "maxQueueBytes": 44271360,
+          "maxReservedFrameBytes": 44271360,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 83256547,
+          "maxRequestBytes": 27341036,
+          "maxWorkers": 4,
+          "maxLeases": 23,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.004333333333333,
+          "maxUnclampedClockLeadSeconds": 0.03433333333333355,
+          "decodedFramesConsumedBeforeObservationEnd": 600,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 388,
+            "consumed": 600,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 306,
+            "deferred": 296,
+            "painted": 115,
+            "decodeMilliseconds": 22953.099999964237,
+            "frameBytes": 44271360,
+            "decodeWallMilliseconds": 6380.999999910593,
+            "decoderPreparationMilliseconds": 187.30000001192093,
+            "decoderMilliseconds": 11410.900000154972,
+            "reconstructionMilliseconds": 5304.699999958277,
+            "rendererInitializationMilliseconds": 1.6999999582767487,
+            "workerDeliveryMilliseconds": 5563.129638671875,
+            "peakWorkerHeapBytes": 72155136,
+            "renderers": {
+              "canvas2d": 306
+            },
+            "presentationQueueMilliseconds": 61451.394775390625,
+            "visibleDrawMilliseconds": 6.19970703125
+          },
+          "readerMetrics": {
+            "cacheBytes": 83256547,
+            "requestBytes": 33287695,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 731739722,
+              "workerMilliseconds": 1487.2000001370907,
+              "roundTripMilliseconds": 6389.700000047684
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 2.867,
+              "buffering": false,
+              "decoded": 189,
+              "queue": 16
+            },
+            {
+              "position": 5.513999999999999,
+              "buffering": false,
+              "decoded": 347,
+              "queue": 16
+            },
+            {
+              "position": 8.448666666666666,
+              "buffering": false,
+              "decoded": 514,
+              "queue": 7
+            }
+          ],
+          "transferredSciBytes": 731816470
+        },
+        {
+          "uninterrupted": false,
+          "iteration": 1,
+          "variant": "candidate",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 1080,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "1080:105",
+            "0:105"
+          ],
+          "height": 1080,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095813,
+          "observedVideoSeconds": 10.009666666666664,
+          "startupMilliseconds": 496.7000000178814,
+          "preparationMilliseconds": 180.19999998807907,
+          "playbackMilliseconds": 17382.5,
+          "bufferingMilliseconds": 11654.599999964237,
+          "waitingEvents": 22,
+          "samples": 1057,
+          "maxQueueBytes": 66355200,
+          "maxReservedFrameBytes": 66355200,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 83163756,
+          "maxRequestBytes": 50090900,
+          "maxWorkers": 4,
+          "maxLeases": 9,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.009666666666664,
+          "maxUnclampedClockLeadSeconds": 0.15399999999999991,
+          "decodedFramesConsumedBeforeObservationEnd": 599,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 312,
+            "consumed": 599,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 303,
+            "deferred": 299,
+            "painted": 152,
+            "decodeMilliseconds": 37099.199999809265,
+            "frameBytes": 66355200,
+            "decodeWallMilliseconds": 10522.100000023842,
+            "decoderPreparationMilliseconds": 216.40000000596046,
+            "decoderMilliseconds": 22543.700000196695,
+            "reconstructionMilliseconds": 8126.099999904633,
+            "rendererInitializationMilliseconds": 0.9999999701976776,
+            "workerDeliveryMilliseconds": 5393.9365234375,
+            "peakWorkerHeapBytes": 155254784,
+            "renderers": {
+              "canvas2d": 303
+            },
+            "presentationQueueMilliseconds": 90760.294921875,
+            "visibleDrawMilliseconds": 10.800537109375
+          },
+          "readerMetrics": {
+            "cacheBytes": 83163756,
+            "requestBytes": 50090900,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 1618558272,
+              "workerMilliseconds": 3117.1000000834465,
+              "roundTripMilliseconds": 6390
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 0.9,
+              "buffering": true,
+              "decoded": 57,
+              "queue": 3
+            },
+            {
+              "position": 1.667,
+              "buffering": true,
+              "decoded": 108,
+              "queue": 7
+            },
+            {
+              "position": 2.5,
+              "buffering": true,
+              "decoded": 160,
+              "queue": 9
+            },
+            {
+              "position": 3.389666666666667,
+              "buffering": false,
+              "decoded": 217,
+              "queue": 14
+            },
+            {
+              "position": 4.333,
+              "buffering": true,
+              "decoded": 268,
+              "queue": 7
+            },
+            {
+              "position": 5.333,
+              "buffering": true,
+              "decoded": 329,
+              "queue": 8
+            },
+            {
+              "position": 6.555333333333331,
+              "buffering": false,
+              "decoded": 398,
+              "queue": 7
+            },
+            {
+              "position": 7.633,
+              "buffering": true,
+              "decoded": 458,
+              "queue": 0
+            },
+            {
+              "position": 8.61633333333333,
+              "buffering": false,
+              "decoded": 518,
+              "queue": 2
+            },
+            {
+              "position": 9.531000000000002,
+              "buffering": false,
+              "decoded": 577,
+              "queue": 6
+            }
+          ],
+          "transferredSciBytes": 1618635129
+        },
+        {
+          "uninterrupted": false,
+          "iteration": 1,
+          "variant": "baseline",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 1080,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "1080:105",
+            "0:105"
+          ],
+          "height": 1080,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095813,
+          "observedVideoSeconds": 10.015666666666672,
+          "startupMilliseconds": 523.6999999880791,
+          "preparationMilliseconds": 170.80000001192093,
+          "playbackMilliseconds": 18071.5,
+          "bufferingMilliseconds": 12284.600000053644,
+          "waitingEvents": 25,
+          "samples": 1022,
+          "maxQueueBytes": 66355200,
+          "maxReservedFrameBytes": 66355200,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 82692503,
+          "maxRequestBytes": 50210477,
+          "maxWorkers": 4,
+          "maxLeases": 8,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.015666666666672,
+          "maxUnclampedClockLeadSeconds": 0.12600000000000078,
+          "decodedFramesConsumedBeforeObservationEnd": 601,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 345,
+            "consumed": 601,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 303,
+            "deferred": 299,
+            "painted": 142,
+            "decodeMilliseconds": 42984.09999975562,
+            "frameBytes": 66355200,
+            "decodeWallMilliseconds": 12481.800000011921,
+            "decoderPreparationMilliseconds": 235.2000000178814,
+            "decoderMilliseconds": 25737.09999999404,
+            "reconstructionMilliseconds": 8528.399999767542,
+            "rendererInitializationMilliseconds": 1.7000000178813934,
+            "workerDeliveryMilliseconds": 7677.513671875,
+            "peakWorkerHeapBytes": 155254784,
+            "renderers": {
+              "canvas2d": 303
+            },
+            "presentationQueueMilliseconds": 102340.3076171875,
+            "visibleDrawMilliseconds": 10.69921875
+          },
+          "readerMetrics": {
+            "cacheBytes": 82692503,
+            "requestBytes": 50210477,
+            "requests": 7,
+            "integrity": {
+              "verifiedBytes": 1618558272,
+              "workerMilliseconds": 3210.7000001072884,
+              "roundTripMilliseconds": 8783.099999934435
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 1.3706666666666667,
+              "buffering": false,
+              "decoded": 92,
+              "queue": 9
+            },
+            {
+              "position": 2.4,
+              "buffering": true,
+              "decoded": 149,
+              "queue": 4
+            },
+            {
+              "position": 3.6943333333333324,
+              "buffering": false,
+              "decoded": 230,
+              "queue": 8
+            },
+            {
+              "position": 4.894999999999998,
+              "buffering": false,
+              "decoded": 296,
+              "queue": 3
+            },
+            {
+              "position": 6.067,
+              "buffering": true,
+              "decoded": 379,
+              "queue": 14
+            },
+            {
+              "position": 7.033,
+              "buffering": true,
+              "decoded": 434,
+              "queue": 11
+            },
+            {
+              "position": 8.133,
+              "buffering": false,
+              "decoded": 504,
+              "queue": 15
+            },
+            {
+              "position": 8.633,
+              "buffering": true,
+              "decoded": 518,
+              "queue": 0
+            },
+            {
+              "position": 8.917,
+              "buffering": true,
+              "decoded": 548,
+              "queue": 12
+            },
+            {
+              "position": 9.767,
+              "buffering": true,
+              "decoded": 598,
+              "queue": 11
+            }
+          ],
+          "transferredSciBytes": 1618635129
+        },
+        {
+          "uninterrupted": true,
+          "iteration": 2,
+          "variant": "baseline",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 360,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "360:105",
+            "0:105"
+          ],
+          "height": 360,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095813,
+          "observedVideoSeconds": 10.019333333333334,
+          "startupMilliseconds": 144.40000000596046,
+          "preparationMilliseconds": 78.40000000596046,
+          "playbackMilliseconds": 5042.300000011921,
+          "bufferingMilliseconds": 0,
+          "waitingEvents": 0,
+          "samples": 464,
+          "maxQueueBytes": 10121760,
+          "maxReservedFrameBytes": 10121760,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 32945511,
+          "maxRequestBytes": 12935330,
+          "maxWorkers": 4,
+          "maxLeases": 35,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.019333333333334,
+          "maxUnclampedClockLeadSeconds": 0,
+          "decodedFramesConsumedBeforeObservationEnd": 600,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 299,
+            "consumed": 600,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 304,
+            "deferred": 298,
+            "painted": 197,
+            "decodeMilliseconds": 4270.199999630451,
+            "frameBytes": 10121760,
+            "decodeWallMilliseconds": 2235.4999996721745,
+            "decoderPreparationMilliseconds": 72.59999999403954,
+            "decoderMilliseconds": 2869.6000006198883,
+            "reconstructionMilliseconds": 769.8999997377396,
+            "rendererInitializationMilliseconds": 2.3999999463558197,
+            "workerDeliveryMilliseconds": 396.34375,
+            "peakWorkerHeapBytes": 22544384,
+            "renderers": {
+              "canvas2d": 304
+            },
+            "presentationQueueMilliseconds": 76034.6005859375,
+            "visibleDrawMilliseconds": 9.899169921875
+          },
+          "readerMetrics": {
+            "cacheBytes": 32945511,
+            "requestBytes": 12935330,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 189617127,
+              "workerMilliseconds": 411.90000012516975,
+              "roundTripMilliseconds": 841.2000003159046
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 2.1473333333333335,
+              "buffering": false,
+              "decoded": 145,
+              "queue": 16
+            },
+            {
+              "position": 4.344666666666667,
+              "buffering": false,
+              "decoded": 275,
+              "queue": 14
+            },
+            {
+              "position": 6.542,
+              "buffering": false,
+              "decoded": 406,
+              "queue": 13
+            },
+            {
+              "position": 8.718,
+              "buffering": false,
+              "decoded": 537,
+              "queue": 15
+            }
+          ],
+          "transferredSciBytes": 189693872
+        },
+        {
+          "uninterrupted": true,
+          "iteration": 2,
+          "variant": "candidate",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 360,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "360:105",
+            "0:105"
+          ],
+          "height": 360,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095813,
+          "observedVideoSeconds": 10.019333333333334,
+          "startupMilliseconds": 232.89999997615814,
+          "preparationMilliseconds": 93.90000000596046,
+          "playbackMilliseconds": 5032.5,
+          "bufferingMilliseconds": 0,
+          "waitingEvents": 0,
+          "samples": 441,
+          "maxQueueBytes": 8281440,
+          "maxReservedFrameBytes": 8281440,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 33719236,
+          "maxRequestBytes": 10305383,
+          "maxWorkers": 4,
+          "maxLeases": 35,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.019333333333334,
+          "maxUnclampedClockLeadSeconds": 0,
+          "decodedFramesConsumedBeforeObservationEnd": 600,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 299,
+            "consumed": 600,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 302,
+            "deferred": 300,
+            "painted": 155,
+            "decodeMilliseconds": 5682.499999940395,
+            "frameBytes": 8281440,
+            "decodeWallMilliseconds": 2684.5999996364117,
+            "decoderPreparationMilliseconds": 59.099999994039536,
+            "decoderMilliseconds": 3097.0000000298023,
+            "reconstructionMilliseconds": 1422.5,
+            "rendererInitializationMilliseconds": 2.100000023841858,
+            "workerDeliveryMilliseconds": 1051.72705078125,
+            "peakWorkerHeapBytes": 23134208,
+            "renderers": {
+              "canvas2d": 302
+            },
+            "presentationQueueMilliseconds": 74264.20288085938,
+            "visibleDrawMilliseconds": 7.30078125
+          },
+          "readerMetrics": {
+            "cacheBytes": 33719236,
+            "requestBytes": 10314136,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 189617127,
+              "workerMilliseconds": 403.0999999642372,
+              "roundTripMilliseconds": 971.1999998688698
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 2.275333333333333,
+              "buffering": false,
+              "decoded": 150,
+              "queue": 13
+            },
+            {
+              "position": 4.536666666666667,
+              "buffering": false,
+              "decoded": 287,
+              "queue": 16
+            },
+            {
+              "position": 6.883333333333333,
+              "buffering": false,
+              "decoded": 428,
+              "queue": 16
+            },
+            {
+              "position": 9.166,
+              "buffering": false,
+              "decoded": 564,
+              "queue": 14
+            }
+          ],
+          "transferredSciBytes": 189693872
+        },
+        {
+          "uninterrupted": true,
+          "iteration": 2,
+          "variant": "baseline",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 480,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "480:105",
+            "0:105"
+          ],
+          "height": 480,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 60,
+          "observedVideoSeconds": 10.019333333333332,
+          "startupMilliseconds": 396.59999999403954,
+          "preparationMilliseconds": 49.19999998807907,
+          "playbackMilliseconds": 5033.600000023842,
+          "bufferingMilliseconds": 0,
+          "waitingEvents": 0,
+          "samples": 411,
+          "maxQueueBytes": 17994240,
+          "maxReservedFrameBytes": 17994240,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 52849653,
+          "maxRequestBytes": 22422983,
+          "maxWorkers": 4,
+          "maxLeases": 33,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.019333333333332,
+          "maxUnclampedClockLeadSeconds": 0,
+          "decodedFramesConsumedBeforeObservationEnd": 600,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 310,
+            "consumed": 600,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 305,
+            "deferred": 297,
+            "painted": 131,
+            "decodeMilliseconds": 7764.900000035763,
+            "frameBytes": 17994240,
+            "decodeWallMilliseconds": 3637.2999999821186,
+            "decoderPreparationMilliseconds": 219.5,
+            "decoderMilliseconds": 4751.0999999940395,
+            "reconstructionMilliseconds": 1650.599999934435,
+            "rendererInitializationMilliseconds": 1.2999999523162842,
+            "workerDeliveryMilliseconds": 1096.77734375,
+            "peakWorkerHeapBytes": 35127296,
+            "renderers": {
+              "canvas2d": 305
+            },
+            "presentationQueueMilliseconds": 71660.30004882812,
+            "visibleDrawMilliseconds": 6.000244140625
+          },
+          "readerMetrics": {
+            "cacheBytes": 52854473,
+            "requestBytes": 22422983,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 332177402,
+              "workerMilliseconds": 707.9000001251698,
+              "roundTripMilliseconds": 1551.7000003755093
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 2.6166666666666667,
+              "buffering": false,
+              "decoded": 169,
+              "queue": 12
+            },
+            {
+              "position": 5.198,
+              "buffering": false,
+              "decoded": 326,
+              "queue": 15
+            },
+            {
+              "position": 7.608666666666667,
+              "buffering": false,
+              "decoded": 470,
+              "queue": 13
+            },
+            {
+              "position": 9.784666666666666,
+              "buffering": false,
+              "decoded": 602,
+              "queue": 16
+            }
+          ],
+          "transferredSciBytes": 332254149
+        },
+        {
+          "uninterrupted": true,
+          "iteration": 2,
+          "variant": "candidate",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 480,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "480:105",
+            "0:105"
+          ],
+          "height": 480,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095813,
+          "observedVideoSeconds": 10.019333333333334,
+          "startupMilliseconds": 162.19999998807907,
+          "preparationMilliseconds": 137.59999999403954,
+          "playbackMilliseconds": 5042.100000023842,
+          "bufferingMilliseconds": 0,
+          "waitingEvents": 0,
+          "samples": 402,
+          "maxQueueBytes": 17994240,
+          "maxReservedFrameBytes": 17994240,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 57792229,
+          "maxRequestBytes": 6073207,
+          "maxWorkers": 4,
+          "maxLeases": 36,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.019333333333334,
+          "maxUnclampedClockLeadSeconds": 0,
+          "decodedFramesConsumedBeforeObservationEnd": 602,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 308,
+            "consumed": 602,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 304,
+            "deferred": 298,
+            "painted": 145,
+            "decodeMilliseconds": 7886.69999936223,
+            "frameBytes": 17994240,
+            "decodeWallMilliseconds": 3799.7999998629093,
+            "decoderPreparationMilliseconds": 100.5,
+            "decoderMilliseconds": 4320.199999958277,
+            "reconstructionMilliseconds": 1834.999999910593,
+            "rendererInitializationMilliseconds": 1.5000000298023224,
+            "workerDeliveryMilliseconds": 1286.180419921875,
+            "peakWorkerHeapBytes": 35389440,
+            "renderers": {
+              "canvas2d": 304
+            },
+            "presentationQueueMilliseconds": 73693.599609375,
+            "visibleDrawMilliseconds": 4.699462890625
+          },
+          "readerMetrics": {
+            "cacheBytes": 57792229,
+            "requestBytes": 15003064,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 332177402,
+              "workerMilliseconds": 693.0000000298023,
+              "roundTripMilliseconds": 1775.4999998807907
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 2.6166666666666667,
+              "buffering": false,
+              "decoded": 172,
+              "queue": 16
+            },
+            {
+              "position": 5.1979999999999995,
+              "buffering": false,
+              "decoded": 325,
+              "queue": 15
+            },
+            {
+              "position": 7.779333333333333,
+              "buffering": false,
+              "decoded": 481,
+              "queue": 15
+            },
+            {
+              "position": 9.976666666666667,
+              "buffering": false,
+              "decoded": 602,
+              "queue": 3
+            }
+          ],
+          "transferredSciBytes": 332254149
+        },
+        {
+          "uninterrupted": false,
+          "iteration": 2,
+          "variant": "baseline",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 720,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "720:105",
+            "0:105"
+          ],
+          "height": 720,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095813,
+          "observedVideoSeconds": 10.00633333333333,
+          "startupMilliseconds": 587.5,
+          "preparationMilliseconds": 148.09999999403954,
+          "playbackMilliseconds": 6625,
+          "bufferingMilliseconds": 1523.1999999582767,
+          "waitingEvents": 10,
+          "samples": 420,
+          "maxQueueBytes": 33203520,
+          "maxReservedFrameBytes": 33203520,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 83256547,
+          "maxRequestBytes": 50111935,
+          "maxWorkers": 4,
+          "maxLeases": 23,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.00633333333333,
+          "maxUnclampedClockLeadSeconds": 0.027333333333333876,
+          "decodedFramesConsumedBeforeObservationEnd": 600,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 353,
+            "consumed": 600,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 303,
+            "deferred": 299,
+            "painted": 135,
+            "decodeMilliseconds": 20511.999999970198,
+            "frameBytes": 33203520,
+            "decodeWallMilliseconds": 6218.700000077486,
+            "decoderPreparationMilliseconds": 140.40000000596046,
+            "decoderMilliseconds": 11231.899999976158,
+            "reconstructionMilliseconds": 4333.400000244379,
+            "rendererInitializationMilliseconds": 1.4000000357627869,
+            "workerDeliveryMilliseconds": 4413.451416015625,
+            "peakWorkerHeapBytes": 72155136,
+            "renderers": {
+              "canvas2d": 303
+            },
+            "presentationQueueMilliseconds": 68538.3017578125,
+            "visibleDrawMilliseconds": 7.699462890625
+          },
+          "readerMetrics": {
+            "cacheBytes": 83256547,
+            "requestBytes": 50111935,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 731739722,
+              "workerMilliseconds": 1541.3999999761581,
+              "roundTripMilliseconds": 5484.200000286102
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 2.361,
+              "buffering": false,
+              "decoded": 155,
+              "queue": 14
+            },
+            {
+              "position": 4.527333333333334,
+              "buffering": false,
+              "decoded": 284,
+              "queue": 12
+            },
+            {
+              "position": 7.184666666666667,
+              "buffering": false,
+              "decoded": 442,
+              "queue": 11
+            },
+            {
+              "position": 9.579666666666665,
+              "buffering": false,
+              "decoded": 587,
+              "queue": 14
+            }
+          ],
+          "transferredSciBytes": 731816470
+        },
+        {
+          "uninterrupted": false,
+          "iteration": 2,
+          "variant": "candidate",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 720,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "720:105",
+            "0:105"
+          ],
+          "height": 720,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095807,
+          "observedVideoSeconds": 10.007333333333332,
+          "startupMilliseconds": 334.5,
+          "preparationMilliseconds": 124.39999997615814,
+          "playbackMilliseconds": 5982.700000017881,
+          "bufferingMilliseconds": 761.1999999880791,
+          "waitingEvents": 9,
+          "samples": 344,
+          "maxQueueBytes": 44271360,
+          "maxReservedFrameBytes": 44271360,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 83395271,
+          "maxRequestBytes": 28262037,
+          "maxWorkers": 4,
+          "maxLeases": 23,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.007333333333332,
+          "maxUnclampedClockLeadSeconds": 0.051000000000001044,
+          "decodedFramesConsumedBeforeObservationEnd": 601,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 367,
+            "consumed": 601,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 306,
+            "deferred": 296,
+            "painted": 112,
+            "decodeMilliseconds": 20844.699999958277,
+            "frameBytes": 44271360,
+            "decodeWallMilliseconds": 5707.0999999940395,
+            "decoderPreparationMilliseconds": 196.10000002384186,
+            "decoderMilliseconds": 10450.799999773502,
+            "reconstructionMilliseconds": 5091.799999892712,
+            "rendererInitializationMilliseconds": 1.7000000476837158,
+            "workerDeliveryMilliseconds": 4333.09521484375,
+            "peakWorkerHeapBytes": 69992448,
+            "renderers": {
+              "canvas2d": 306
+            },
+            "presentationQueueMilliseconds": 55195.699462890625,
+            "visibleDrawMilliseconds": 5.80078125
+          },
+          "readerMetrics": {
+            "cacheBytes": 83395271,
+            "requestBytes": 34793804,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 731739722,
+              "workerMilliseconds": 1601.3999998271465,
+              "roundTripMilliseconds": 5071.400000154972
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 3.1,
+              "buffering": true,
+              "decoded": 196,
+              "queue": 9
+            },
+            {
+              "position": 5.939333333333333,
+              "buffering": false,
+              "decoded": 363,
+              "queue": 7
+            },
+            {
+              "position": 9.111333333333333,
+              "buffering": false,
+              "decoded": 557,
+              "queue": 10
+            }
+          ],
+          "transferredSciBytes": 731816470
+        },
+        {
+          "uninterrupted": false,
+          "iteration": 2,
+          "variant": "baseline",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 1080,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "1080:105",
+            "0:105"
+          ],
+          "height": 1080,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095813,
+          "observedVideoSeconds": 10.010333333333334,
+          "startupMilliseconds": 640,
+          "preparationMilliseconds": 135.90000000596046,
+          "playbackMilliseconds": 14465.09999999404,
+          "bufferingMilliseconds": 8686.000000059605,
+          "waitingEvents": 24,
+          "samples": 877,
+          "maxQueueBytes": 66355200,
+          "maxReservedFrameBytes": 66355200,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 83000544,
+          "maxRequestBytes": 49833656,
+          "maxWorkers": 4,
+          "maxLeases": 9,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.010333333333334,
+          "maxUnclampedClockLeadSeconds": 0.11199999999999832,
+          "decodedFramesConsumedBeforeObservationEnd": 600,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 332,
+            "consumed": 600,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 304,
+            "deferred": 298,
+            "painted": 138,
+            "decodeMilliseconds": 39369.39999988675,
+            "frameBytes": 66355200,
+            "decodeWallMilliseconds": 11041.5,
+            "decoderPreparationMilliseconds": 152.40000000596046,
+            "decoderMilliseconds": 25742.300000160933,
+            "reconstructionMilliseconds": 7416.199999928474,
+            "rendererInitializationMilliseconds": 1.9999999403953552,
+            "workerDeliveryMilliseconds": 5178.952880859375,
+            "peakWorkerHeapBytes": 155254784,
+            "renderers": {
+              "canvas2d": 304
+            },
+            "presentationQueueMilliseconds": 89997.69995117188,
+            "visibleDrawMilliseconds": 7.59912109375
+          },
+          "readerMetrics": {
+            "cacheBytes": 83000544,
+            "requestBytes": 49895468,
+            "requests": 7,
+            "integrity": {
+              "verifiedBytes": 1618558272,
+              "workerMilliseconds": 3566.600000023842,
+              "roundTripMilliseconds": 8038.900000065565
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 1.1206666666666667,
+              "buffering": false,
+              "decoded": 78,
+              "queue": 12
+            },
+            {
+              "position": 2.1243333333333334,
+              "buffering": false,
+              "decoded": 134,
+              "queue": 6
+            },
+            {
+              "position": 3.333,
+              "buffering": true,
+              "decoded": 214,
+              "queue": 13
+            },
+            {
+              "position": 4.333,
+              "buffering": false,
+              "decoded": 276,
+              "queue": 15
+            },
+            {
+              "position": 5.710999999999999,
+              "buffering": false,
+              "decoded": 355,
+              "queue": 14
+            },
+            {
+              "position": 7.033,
+              "buffering": true,
+              "decoded": 422,
+              "queue": 0
+            },
+            {
+              "position": 7.868333333333334,
+              "buffering": false,
+              "decoded": 487,
+              "queue": 16
+            },
+            {
+              "position": 9.103666666666665,
+              "buffering": false,
+              "decoded": 556,
+              "queue": 9
+            }
+          ],
+          "transferredSciBytes": 1618635129
+        },
+        {
+          "uninterrupted": false,
+          "iteration": 2,
+          "variant": "candidate",
+          "rendererPolicy": "default",
+          "outcome": "reached",
+          "playbackError": null,
+          "decoderNextChunk": 106,
+          "readerWindow": {
+            "quality": 1080,
+            "first": 105,
+            "last": 105
+          },
+          "cacheKeys": [
+            "1080:105",
+            "0:105"
+          ],
+          "height": 1080,
+          "codec": "sci-ascii-scene-v1",
+          "nativeFps": 60,
+          "duration": 10.033,
+          "playbackRate": 2,
+          "displayRate": 59.88023952095802,
+          "observedVideoSeconds": 10.010333333333334,
+          "startupMilliseconds": 439.59999999403954,
+          "preparationMilliseconds": 138.40000000596046,
+          "playbackMilliseconds": 12602.699999988079,
+          "bufferingMilliseconds": 6974.100000023842,
+          "waitingEvents": 28,
+          "samples": 627,
+          "maxQueueBytes": 66355200,
+          "maxReservedFrameBytes": 66355200,
+          "reservationAccountingAvailable": true,
+          "maxCacheBytes": 82692503,
+          "maxRequestBytes": 50203949,
+          "maxWorkers": 4,
+          "maxLeases": 9,
+          "contiguousSourceFramesConsumed": 602,
+          "contiguousSourceEnd": 10.033,
+          "unclampedClockSeconds": 10.010333333333334,
+          "maxUnclampedClockLeadSeconds": 0.08333333333333037,
+          "decodedFramesConsumedBeforeObservationEnd": 599,
+          "frameMetrics": {
+            "decoded": 602,
+            "dropped": 411,
+            "consumed": 599,
+            "lateDecoded": 0,
+            "skippedSeekFrames": 0,
+            "discoveredFrames": 602,
+            "sourceConsumed": 602,
+            "reconstructed": 304,
+            "deferred": 298,
+            "painted": 98,
+            "decodeMilliseconds": 41750.40000027418,
+            "frameBytes": 66355200,
+            "decodeWallMilliseconds": 11701.000000029802,
+            "decoderPreparationMilliseconds": 212.2000000178814,
+            "decoderMilliseconds": 23531.59999972582,
+            "reconstructionMilliseconds": 8547.100000053644,
+            "rendererInitializationMilliseconds": 2.399999886751175,
+            "peakWorkerHeapBytes": 155254784,
+            "renderers": {
+              "canvas2d": 304
+            },
+            "workerDeliveryMilliseconds": 8564.265380859375,
+            "presentationQueueMilliseconds": 97605.400390625,
+            "visibleDrawMilliseconds": 8
+          },
+          "readerMetrics": {
+            "cacheBytes": 82692503,
+            "requestBytes": 50203949,
+            "requests": 8,
+            "integrity": {
+              "verifiedBytes": 1618558272,
+              "workerMilliseconds": 3449.0000000298023,
+              "roundTripMilliseconds": 11546.599999785423
+            }
+          },
+          "webgl": {
+            "vendor": "Google Inc. (Google)",
+            "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+          },
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+          "hardwareConcurrency": 16,
+          "diagnostics": [
+            {
+              "position": 1.333,
+              "buffering": false,
+              "decoded": 96,
+              "queue": 15
+            },
+            {
+              "position": 3.083,
+              "buffering": true,
+              "decoded": 194,
+              "queue": 8
+            },
+            {
+              "position": 4.5683333333333325,
+              "buffering": false,
+              "decoded": 289,
+              "queue": 16
+            },
+            {
+              "position": 6.317,
+              "buffering": true,
+              "decoded": 394,
+              "queue": 14
+            },
+            {
+              "position": 8.033,
+              "buffering": true,
+              "decoded": 494,
+              "queue": 11
+            },
+            {
+              "position": 9.719999999999999,
+              "buffering": false,
+              "decoded": 587,
+              "queue": 5
+            }
+          ],
+          "transferredSciBytes": 1618635129
+        }
+      ]
+    },
+    "streamingGateExitCode": 1,
+    "rejectedDirectRgbaPrototype": {
+      "enabled": false,
+      "description": "Temporary copies of the final player returned owned RGBA for fixed CPU rendering instead of worker bitmaps, and wrapped received pixels directly in ImageData for visible drawing. Other preparation behavior was unchanged.",
+      "result": "Reconstruction cost decreased, but real streaming did not improve consistently; one trial timed out after only 320 contiguous source events. No production player changes were retained.",
+      "report": {
+        "started": "2026-10-15T14:55:54.116Z",
+        "finished": "2026-10-15T14:58:29.351Z",
+        "assetsUnchanged": true,
+        "host": {
+          "platform": "linux",
+          "arch": "x64",
+          "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+          "logicalCpus": 16
+        },
+        "archive": {
+          "name": "detail-prefix.sci",
+          "bytes": 2872063351,
+          "metadata": {
+            "audio": {
+              "channels": 2,
+              "codec": "opus",
+              "sampleRate": 48000
+            },
+            "averageFps": 60.00199342170836,
+            "chunkFrames": 60,
+            "chunkSeconds": 1,
+            "chunks": 106,
+            "duration": 10.033,
+            "encoderProfile": "adaptive-layered-v2:360,480,720,1080:4:60/1:0:1000000",
+            "fps": 60,
+            "fpsDenominator": 1,
+            "fpsNumerator": 60,
+            "frames": 602,
+            "qualities": [
+              {
+                "columns": 639,
+                "deliveryBitrate": 151218335.49287352,
+                "height": 360,
+                "rows": 360,
+                "videoBytes": 189597547
+              },
+              {
+                "columns": 852,
+                "deliveryBitrate": 264891434.26691917,
+                "height": 480,
+                "rows": 480,
+                "videoBytes": 332157822
+              },
+              {
+                "columns": 1281,
+                "deliveryBitrate": 583489915.2795774,
+                "height": 720,
+                "rows": 720,
+                "videoBytes": 731720142
+              },
+              {
+                "columns": 1920,
+                "deliveryBitrate": 1290611254.8589654,
+                "height": 1080,
+                "rows": 1080,
+                "videoBytes": 1618538692
+              }
+            ],
+            "source": {
+              "firstPts": 0,
+              "height": 1080,
+              "selectionCeilingDenominator": 1,
+              "selectionCeilingNumerator": 60,
+              "width": 1920
+            },
+            "sourceFrames": 602,
+            "targetBitrate": 1000000,
+            "timebase": 1000000,
+            "version": 4,
+            "video": {
+              "cellBytes": 28,
+              "cellHeight": 4,
+              "cellWidth": 3,
+              "codec": "sci-ascii-scene-v1",
+              "font": "ascii-3x4-v2",
+              "glyphTransform": "reflect-xy-v1",
+              "mapper": "adaptive-layered-v2",
+              "packetFormat": "ascii-scene-zlib"
+            }
+          },
+          "headerMetadataIndexSha256": "9b6072aae37437931b560b3783554fa9e04f7a253ff3c76448d7d592c43fc5f3",
+          "intersectingRecords": [
+            {
+              "height": 1080,
+              "sourceEventsFullyElapsedByRequestedTime": 600,
+              "firstFrame": 0,
+              "lastFrameExclusive": 602,
+              "start": 0,
+              "end": 10.033,
+              "frames": 602,
+              "visualBytes": 1618538692,
+              "records": 106
+            }
+          ]
+        },
+        "modules": [
+          {
+            "name": "baseline",
+            "webSha256": "b6cb58d61ac77178b78f1c31bc9efaccdcc1ae49feadb76a35b7f7112e66e7c7",
+            "sharedWebSha256": "e773c17e1509858610de943f871525d5ebf989e404fcdf3d0f9cafe03565334b",
+            "wasmSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3"
+          },
+          {
+            "name": "candidate",
+            "webSha256": "d428b15087e87c845bca6bcfb0a0745c3f3317caf96820b9724a2a689c998904",
+            "sharedWebSha256": "098cebe5d911a8436ed1f43f7c1cdf6ddced92ce0f32fd59eb533cde60423c07",
+            "wasmSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3"
+          }
+        ],
+        "driverSha256": "007831101c306e665b54e38729eb7cd07ad560068d1f88d6a1c899cdff8012cc",
+        "baselineCpuSupported": false,
+        "moduleOnly": false,
+        "candidateBudgets": {
+          "presentationBytes": 67108864,
+          "sourceEventQueue": 16,
+          "compressedAndAudioCacheBytes": 83886080,
+          "inflightRequestBytes": 50331648
+        },
+        "uninterruptedGate": {
+          "required": true,
+          "passed": false
+        },
+        "network": {
+          "latencyMilliseconds": 0,
+          "downloadBytesPerSecond": -1
+        },
+        "renderers": [
+          "default"
+        ],
+        "iterations": 3,
+        "maximumWallSecondsPerTrial": 30,
+        "requestedVideoSeconds": 10,
+        "includesAudio": true,
+        "includesTransport": true,
+        "includesPresentation": true,
+        "results": [
+          {
+            "uninterrupted": false,
+            "iteration": 0,
+            "variant": "baseline",
+            "rendererPolicy": "default",
+            "outcome": "reached",
+            "playbackError": null,
+            "decoderNextChunk": 106,
+            "readerWindow": {
+              "quality": 1080,
+              "first": 105,
+              "last": 105
+            },
+            "cacheKeys": [
+              "1080:105",
+              "0:105"
+            ],
+            "height": 1080,
+            "codec": "sci-ascii-scene-v1",
+            "nativeFps": 60,
+            "duration": 10.033,
+            "playbackRate": 2,
+            "displayRate": 59.88023952095833,
+            "observedVideoSeconds": 10.001666666666665,
+            "startupMilliseconds": 1406.2000000178814,
+            "preparationMilliseconds": 120.09999999403954,
+            "playbackMilliseconds": 28626.100000023842,
+            "bufferingMilliseconds": 22917.79999998212,
+            "waitingEvents": 26,
+            "samples": 2098,
+            "maxQueueBytes": 66355200,
+            "maxReservedFrameBytes": 66355200,
+            "reservationAccountingAvailable": true,
+            "maxCacheBytes": 80209129,
+            "maxRequestBytes": 49963229,
+            "maxWorkers": 4,
+            "maxLeases": 8,
+            "contiguousSourceFramesConsumed": 602,
+            "contiguousSourceEnd": 10.033,
+            "unclampedClockSeconds": 10.001666666666665,
+            "maxUnclampedClockLeadSeconds": 0.39233333333333054,
+            "decodedFramesConsumedBeforeObservationEnd": 599,
+            "frameMetrics": {
+              "decoded": 602,
+              "dropped": 335,
+              "consumed": 599,
+              "lateDecoded": 0,
+              "skippedSeekFrames": 0,
+              "discoveredFrames": 602,
+              "sourceConsumed": 602,
+              "reconstructed": 304,
+              "deferred": 298,
+              "painted": 145,
+              "decodeMilliseconds": 32562.39999988675,
+              "frameBytes": 66355200,
+              "decodeWallMilliseconds": 10122.900000095367,
+              "decoderPreparationMilliseconds": 717.9000000059605,
+              "decoderMilliseconds": 21744.400000095367,
+              "reconstructionMilliseconds": 6758.799999892712,
+              "rendererInitializationMilliseconds": 1.7000001072883606,
+              "workerDeliveryMilliseconds": 3065.648681640625,
+              "peakWorkerHeapBytes": 155254784,
+              "renderers": {
+                "canvas2d": 304
+              },
+              "presentationQueueMilliseconds": 203767.09936523438,
+              "visibleDrawMilliseconds": 9.60009765625
+            },
+            "readerMetrics": {
+              "cacheBytes": 80209129,
+              "requestBytes": 49963229,
+              "requests": 8,
+              "integrity": {
+                "verifiedBytes": 1618558272,
+                "workerMilliseconds": 2946.899999946356,
+                "roundTripMilliseconds": 8004.6000000834465
+              }
+            },
+            "webgl": {
+              "vendor": "Google Inc. (Google)",
+              "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+            },
+            "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+            "hardwareConcurrency": 16,
+            "diagnostics": [
+              {
+                "position": 0.25,
+                "buffering": false,
+                "decoded": 31,
+                "queue": 15
+              },
+              {
+                "position": 0.583,
+                "buffering": true,
+                "decoded": 45,
+                "queue": 9
+              },
+              {
+                "position": 1,
+                "buffering": true,
+                "decoded": 60,
+                "queue": 0
+              },
+              {
+                "position": 1.417,
+                "buffering": true,
+                "decoded": 85,
+                "queue": 0
+              },
+              {
+                "position": 1.417,
+                "buffering": true,
+                "decoded": 100,
+                "queue": 14
+              },
+              {
+                "position": 1.417,
+                "buffering": true,
+                "decoded": 100,
+                "queue": 14
+              },
+              {
+                "position": 1.417,
+                "buffering": true,
+                "decoded": 100,
+                "queue": 14
+              },
+              {
+                "position": 1.833,
+                "buffering": true,
+                "decoded": 115,
+                "queue": 4
+              },
+              {
+                "position": 2.2853333333333303,
+                "buffering": false,
+                "decoded": 152,
+                "queue": 16
+              },
+              {
+                "position": 2.967,
+                "buffering": true,
+                "decoded": 188,
+                "queue": 9
+              },
+              {
+                "position": 4.1339999999999995,
+                "buffering": false,
+                "decoded": 254,
+                "queue": 5
+              },
+              {
+                "position": 4.733,
+                "buffering": true,
+                "decoded": 294,
+                "queue": 9
+              },
+              {
+                "position": 6.1,
+                "buffering": true,
+                "decoded": 380,
+                "queue": 13
+              },
+              {
+                "position": 6.433,
+                "buffering": true,
+                "decoded": 392,
+                "queue": 5
+              },
+              {
+                "position": 6.996333333333341,
+                "buffering": false,
+                "decoded": 428,
+                "queue": 9
+              },
+              {
+                "position": 7.909666666666673,
+                "buffering": false,
+                "decoded": 482,
+                "queue": 8
+              },
+              {
+                "position": 8.333,
+                "buffering": true,
+                "decoded": 508,
+                "queue": 7
+              },
+              {
+                "position": 8.917,
+                "buffering": true,
+                "decoded": 542,
+                "queue": 6
+              },
+              {
+                "position": 9.101666666666672,
+                "buffering": false,
+                "decoded": 554,
+                "queue": 9
+              },
+              {
+                "position": 9.633,
+                "buffering": true,
+                "decoded": 578,
+                "queue": 0
+              }
+            ],
+            "transferredSciBytes": 1618635129
+          },
+          {
+            "uninterrupted": false,
+            "iteration": 0,
+            "variant": "candidate",
+            "rendererPolicy": "default",
+            "outcome": "timeout",
+            "playbackError": null,
+            "decoderNextChunk": 59,
+            "readerWindow": {
+              "quality": 1080,
+              "first": 59,
+              "last": 63
+            },
+            "cacheKeys": [
+              "0:60",
+              "0:61",
+              "0:62",
+              "0:63",
+              "0:59"
+            ],
+            "height": 1080,
+            "codec": "sci-ascii-scene-v1",
+            "nativeFps": 60,
+            "duration": 10.033,
+            "playbackRate": 2,
+            "displayRate": 59.88023952095833,
+            "observedVideoSeconds": 5.333,
+            "startupMilliseconds": 5088.699999988079,
+            "preparationMilliseconds": 3462.5,
+            "playbackMilliseconds": 30009.79999998212,
+            "bufferingMilliseconds": 26934.09999999404,
+            "waitingEvents": 14,
+            "samples": 2523,
+            "maxQueueBytes": 66355200,
+            "maxReservedFrameBytes": 66355200,
+            "reservationAccountingAvailable": true,
+            "maxCacheBytes": 80209129,
+            "maxRequestBytes": 49963229,
+            "maxWorkers": 4,
+            "maxLeases": 8,
+            "contiguousSourceFramesConsumed": 320,
+            "contiguousSourceEnd": 5.333,
+            "unclampedClockSeconds": 5.333,
+            "maxUnclampedClockLeadSeconds": 0.024666666666657733,
+            "decodedFramesConsumedBeforeObservationEnd": 320,
+            "frameMetrics": {
+              "decoded": 320,
+              "dropped": 168,
+              "consumed": 320,
+              "lateDecoded": 0,
+              "skippedSeekFrames": 0,
+              "discoveredFrames": 320,
+              "sourceConsumed": 320,
+              "reconstructed": 162,
+              "deferred": 158,
+              "painted": 67,
+              "decodeMilliseconds": 15705.700000464916,
+              "frameBytes": 66355200,
+              "decodeWallMilliseconds": 5093.600000053644,
+              "decoderPreparationMilliseconds": 21.200000017881393,
+              "decoderMilliseconds": 11708.59999999404,
+              "reconstructionMilliseconds": 2048.0000001192093,
+              "rendererInitializationMilliseconds": 0.8999999761581421,
+              "workerDeliveryMilliseconds": 1430.68017578125,
+              "peakWorkerHeapBytes": 160104448,
+              "renderers": {
+                "rgba": 162
+              },
+              "presentationQueueMilliseconds": 203108.2998046875,
+              "visibleDrawMilliseconds": 122.39990234375
+            },
+            "readerMetrics": {
+              "cacheBytes": 80209129,
+              "requestBytes": 50025041,
+              "requests": 7,
+              "integrity": {
+                "verifiedBytes": 881886803,
+                "workerMilliseconds": 1942.2999999523163,
+                "roundTripMilliseconds": 3388.000000089407
+              }
+            },
+            "webgl": {
+              "vendor": "Google Inc. (Google)",
+              "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+            },
+            "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+            "hardwareConcurrency": 16,
+            "diagnostics": [
+              {
+                "position": 0.333,
+                "buffering": true,
+                "decoded": 20,
+                "queue": 0
+              },
+              {
+                "position": 0.333,
+                "buffering": true,
+                "decoded": 35,
+                "queue": 14
+              },
+              {
+                "position": 0.75,
+                "buffering": true,
+                "decoded": 45,
+                "queue": 0
+              },
+              {
+                "position": 0.75,
+                "buffering": true,
+                "decoded": 45,
+                "queue": 0
+              },
+              {
+                "position": 0.75,
+                "buffering": true,
+                "decoded": 60,
+                "queue": 14
+              },
+              {
+                "position": 0.75,
+                "buffering": true,
+                "decoded": 60,
+                "queue": 14
+              },
+              {
+                "position": 0.75,
+                "buffering": true,
+                "decoded": 60,
+                "queue": 14
+              },
+              {
+                "position": 1.1053333333333413,
+                "buffering": false,
+                "decoded": 70,
+                "queue": 4
+              },
+              {
+                "position": 1.167,
+                "buffering": true,
+                "decoded": 70,
+                "queue": 0
+              },
+              {
+                "position": 1.167,
+                "buffering": true,
+                "decoded": 70,
+                "queue": 0
+              },
+              {
+                "position": 1.167,
+                "buffering": true,
+                "decoded": 70,
+                "queue": 0
+              },
+              {
+                "position": 1.167,
+                "buffering": true,
+                "decoded": 70,
+                "queue": 0
+              },
+              {
+                "position": 1.167,
+                "buffering": true,
+                "decoded": 85,
+                "queue": 14
+              },
+              {
+                "position": 1.167,
+                "buffering": true,
+                "decoded": 85,
+                "queue": 14
+              },
+              {
+                "position": 1.167,
+                "buffering": true,
+                "decoded": 85,
+                "queue": 14
+              },
+              {
+                "position": 1.167,
+                "buffering": true,
+                "decoded": 85,
+                "queue": 14
+              },
+              {
+                "position": 1.583,
+                "buffering": true,
+                "decoded": 95,
+                "queue": 0
+              },
+              {
+                "position": 1.583,
+                "buffering": true,
+                "decoded": 95,
+                "queue": 0
+              },
+              {
+                "position": 1.583,
+                "buffering": true,
+                "decoded": 95,
+                "queue": 0
+              },
+              {
+                "position": 2,
+                "buffering": true,
+                "decoded": 120,
+                "queue": 0
+              },
+              {
+                "position": 2.417,
+                "buffering": true,
+                "decoded": 145,
+                "queue": 0
+              },
+              {
+                "position": 2.833,
+                "buffering": true,
+                "decoded": 170,
+                "queue": 0
+              },
+              {
+                "position": 3.433,
+                "buffering": true,
+                "decoded": 218,
+                "queue": 11
+              },
+              {
+                "position": 4.233,
+                "buffering": true,
+                "decoded": 266,
+                "queue": 11
+              },
+              {
+                "position": 5.060333333333334,
+                "buffering": false,
+                "decoded": 312,
+                "queue": 8
+              }
+            ],
+            "transferredSciBytes": 897081593
+          },
+          {
+            "uninterrupted": false,
+            "iteration": 1,
+            "variant": "candidate",
+            "rendererPolicy": "default",
+            "outcome": "reached",
+            "playbackError": null,
+            "decoderNextChunk": 106,
+            "readerWindow": {
+              "quality": 1080,
+              "first": 105,
+              "last": 105
+            },
+            "cacheKeys": [
+              "1080:105",
+              "0:105"
+            ],
+            "height": 1080,
+            "codec": "sci-ascii-scene-v1",
+            "nativeFps": 60,
+            "duration": 10.033,
+            "playbackRate": 2,
+            "displayRate": 59.88023952095807,
+            "observedVideoSeconds": 10.016333333333334,
+            "startupMilliseconds": 403.19999998807907,
+            "preparationMilliseconds": 95.40000000596046,
+            "playbackMilliseconds": 15265.199999988079,
+            "bufferingMilliseconds": 9932.400000035763,
+            "waitingEvents": 28,
+            "samples": 817,
+            "maxQueueBytes": 66355200,
+            "maxReservedFrameBytes": 66355200,
+            "reservationAccountingAvailable": true,
+            "maxCacheBytes": 82692503,
+            "maxRequestBytes": 50025041,
+            "maxWorkers": 4,
+            "maxLeases": 9,
+            "contiguousSourceFramesConsumed": 602,
+            "contiguousSourceEnd": 10.033,
+            "unclampedClockSeconds": 10.016333333333334,
+            "maxUnclampedClockLeadSeconds": 0.04066666666666574,
+            "decodedFramesConsumedBeforeObservationEnd": 600,
+            "frameMetrics": {
+              "decoded": 602,
+              "dropped": 384,
+              "consumed": 600,
+              "lateDecoded": 0,
+              "skippedSeekFrames": 0,
+              "discoveredFrames": 602,
+              "sourceConsumed": 602,
+              "reconstructed": 305,
+              "deferred": 297,
+              "painted": 115,
+              "decodeMilliseconds": 40775.89999997616,
+              "frameBytes": 66355200,
+              "decodeWallMilliseconds": 11969.799999922514,
+              "decoderPreparationMilliseconds": 164,
+              "decoderMilliseconds": 23701.49999985099,
+              "reconstructionMilliseconds": 3955.400000065565,
+              "rendererInitializationMilliseconds": 1.5999999642372131,
+              "workerDeliveryMilliseconds": 12113.197021484375,
+              "peakWorkerHeapBytes": 156303360,
+              "renderers": {
+                "rgba": 305
+              },
+              "presentationQueueMilliseconds": 109094.89453125,
+              "visibleDrawMilliseconds": 225.4990234375
+            },
+            "readerMetrics": {
+              "cacheBytes": 82692503,
+              "requestBytes": 50148665,
+              "requests": 7,
+              "integrity": {
+                "verifiedBytes": 1618558272,
+                "workerMilliseconds": 3330.799999922514,
+                "roundTripMilliseconds": 10245.900000214577
+              }
+            },
+            "webgl": {
+              "vendor": "Google Inc. (Google)",
+              "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+            },
+            "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+            "hardwareConcurrency": 16,
+            "diagnostics": [
+              {
+                "position": 1.633,
+                "buffering": false,
+                "decoded": 114,
+                "queue": 15
+              },
+              {
+                "position": 3.446999999999999,
+                "buffering": false,
+                "decoded": 223,
+                "queue": 16
+              },
+              {
+                "position": 5.333,
+                "buffering": true,
+                "decoded": 320,
+                "queue": 0
+              },
+              {
+                "position": 6.1,
+                "buffering": true,
+                "decoded": 376,
+                "queue": 9
+              },
+              {
+                "position": 7.583,
+                "buffering": true,
+                "decoded": 470,
+                "queue": 14
+              },
+              {
+                "position": 8.333,
+                "buffering": true,
+                "decoded": 509,
+                "queue": 8
+              },
+              {
+                "position": 8.933,
+                "buffering": true,
+                "decoded": 536,
+                "queue": 0
+              },
+              {
+                "position": 9.741999999999999,
+                "buffering": false,
+                "decoded": 596,
+                "queue": 11
+              }
+            ],
+            "transferredSciBytes": 1618635129
+          },
+          {
+            "uninterrupted": false,
+            "iteration": 1,
+            "variant": "baseline",
+            "rendererPolicy": "default",
+            "outcome": "reached",
+            "playbackError": null,
+            "decoderNextChunk": 106,
+            "readerWindow": {
+              "quality": 1080,
+              "first": 105,
+              "last": 105
+            },
+            "cacheKeys": [
+              "1080:105",
+              "0:105"
+            ],
+            "height": 1080,
+            "codec": "sci-ascii-scene-v1",
+            "nativeFps": 60,
+            "duration": 10.033,
+            "playbackRate": 2,
+            "displayRate": 59.88023952095813,
+            "observedVideoSeconds": 10.008333333333342,
+            "startupMilliseconds": 470.69999998807907,
+            "preparationMilliseconds": 106.7999999821186,
+            "playbackMilliseconds": 25690.600000023842,
+            "bufferingMilliseconds": 20124.600000053644,
+            "waitingEvents": 27,
+            "samples": 1813,
+            "maxQueueBytes": 66355200,
+            "maxReservedFrameBytes": 66355200,
+            "reservationAccountingAvailable": true,
+            "maxCacheBytes": 83000544,
+            "maxRequestBytes": 49957280,
+            "maxWorkers": 4,
+            "maxLeases": 9,
+            "contiguousSourceFramesConsumed": 602,
+            "contiguousSourceEnd": 10.033,
+            "unclampedClockSeconds": 10.008333333333342,
+            "maxUnclampedClockLeadSeconds": 0.07800000000000296,
+            "decodedFramesConsumedBeforeObservationEnd": 601,
+            "frameMetrics": {
+              "decoded": 602,
+              "dropped": 409,
+              "consumed": 601,
+              "lateDecoded": 0,
+              "skippedSeekFrames": 0,
+              "discoveredFrames": 602,
+              "sourceConsumed": 602,
+              "reconstructed": 305,
+              "deferred": 297,
+              "painted": 94,
+              "decodeMilliseconds": 43769.70000037551,
+              "frameBytes": 66355200,
+              "decodeWallMilliseconds": 12386.799999982119,
+              "decoderPreparationMilliseconds": 289,
+              "decoderMilliseconds": 23129.00000026822,
+              "reconstructionMilliseconds": 10059.600000083447,
+              "rendererInitializationMilliseconds": 1.899999976158142,
+              "workerDeliveryMilliseconds": 9302.082763671875,
+              "peakWorkerHeapBytes": 156303360,
+              "renderers": {
+                "canvas2d": 305
+              },
+              "presentationQueueMilliseconds": 119258.70385742188,
+              "visibleDrawMilliseconds": 7.299560546875
+            },
+            "readerMetrics": {
+              "cacheBytes": 83000544,
+              "requestBytes": 49957280,
+              "requests": 8,
+              "integrity": {
+                "verifiedBytes": 1618558272,
+                "workerMilliseconds": 3175.599999934435,
+                "roundTripMilliseconds": 12146.00000011921
+              }
+            },
+            "webgl": {
+              "vendor": "Google Inc. (Google)",
+              "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+            },
+            "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+            "hardwareConcurrency": 16,
+            "diagnostics": [
+              {
+                "position": 1.567,
+                "buffering": true,
+                "decoded": 102,
+                "queue": 7
+              },
+              {
+                "position": 2.933,
+                "buffering": false,
+                "decoded": 192,
+                "queue": 15
+              },
+              {
+                "position": 4.633,
+                "buffering": true,
+                "decoded": 288,
+                "queue": 9
+              },
+              {
+                "position": 5.133,
+                "buffering": true,
+                "decoded": 308,
+                "queue": 0
+              },
+              {
+                "position": 5.133,
+                "buffering": true,
+                "decoded": 308,
+                "queue": 0
+              },
+              {
+                "position": 5.133,
+                "buffering": true,
+                "decoded": 308,
+                "queue": 0
+              },
+              {
+                "position": 5.133,
+                "buffering": true,
+                "decoded": 320,
+                "queue": 11
+              },
+              {
+                "position": 5.189666666666665,
+                "buffering": false,
+                "decoded": 325,
+                "queue": 16
+              },
+              {
+                "position": 5.633,
+                "buffering": true,
+                "decoded": 338,
+                "queue": 0
+              },
+              {
+                "position": 5.633,
+                "buffering": true,
+                "decoded": 338,
+                "queue": 0
+              },
+              {
+                "position": 5.633,
+                "buffering": true,
+                "decoded": 338,
+                "queue": 0
+              },
+              {
+                "position": 5.633,
+                "buffering": true,
+                "decoded": 338,
+                "queue": 0
+              },
+              {
+                "position": 5.633,
+                "buffering": true,
+                "decoded": 338,
+                "queue": 0
+              },
+              {
+                "position": 5.633,
+                "buffering": true,
+                "decoded": 338,
+                "queue": 0
+              },
+              {
+                "position": 5.633,
+                "buffering": true,
+                "decoded": 338,
+                "queue": 0
+              },
+              {
+                "position": 6.8,
+                "buffering": true,
+                "decoded": 415,
+                "queue": 6
+              },
+              {
+                "position": 8.333,
+                "buffering": true,
+                "decoded": 510,
+                "queue": 9
+              },
+              {
+                "position": 9.731000000000003,
+                "buffering": false,
+                "decoded": 600,
+                "queue": 16
+              }
+            ],
+            "transferredSciBytes": 1618635129
+          },
+          {
+            "uninterrupted": false,
+            "iteration": 2,
+            "variant": "baseline",
+            "rendererPolicy": "default",
+            "outcome": "reached",
+            "playbackError": null,
+            "decoderNextChunk": 106,
+            "readerWindow": {
+              "quality": 1080,
+              "first": 105,
+              "last": 105
+            },
+            "cacheKeys": [
+              "0:99",
+              "0:98",
+              "1080:105",
+              "0:105"
+            ],
+            "height": 1080,
+            "codec": "sci-ascii-scene-v1",
+            "nativeFps": 60,
+            "duration": 10.033,
+            "playbackRate": 2,
+            "displayRate": 59.52380952380953,
+            "observedVideoSeconds": 10.015666666666664,
+            "startupMilliseconds": 440.59999999403954,
+            "preparationMilliseconds": 123.80000001192093,
+            "playbackMilliseconds": 14912.299999982119,
+            "bufferingMilliseconds": 9563.300000011921,
+            "waitingEvents": 28,
+            "samples": 717,
+            "maxQueueBytes": 66355200,
+            "maxReservedFrameBytes": 66355200,
+            "reservationAccountingAvailable": true,
+            "maxCacheBytes": 83000544,
+            "maxRequestBytes": 49895468,
+            "maxWorkers": 4,
+            "maxLeases": 9,
+            "contiguousSourceFramesConsumed": 602,
+            "contiguousSourceEnd": 10.033,
+            "unclampedClockSeconds": 10.015666666666664,
+            "maxUnclampedClockLeadSeconds": 0.09799999999999986,
+            "decodedFramesConsumedBeforeObservationEnd": 600,
+            "frameMetrics": {
+              "decoded": 602,
+              "dropped": 403,
+              "consumed": 600,
+              "lateDecoded": 0,
+              "skippedSeekFrames": 0,
+              "discoveredFrames": 602,
+              "sourceConsumed": 602,
+              "reconstructed": 302,
+              "deferred": 300,
+              "painted": 100,
+              "decodeMilliseconds": 47743.99999976158,
+              "frameBytes": 66355200,
+              "decodeWallMilliseconds": 13285.799999952316,
+              "decoderPreparationMilliseconds": 262.30000001192093,
+              "decoderMilliseconds": 24800.20000001788,
+              "reconstructionMilliseconds": 10907.300000041723,
+              "rendererInitializationMilliseconds": 1.800000011920929,
+              "workerDeliveryMilliseconds": 10941.971435546875,
+              "peakWorkerHeapBytes": 155254784,
+              "renderers": {
+                "canvas2d": 302
+              },
+              "presentationQueueMilliseconds": 111432.80786132812,
+              "visibleDrawMilliseconds": 8.399658203125
+            },
+            "readerMetrics": {
+              "cacheBytes": 83000544,
+              "requestBytes": 49895468,
+              "requests": 8,
+              "integrity": {
+                "verifiedBytes": 1618558272,
+                "workerMilliseconds": 3265.9999999403954,
+                "roundTripMilliseconds": 11964.800000011921
+              }
+            },
+            "webgl": {
+              "vendor": "Google Inc. (Google)",
+              "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+            },
+            "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+            "hardwareConcurrency": 16,
+            "diagnostics": [
+              {
+                "position": 1.5,
+                "buffering": true,
+                "decoded": 102,
+                "queue": 11
+              },
+              {
+                "position": 2.95,
+                "buffering": true,
+                "decoded": 189,
+                "queue": 11
+              },
+              {
+                "position": 4.281,
+                "buffering": false,
+                "decoded": 273,
+                "queue": 16
+              },
+              {
+                "position": 6.033,
+                "buffering": true,
+                "decoded": 374,
+                "queue": 11
+              },
+              {
+                "position": 7.517,
+                "buffering": true,
+                "decoded": 463,
+                "queue": 11
+              },
+              {
+                "position": 8.833,
+                "buffering": false,
+                "decoded": 547,
+                "queue": 16
+              },
+              {
+                "position": 9.767,
+                "buffering": true,
+                "decoded": 600,
+                "queue": 13
+              }
+            ],
+            "transferredSciBytes": 1618635129
+          },
+          {
+            "uninterrupted": false,
+            "iteration": 2,
+            "variant": "candidate",
+            "rendererPolicy": "default",
+            "outcome": "reached",
+            "playbackError": null,
+            "decoderNextChunk": 106,
+            "readerWindow": {
+              "quality": 1080,
+              "first": 105,
+              "last": 105
+            },
+            "cacheKeys": [
+              "1080:105",
+              "0:105"
+            ],
+            "height": 1080,
+            "codec": "sci-ascii-scene-v1",
+            "nativeFps": 60,
+            "duration": 10.033,
+            "playbackRate": 2,
+            "displayRate": 59.88023952095813,
+            "observedVideoSeconds": 10.017000000000003,
+            "startupMilliseconds": 924.3000000119209,
+            "preparationMilliseconds": 228.7000000178814,
+            "playbackMilliseconds": 23811.69999998808,
+            "bufferingMilliseconds": 19034.300000071526,
+            "waitingEvents": 31,
+            "samples": 1174,
+            "maxQueueBytes": 66355200,
+            "maxReservedFrameBytes": 66355200,
+            "reservationAccountingAvailable": true,
+            "maxCacheBytes": 83000544,
+            "maxRequestBytes": 50086853,
+            "maxWorkers": 4,
+            "maxLeases": 8,
+            "contiguousSourceFramesConsumed": 602,
+            "contiguousSourceEnd": 10.033,
+            "unclampedClockSeconds": 10.017000000000003,
+            "maxUnclampedClockLeadSeconds": 0.11499999999999977,
+            "decodedFramesConsumedBeforeObservationEnd": 602,
+            "frameMetrics": {
+              "decoded": 602,
+              "dropped": 422,
+              "consumed": 602,
+              "lateDecoded": 0,
+              "skippedSeekFrames": 0,
+              "discoveredFrames": 602,
+              "sourceConsumed": 602,
+              "reconstructed": 303,
+              "deferred": 299,
+              "painted": 99,
+              "decodeMilliseconds": 64140.99999970198,
+              "frameBytes": 66355200,
+              "decodeWallMilliseconds": 18243.299999922514,
+              "decoderPreparationMilliseconds": 301,
+              "decoderMilliseconds": 36627.90000075102,
+              "reconstructionMilliseconds": 5728.7999994158745,
+              "rendererInitializationMilliseconds": 3.5,
+              "workerDeliveryMilliseconds": 20307.50634765625,
+              "peakWorkerHeapBytes": 155254784,
+              "renderers": {
+                "rgba": 303
+              },
+              "presentationQueueMilliseconds": 149990.10278320312,
+              "visibleDrawMilliseconds": 262.999267578125
+            },
+            "readerMetrics": {
+              "cacheBytes": 83000544,
+              "requestBytes": 50086853,
+              "requests": 7,
+              "integrity": {
+                "verifiedBytes": 1618558272,
+                "workerMilliseconds": 5768.100000143051,
+                "roundTripMilliseconds": 17900.20000001788
+              }
+            },
+            "webgl": {
+              "vendor": "Google Inc. (Google)",
+              "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+            },
+            "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+            "hardwareConcurrency": 16,
+            "diagnostics": [
+              {
+                "position": 0.833,
+                "buffering": true,
+                "decoded": 56,
+                "queue": 5
+              },
+              {
+                "position": 1.25,
+                "buffering": true,
+                "decoded": 75,
+                "queue": 0
+              },
+              {
+                "position": 1.6,
+                "buffering": true,
+                "decoded": 108,
+                "queue": 11
+              },
+              {
+                "position": 2.733,
+                "buffering": true,
+                "decoded": 177,
+                "queue": 12
+              },
+              {
+                "position": 4.16033333333333,
+                "buffering": false,
+                "decoded": 254,
+                "queue": 6
+              },
+              {
+                "position": 5.363333333333334,
+                "buffering": false,
+                "decoded": 329,
+                "queue": 8
+              },
+              {
+                "position": 5.6,
+                "buffering": true,
+                "decoded": 338,
+                "queue": 1
+              },
+              {
+                "position": 5.6,
+                "buffering": true,
+                "decoded": 338,
+                "queue": 1
+              },
+              {
+                "position": 6.217,
+                "buffering": true,
+                "decoded": 384,
+                "queue": 10
+              },
+              {
+                "position": 7.6140000000000025,
+                "buffering": false,
+                "decoded": 473,
+                "queue": 16
+              },
+              {
+                "position": 9.067,
+                "buffering": true,
+                "decoded": 559,
+                "queue": 14
+              }
+            ],
+            "transferredSciBytes": 1618635129
+          }
+        ]
+      },
+      "gateExitCode": 1
+    },
+    "validation": {
+      "rustReleaseWorkspacePassedTestsIncludingDoctests": 52,
+      "rustClippyAllTargetsWarningsDenied": true,
+      "rustFmt": true,
+      "playerUnitPassedTests": 74,
+      "nativeBrowserChecks": true,
+      "allByteTriplesCompared": 16777216,
+      "spatialAndTemporalReferenceBytesCompared": true,
+      "ingestionAndCacheEndToEnd": true,
+      "publicWebsiteBuild": true,
+      "constrainedLinkCorrectnessDiagnostic": {
+        "scope": "Correctness diagnostics, run alongside other correctness checks. Not a controlled speed comparison. A passing ingestion test does not establish uninterrupted playback.",
+        "measurements": [
+          {
+            "latencyMs": 100,
+            "throughputBytesPerSecond": 187500,
+            "startupMs": 10866.232342,
+            "transferredSciBytes": 5427375,
+            "requestedSciBodyBytes": 6621543,
+            "observedThroughVideoSeconds": 4,
+            "samples": 479,
+            "bufferingSamples": 395,
+            "maxQueuedFrames": 8,
+            "maxChunks": 3
+          },
+          {
+            "coldSeekSeconds": 8.25,
+            "seekMs": 7594.7064889999965,
+            "transferredSciBytes": 1285684,
+            "latencyMs": 100,
+            "throughputBytesPerSecond": 187500
+          }
+        ],
+        "completed": true
+      }
+    },
+    "completion": {
+      "allTierUninterruptedMaximumSpeed": false,
+      "smallerThanH266": false,
+      "archiveSizeReduced": false
+    }
   }
 }

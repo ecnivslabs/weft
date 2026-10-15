@@ -45,7 +45,7 @@ These results do not establish indistinguishable source fidelity, lower bandwidt
 
 ## H.266 in MP4 comparison
 
-The current version 5 archives were compared with genuine H.266/VVC MP4 files on two retained 1920 by 1080 excerpts. Each contains 96 source presentation events: cartoon runs for 4.004 seconds at 24000/1001 FPS; fossils runs for four seconds at 24 FPS. The [raw report](measurements/vvc-mp4.json) records sources, hashes, tool versions, every QP search trial and independent MP4 verification. The [benchmark guide](benchmarking.md#h-266-in-mp4) describes reproduction.
+The version 5 archives were compared with genuine H.266/VVC MP4 files on two retained 1920 by 1080 excerpts. Each contains 96 source presentation events: cartoon runs for 4.004 seconds at 24000/1001 FPS; fossils runs for four seconds at 24 FPS. The [raw report](measurements/vvc-mp4.json) records sources, hashes, tool versions, every QP search trial and independent MP4 verification. The [benchmark guide](benchmarking.md#h-266-in-mp4) describes reproduction.
 
 VVenC 1.14.0, medium preset, eight threads and perceptual QP adaptation encode the original source RGB reference after conversion to ten-bit 4:2:0. SCI retains its full eight-bit RGB composition attributes. The comparison does not encode SCI output with VVC. Both containers include stereo 48 kHz Opus audio, although these excerpts contain silence. All complete-file byte counts below include audio and container overhead. MB means one million bytes.
 
@@ -106,6 +106,16 @@ Correctness tests can pass while buffering persists. A separate 360p correctness
 A forced 100 ms independent-checkpoint experiment was rejected: the cartoon archive grew to 12.54 MB at 360p, and 1080p repacking exceeded a 16 MiB shared-chunk bound. No checkpoint policy was shipped. A separate intermediate SIMD microbenchmark showed only a small completed-pixel improvement; a second decoder bundle was not added. The raw report retains both experiments and an early lead-preparation deadlock that received regression tests.
 
 The result is faster encoding and decoding with unchanged ASCII output, timing and supported archive versions. **The zero-buffering target remains unmet**, including on this host's loopback stress test. Further work must reduce actual per-event decoding, reconstruction and delivery cost while measuring bytes, fidelity, startup and memory together.
+
+### Plane prediction follow-up
+
+The `planePrediction` section of the speed report compares a further lossless change against `8afd080`. Paeth prediction uses equivalent integer thresholds; independent first rows and temporal reference rows avoid repeated per-cell boundary calculations. All 16777216 byte triples preserve the original predictor and its tie rules. Reference tests also compare exact spatial and temporal stream bytes across motion edges and partial blocks. Format versions and ASCII reconstruction remain unchanged.
+
+On the first 60 events of the retained 1080p60 detail prefix, one warm-up and five alternating measured passes reduced median direct WASM RGBA decoding from 40.186 to 37.388 ms per event, a 6.96 percent reduction. This excludes transport, worker preparation and visible presentation. Control-clip results varied: the first cartoon batch increased p95 by 5.84 percent; a second complete batch checked that concern. Combining all ten passes gives a 1.91 percent lower median and 1.91 percent higher p95. Fossils changed by less than one percent in median cost. Both batches and every failed gate remain in the report.
+
+Alternating complete 360p encodes showed no meaningful preparation improvement: cartoon median time changed from 10.537 to 10.569 seconds, and fossils from 10.572 to 10.565 seconds. Every reconstructed pixel and presentation time matched. Complete files remained 3883512 and 9179865 bytes, respectively. This change does not narrow the measured H.266 size gap.
+
+Three paired browser trials per tier used identical playback assets apart from WASM, unchanged budgets, ten source seconds and 2x speed. The candidate reached the source frontier in every trial. Waiting events were zero at 360p and 480p, but 21, 11 and 9 at 720p, and 27, 22 and 28 at 1080p. The strict uninterrupted gate failed. A separate direct-RGBA transfer prototype reduced reconstruction cost but produced inconsistent streaming results, including a timeout; it is not enabled. These results still do not establish sustained maximum-speed playback or superiority over conventional video.
 
 ## Historical measurements
 
