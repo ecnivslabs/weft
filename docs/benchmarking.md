@@ -51,7 +51,7 @@ node player/tests/encode-benchmark.mjs SHORT_SOURCE HEIGHT BEFORE_BINARY AFTER_B
 node player/tests/playback-benchmark.mjs ARCHIVE HEIGHT BEFORE_WASM AFTER_WASM
 ```
 
-The encoder runner alternates three measured encodes after a warm-up and checks pixels and presentation times. The decoder runner alternates five measured passes after a warm-up and checks every reconstructed pixel hash.
+The encoder runner alternates three measured encodes after a warm-up and checks every expanded ASCII cell, reconstructed pixel and presentation time. The decoder runner alternates five measured passes after a warm-up and checks every reconstructed pixel hash.
 
 The native `profile` example separates inflation, composition decoding and RGB rendering in one delivery chunk. It diagnoses costs; it is not a complete playback benchmark.
 

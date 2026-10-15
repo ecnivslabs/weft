@@ -1,9 +1,19 @@
 use std::sync::OnceLock;
 
 use crate::format::reflect;
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+#[path = "glyph_fit_avx2.rs"]
+mod avx2;
+
 const CELL_BYTES: usize = 8;
+const RECIPROCALS: [u32; 13] = [
+    0, 65536, 32768, 21846, 16384, 13108, 10923, 9363, 8192, 7282, 6554, 5958, 5462,
+];
+
 struct Atlas {
     glyphs: Vec<Glyph>,
+    #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+    batches: Vec<avx2::Batch>,
 }
 
 struct Glyph {
@@ -42,19 +52,30 @@ fn atlas() -> &'static Atlas {
                 }
             }
         }
-        Atlas { glyphs }
+        Atlas {
+            #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+            batches: glyphs.chunks(8).map(avx2::Batch::new).collect(),
+            glyphs,
+        }
     })
 }
 
 pub(crate) fn mean(sum: u32, count: u32) -> u32 {
     // Rounded means of at most twelve bytes are exact with these 16-bit reciprocals.
-    const RECIPROCALS: [u32; 13] = [
-        0, 65536, 32768, 21846, 16384, 13108, 10923, 9363, 8192, 7282, 6554, 5958, 5462,
-    ];
     ((sum + count / 2) * RECIPROCALS[count as usize]) >> 16
 }
 
 pub(crate) fn fit(pixels: &[[u8; 3]; 12]) -> [u8; CELL_BYTES] {
+    let atlas = atlas();
+    #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
+    if std::is_x86_feature_detected!("avx2") {
+        // SAFETY: Runtime detection checks CPU and OS support before entering the AVX2 function.
+        return unsafe { avx2::fit(pixels, atlas) };
+    }
+    scalar(pixels, atlas)
+}
+
+fn scalar(pixels: &[[u8; 3]; 12], atlas: &Atlas) -> [u8; CELL_BYTES] {
     let mut total = [0_u32; 3];
     let mut squares = 0_i32;
     let mut rows = [[[0_u16; 3]; 8]; 4];
@@ -77,7 +98,7 @@ pub(crate) fn fit(pixels: &[[u8; 3]; 12]) -> [u8; CELL_BYTES] {
     }
     let mut best_error = i32::MAX;
     let mut best = [0; CELL_BYTES];
-    for glyph in &atlas().glyphs {
+    for glyph in &atlas.glyphs {
         let count = glyph.count;
         let background_count = 12 - count;
         let mut cell = [glyph.character, 0, 0, 0, 0, 0, 0, glyph.transform];
@@ -114,5 +135,47 @@ fn reciprocal_means_match_integer_division_for_every_valid_sum() {
         for sum in 0..=255 * count {
             assert_eq!(mean(sum, count), (sum + count / 2) / count);
         }
+    }
+}
+
+#[test]
+fn dispatched_fitting_preserves_scalar_colors_masks_order_and_partial_batches() {
+    let atlas = atlas();
+    let mut patches = vec![[[0; 3]; 12], [[255; 3]; 12], [[93, 173, 241]; 12]];
+    for glyph in &atlas.glyphs {
+        for (foreground, background) in [
+            ([0, 255, 0], [255, 0, 255]),
+            ([255, 255, 255], [0, 0, 0]),
+            ([127, 128, 129], [128, 127, 128]),
+        ] {
+            patches.push(std::array::from_fn(|pixel| {
+                if glyph.shape & (1 << pixel) == 0 {
+                    background
+                } else {
+                    foreground
+                }
+            }));
+        }
+    }
+    for mask in 0..4096 {
+        patches.push(std::array::from_fn(|pixel| {
+            if mask & (1 << pixel) == 0 {
+                [255, 0, 255]
+            } else {
+                [0, 255, 0]
+            }
+        }));
+    }
+    let mut seed = 0xf71b_395a_u32;
+    for _ in 0..8192 {
+        patches.push(std::array::from_fn(|_| {
+            std::array::from_fn(|_| {
+                seed = seed.wrapping_mul(1664525).wrapping_add(1013904223);
+                (seed >> 24) as u8
+            })
+        }));
+    }
+    for pixels in patches {
+        assert_eq!(fit(&pixels), scalar(&pixels, atlas));
     }
 }

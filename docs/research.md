@@ -155,6 +155,22 @@ Alternating complete 360p encodes showed no meaningful preparation improvement: 
 
 Three paired browser trials per tier used identical playback assets apart from WASM, unchanged budgets, ten source seconds and 2x speed. The candidate reached the source frontier in every trial. Waiting events were zero at 360p and 480p, but 21, 11 and 9 at 720p, and 27, 22 and 28 at 1080p. The strict uninterrupted gate failed. A separate direct-RGBA transfer prototype reduced reconstruction cost but produced inconsistent streaming results, including a timeout; it is not enabled. These results still do not establish sustained maximum-speed playback or superiority over conventional video.
 
+### Vector glyph initialization
+
+The `vectorGlyphInitialization` section of the speed report compares an AVX2 implementation against `d384105`. It evaluates eight fixed glyph masks together using integer subset sums, exact reciprocal means and squared errors. Selection retains the first strict minimum, preserving the original glyph, reflection and colors. [Runtime feature detection](https://doc.rust-lang.org/std/macro.is_x86_feature_detected.html) guards the architecture-specific function; other CPUs and targets retain the scalar implementation. No dependency or format change is introduced.
+
+One warm-up and three alternating measured complete encodes use the same physical performance cores, 0, 2, 4 and 6. Other applications and the powersave governor remain unchanged. Every expanded ASCII cell, reconstructed pixel and presentation time matches, and complete SCI sizes remain equal:
+
+| 360p excerpt | Median before | Median after | Elapsed-time reduction |
+| :--- | ---: | ---: | ---: |
+| cartoon, 96 events | 21.436 s | 20.707 s | 3.40% |
+| fossils, 96 events | 21.646 s | 21.407 s | 1.10% |
+| weave, 240 events | 26.035 s | 25.675 s | 1.38% |
+
+These gains are small. They optimize the initial two-color glyph fit; the remaining greedy layer search, compression and browser decoder are unchanged. The raw report records all timings and hashes. Earlier batches used different host conditions, so their absolute times are not comparable. No result establishes real-time encoding, smaller files, a H.266 advantage or uninterrupted playback.
+
+The scalar oracle checks all 4096 binary patch masks, 8192 randomized patches, glyph and rounding cases, and partial atlases of one through sixteen entries. Full release tests, Clippy with warnings denied, Windows GNU and WASM compilation checks, and end-to-end ingestion and cache checks pass. Windows runtime behavior and performance on other CPU architectures were not measured.
+
 ## Historical measurements
 
 Earlier reports and raw measurement JSON remain in the repository history at [cef572b](https://github.com/ecnivslabs/weft/tree/cef572b67b5e91beb46ebab6495e85cfd81ddfe0/docs). They describe the code and fixtures tested at that revision, not a new run of the current checkout.

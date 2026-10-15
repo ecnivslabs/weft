@@ -11757,5 +11757,247 @@
       "smallerThanH266": false,
       "archiveSizeReduced": false
     }
+  },
+  "vectorGlyphInitialization": {
+    "recordedUtc": "2026-10-15T17:14:08.069470+00:00",
+    "baselineRevision": "d384105",
+    "implementation": "AVX2 evaluates eight fixed glyph masks per batch. Exact 16-bit reciprocal means, squared errors and stable tie handling preserve glyphs, reflections and RGB attributes. Runtime feature detection guards the AVX2 function; the existing scalar path remains on other targets and CPUs.",
+    "conditions": {
+      "warmups": 1,
+      "measuredAlternatingPasses": 3,
+      "height": 360,
+      "cpuAffinity": [
+        0,
+        2,
+        4,
+        6
+      ],
+      "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+      "logicalCpus": 16,
+      "governor": "powersave, unchanged",
+      "otherApplications": "Existing user applications remained running; CPU frequency was not pinned.",
+      "concurrency": "One measured benchmark at a time; no concurrent owned tests, compiles, conversions or rendering jobs.",
+      "verification": "Every expanded ASCII cell, reconstructed pixel and presentation time matches. Complete SCI byte counts match. Audio is validated, but encoded audio hashes are not compared.",
+      "scope": "Cartoon and fossils contain 96 events each, over 4.004 and four seconds. Weave contains 240 events over four seconds at 60 FPS. These are full local 360p encodes, not real-time ingestion or sustained playback."
+    },
+    "identities": {
+      "baselineCli": {
+        "path": "/tmp/weft-vector-hht48lki/before-weft",
+        "bytes": 1265568,
+        "sha256": "9c74fc3ebef32096326bbecd4feee1e0ca4d6f4d7d798daabf26dba29613573e"
+      },
+      "candidateCli": {
+        "path": "/tmp/weft-vector-hht48lki/after-weft",
+        "bytes": 1271616,
+        "sha256": "ae05665361d80f79c445c7d6bb40662bfd45ff1ef05ae36e0584235ab7acdf81"
+      },
+      "verificationWasm": {
+        "path": "player/web/decoder.wasm",
+        "bytes": 179394,
+        "sha256": "0f446000fc287100e3d28f6a07623b104e2725a040b881c1e9657101e24d2e6f"
+      }
+    },
+    "sources": [
+      {
+        "path": "videos/cartoon-sample/source.nut",
+        "bytes": 125682769,
+        "sha256": "822135dd195869f73c83de4f42b43c40c367d054ee501734ab42a4b023f30683"
+      },
+      {
+        "path": "videos/fossils-sample/source.nut",
+        "bytes": 91266141,
+        "sha256": "376e5f3a18f1925fb37b7201c83656f118408f92bf17ec1d1a9bd847f04c75d8"
+      },
+      {
+        "path": "videos/kinetic-weave/source.nut",
+        "bytes": 75022586,
+        "sha256": "cf5a5eadb8342b1d1253967d857cde2bdc02026721f1c6dc06a67faed643cf05"
+      }
+    ],
+    "sourceSha256": {
+      "player/tests/encode-benchmark.mjs": "c05b0bf4e72b9312fb331764f790c533a1cd72df6e5cc0574286c23f536ad1c8",
+      "crates/weft/src/glyph_fit.rs": "53079210a1281aa6fd0ba70a270aa6e31ba10e2bd0a098bcbf7befc17dd3aae3",
+      "crates/weft/src/glyph_fit_avx2.rs": "66c511327f4aa49b05594cb1a7eeba9a665437580d317bd4f577c25f332e26fb"
+    },
+    "results": [
+      {
+        "case": "cartoon",
+        "height": 360,
+        "warmups": 1,
+        "measuredIterations": 3,
+        "presentationSha256": "b9fc9525e40bb1f1536c174b9bafed472ad05eeea1b8c6013f6096ffdb4deb23",
+        "asciiAndPresentationSha256": "3384ad64dc667cdc84f8dad11e5d86a335f6dbbb7f5dc558bf0436b88021e507",
+        "timeline": [
+          639,
+          360,
+          96,
+          24000,
+          1001,
+          4.004
+        ],
+        "results": [
+          {
+            "binary": "/tmp/weft-vector-hht48lki/before-weft",
+            "seconds": [
+              21.647208221,
+              21.436011413999992,
+              20.551568326999988
+            ],
+            "bytes": 3845037,
+            "medianSeconds": 21.436011413999992
+          },
+          {
+            "binary": "/tmp/weft-vector-hht48lki/after-weft",
+            "seconds": [
+              20.706839003000002,
+              20.85159898000001,
+              20.282745487000007
+            ],
+            "bytes": 3845037,
+            "medianSeconds": 20.706839003000002
+          }
+        ],
+        "cpuAffinity": [
+          0,
+          2,
+          4,
+          6
+        ],
+        "medianChangePercent": -3.4016235432854924
+      },
+      {
+        "case": "fossils",
+        "height": 360,
+        "warmups": 1,
+        "measuredIterations": 3,
+        "presentationSha256": "fb684d297bff01cb1028c465d649944855d0af0cbbc891eefd7d9a0ac242cd83",
+        "asciiAndPresentationSha256": "fba566d83ecf464c1cecf569557a72bdfc9a4d6909cadef36db6c74b5beb1cee",
+        "timeline": [
+          639,
+          360,
+          96,
+          24,
+          1,
+          4
+        ],
+        "results": [
+          {
+            "binary": "/tmp/weft-vector-hht48lki/before-weft",
+            "seconds": [
+              21.646390591999996,
+              21.646139200000004,
+              21.454172183999994
+            ],
+            "bytes": 8859609,
+            "medianSeconds": 21.646139200000004
+          },
+          {
+            "binary": "/tmp/weft-vector-hht48lki/after-weft",
+            "seconds": [
+              21.557941906,
+              21.40725402800001,
+              21.17282490799998
+            ],
+            "bytes": 8859609,
+            "medianSeconds": 21.40725402800001
+          }
+        ],
+        "cpuAffinity": [
+          0,
+          2,
+          4,
+          6
+        ],
+        "medianChangePercent": -1.1035925150106762
+      },
+      {
+        "case": "weave",
+        "height": 360,
+        "warmups": 1,
+        "measuredIterations": 3,
+        "presentationSha256": "ab0e51cffad77e36f9ed31e91bd7aa952dddf3caff17ad1610fd5afe8707d5ba",
+        "asciiAndPresentationSha256": "e1dac56eb92530a797b1090e3be5780062eb90d85f3cf2f10c8083cf3c950827",
+        "timeline": [
+          639,
+          360,
+          240,
+          60,
+          1,
+          4
+        ],
+        "results": [
+          {
+            "binary": "/tmp/weft-vector-hht48lki/before-weft",
+            "seconds": [
+              26.035078724999998,
+              26.016404508000008,
+              26.197860107000015
+            ],
+            "bytes": 18304822,
+            "medianSeconds": 26.035078724999998
+          },
+          {
+            "binary": "/tmp/weft-vector-hht48lki/after-weft",
+            "seconds": [
+              25.779613208000004,
+              25.408314923999978,
+              25.674773275000014
+            ],
+            "bytes": 18304822,
+            "medianSeconds": 25.674773275000014
+          }
+        ],
+        "cpuAffinity": [
+          0,
+          2,
+          4,
+          6
+        ],
+        "medianChangePercent": -1.383923028640599
+      }
+    ],
+    "validation": {
+      "rustTestsIncludingDoctest": 57,
+      "releaseWorkspaceTestsPassed": true,
+      "clippyWarningsDeniedPassed": true,
+      "formatPassed": true,
+      "wasm32CompilationPassed": true,
+      "windowsGnuCompilationPassed": true,
+      "windowsRuntimeTested": false,
+      "scalarOracleBinaryMasks": 4096,
+      "scalarOracleRandomPatches": 8192,
+      "partialAtlasLengthsTested": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "productDependenciesAdded": false,
+      "formatChanged": false,
+      "endToEndIngestionPlaybackAndCachePassed": true
+    },
+    "limitations": [
+      "Observed median gains are small, 1.10 through 3.40 percent on these inputs.",
+      "The remaining greedy layer search, entropy coding and browser decoder are unchanged.",
+      "No file-size reduction, H.266 advantage or zero-buffering claim.",
+      "No timing result covers other CPU architectures or default unpinned ingestion."
+    ],
+    "references": [
+      "https://doc.rust-lang.org/core/arch/x86_64/fn._mm256_permutevar8x32_epi32.html",
+      "https://doc.rust-lang.org/std/macro.is_x86_feature_detected.html",
+      "https://doc.rust-lang.org/reference/attributes/codegen.html#the-target_feature-attribute"
+    ]
   }
 }

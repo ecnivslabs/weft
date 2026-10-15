@@ -16,6 +16,7 @@ if (!source || ![360,480,720,1080].includes(Number(height)) || binaries.length !
 const temporary = mkdtempSync(join(tmpdir(), 'weft-encode-speed-'));
 const samples = binaries.map(binary => ({binary:resolve(binary), seconds:[]}));
 let expected;
+let expectedAscii;
 let expectedTimeline;
 try {
   for (let iteration = 0; iteration < 4; iteration++) {
@@ -37,13 +38,16 @@ try {
       expectedTimeline = timeline;
       const decoder = await Decoder.open(readFileSync(new URL('../web/decoder.wasm',import.meta.url)));
       const pixels = createHash('sha256');
+      const ascii = createHash('sha256');
       for (let chunk=0;chunk<metadata.chunks;chunk++) {
         const record = records.get(`${height}:${chunk}`);
         const payload = bytes.subarray(record.offset,record.offset+record.length);
         assert.equal(crc32(payload),record.checksum);
         for (const [index,packet] of asciiPackets(payload,record,metadata.video.cellBytes).entries()) {
           pixels.update(String(packet.time)); pixels.update(String(packet.duration));
-          pixels.update(decoder.decode(packet,quality.columns,quality.rows,metadata.video.cellBytes,index===0,metadata.video.font));
+          ascii.update(String(packet.time)); ascii.update(String(packet.duration));
+          ascii.update(decoder.decodeCells(packet,quality.columns,quality.rows,metadata.video.cellBytes,index===0,metadata.video.font));
+          pixels.update(decoder.renderCurrentCells(quality.columns,quality.rows));
         }
         if (metadata.audio) {
           const audio = records.get(`0:${chunk}`);
@@ -53,10 +57,13 @@ try {
       const hash = pixels.digest('hex');
       if (expected) assert.equal(hash,expected,'Lossless optimizations must preserve decoded pixels and presentation times.');
       expected = hash;
+      const asciiHash = ascii.digest('hex');
+      if (expectedAscii) assert.equal(asciiHash,expectedAscii,'Lossless optimizations must preserve every ASCII cell and presentation time.');
+      expectedAscii = asciiHash;
       sample.bytes = bytes.length;
       if (iteration) sample.seconds.push(seconds);
     }
   }
-  console.log(JSON.stringify({height:Number(height),warmups:1,measuredIterations:3,presentationSha256:expected,timeline:expectedTimeline,
+  console.log(JSON.stringify({height:Number(height),warmups:1,measuredIterations:3,presentationSha256:expected,asciiAndPresentationSha256:expectedAscii,timeline:expectedTimeline,
     results:samples.map(sample=>({...sample,medianSeconds:sample.seconds.toSorted((a,b)=>a-b)[1]}))},null,2));
 } finally {rmSync(temporary,{recursive:true,force:true});}
