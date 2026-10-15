@@ -1,5 +1,6 @@
 //! Adaptive, layered compositions of fixed ASCII glyphs.
 
+mod fields;
 mod fit;
 mod frame;
 mod packet;
@@ -13,7 +14,7 @@ pub use fit::{Encoder, Options};
 pub use frame::Frame;
 pub(crate) use frame::Previous;
 pub(crate) use packet::decode_previous;
-pub use packet::{decode, packet, packet_predicted};
+pub use packet::{decode, packet, packet_for_version, packet_predicted};
 pub use surface::Surface;
 
 pub const CELL_BYTES: usize = 28;

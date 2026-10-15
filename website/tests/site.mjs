@@ -12,6 +12,7 @@ assert.equal(readFileSync(join(directory, 'CNAME'), 'utf8').trim(), 'weft.ecnivs
 const files = readdirSync(directory, { recursive: true }).filter(name => statSync(join(directory, name)).isFile());
 assert.equal(files.some(name => /\.(mp4|mkv|mov|avi|webm|m4v|nut|sci|wasm)$/i.test(name)), false);
 assert.equal(files.includes('player.html'), false);
+assert.deepEqual(files.filter(name => name.endsWith('.js')).sort(), ['hero.js', 'preview.js']);
 const hero = JSON.parse(readFileSync(new URL('../media/hero.json', import.meta.url)));
 assert.equal(createHash('sha256').update(readFileSync(join(directory, 'assets/hero-knot.png'))).digest('hex'), hero.imageSha256);
 const fidelity = JSON.parse(readFileSync(new URL('../../docs/assets/fidelity.json', import.meta.url)));

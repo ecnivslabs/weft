@@ -59,7 +59,7 @@ impl<R: Read + Seek> Archive<R> {
         let version = u16_at(&header, 4);
         let record_bytes = 48;
         if &header[..4] != b"SCIV"
-            || version != 4
+            || ![4, 5].contains(&version)
             || audio > 1
             || !(2..=4096).contains(&length)
             || !(1..=100000).contains(&count)
@@ -211,6 +211,7 @@ impl<R: Read + Seek> Archive<R> {
             previous: None,
             time_us: 0,
             last_timing: None,
+            version: self.metadata["version"].as_u64().unwrap() as u16,
         })
     }
 
@@ -246,6 +247,7 @@ pub struct Frames {
     previous: Option<Vec<u8>>,
     time_us: u64,
     last_timing: Option<(u64, u32)>,
+    version: u16,
 }
 
 impl Frames {
@@ -284,6 +286,9 @@ impl Frames {
             .get(self.offset..self.offset + 9)
             .ok_or_else(invalid)?;
         let tag = header[0];
+        if self.version == 4 && [8, 9].contains(&tag) {
+            return Err(invalid());
+        }
         let declared = u32_at(header, 1) as usize;
         let length = u32_at(header, 5) as usize;
         self.offset += 9;

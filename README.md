@@ -45,10 +45,10 @@ To build the website (Node.js 22 or newer):
 
 ```sh
 npm ci --prefix website
-npm run build:site --prefix website
+npm run build --prefix website
 ```
 
-`website/dist/` is the GitHub Pages artifact for `weft.ecnivs.com`. It contains the product website, image previews and hosted documentation. The SCI decoder stays with the native browser player. Original footage stays in the ignored `videos/` directory. Deployment uses a manually triggered [workflow](.github/workflows/deploy-website.yml). [Website development](docs/website.md) covers local preview and hosting.
+`website/dist/` is the GitHub Pages artifact for `weft.ecnivs.com`. It contains the product website, image previews and hosted documentation. The local SCI player, ingestion server, tests and benchmarks live separately under `player/`. Original footage stays in the ignored `videos/` directory. Deployment uses a manually triggered [workflow](.github/workflows/deploy-website.yml). [Website development](docs/website.md) covers local preview and hosting.
 
 ## Documentation
 
@@ -73,4 +73,4 @@ Fork, make a focused change, and open a pull request against `master`. Codec cha
 
 [Weft Noncommercial License 1.0](LICENSE). Noncommercial use is free. Commercial use requires a separate paid license from the applicable copyright holders, including use by solo developers.
 
-Media and fonts have separate terms. See [asset notices](website/ASSETS.md) and the notices under [website/web/fonts](website/web/fonts).
+Media and fonts have separate terms. See [asset notices](website/ASSETS.md) and the notices under [shared/web/fonts](shared/web/fonts).

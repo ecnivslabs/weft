@@ -2,7 +2,7 @@
 
 SCI is Weft's ASCII video archive format. Files use `.sci` and MIME type `application/vnd.weft.sci`. One visual representation is supported, with synchronized Opus audio and explicit presentation timing. The format contains ASCII symbols and appearance attributes, never a conventional video stream or source pixel planes.
 
-The internal container version is **4**. It is a compatibility field, not a filename extension or viewer setting. Older containers, two-color visual profiles and experimental scene-v2/v3 profiles are rejected. Re-encode their retained source media with the current encoder.
+New archives use internal container version **5**. Version 4 remains readable with its original packet rules. Versions 1 through 3, two-color visual profiles and experimental scene-v2/v3 profiles are rejected. Container versions describe compatibility, not visual modes or filename extensions. Existing valid version 4 archives remain reusable without re-encoding.
 
 ## Header and metadata
 
@@ -11,7 +11,7 @@ Integers are unsigned and little endian. The fixed header occupies 32 bytes.
 | Offset | Bytes | Meaning |
 | :--- | :--- | :--- |
 | 0 | 4 | Magic `SCIV` |
-| 4 | 2 | Internal version 4 |
+| 4 | 2 | Internal version 4 or 5 |
 | 6 | 2 | Flags, bit 0 indicates audio; other bits zero |
 | 8 | 4 | UTF-8 JSON metadata length |
 | 12 | 4 | Index record count |
@@ -44,7 +44,7 @@ Metadata declares `chunks`, `frames`, `duration`, nominal rational `fpsNumerator
 
 A video packet starts with its unsigned 32-bit presentation duration in microseconds, followed by a nine-byte packet header (tag, uncompressed length, compressed length) and one zlib stream. Durations are positive and at most one second. Long source holds split into identical presentation events without introducing new motion. Metadata records sourceFrames and averageFps separately from presentation event counts. Delivery chunks span at most two seconds, including a trailing hold event. Their sum must equal the indexed chunk duration. References reset at each chunk. Source timestamps normalize to the first video frame and are retained to microsecond precision. Sources above the configured frame-rate ceiling drop frames using source timestamps, rather than generating new motion.
 
-The only visual profile is `sci-ascii-scene-v1`, mapper `adaptive-layered-v2`, font `ascii-3x4-v2`, transform `reflect-xy-v1`, packet format `ascii-scene-zlib`, and `cellBytes: 28`. Packet tags are 4 (independent commands), 5 (predicted commands), 6 (spatial attribute planes), and 7 (motion-predicted attribute planes). Tags 5 and 7 require a previous frame. All other tags and codec profiles are rejected.
+The only visual profile is `sci-ascii-scene-v1`, mapper `adaptive-layered-v2`, font `ascii-3x4-v2`, transform `reflect-xy-v1`, and `cellBytes: 28`. Version 4 uses packet format `ascii-scene-zlib`; version 5 uses `ascii-scene-fields-zlib`. Packet tags are 4 (independent commands), 5 (predicted commands), 6 (spatial attribute planes), and 7 (motion-predicted attribute planes). Version 5 additionally permits tags 8 (independent composition fields) and 9 (temporal composition fields). Tags 5, 7, and 9 require a previous frame and cannot start a chunk. Version 4 rejects tags 8 and 9. All other tags and codec profiles are rejected.
 
 The writer stages independently compressed ASCII frames before delivery packing. Packing reconstructs those compositions and selects temporal packets, then splits every rendition at a common boundary whenever any rendition would exceed 16 MiB. New boundary packets are independent. This bounds delivery payloads without changing fitted glyphs, colors, resolution, or source timing. Chunks may therefore be shorter than the one-second target. Temporary ASCII staging is limited to 64 GiB and is removed on completion or failure. Reserved index space may leave an unreferenced gap before payloads; viewers do not fetch that gap.
 
@@ -91,6 +91,18 @@ Tag 6 contains exactly `baseCellCount * 28` bytes, arranged in 28 attribute plan
 Tag 7 starts with signed little-endian 16-bit horizontal and vertical motion offsets in base-cell units, each between -64 and 64. The remaining bytes are 28 attribute planes. Each reconstructed destination attribute predicts from the previous frame at `(x - dx, y - dy)`, or zero outside the frame. Attribute subtraction/addition is modulo 256. The complete reconstructed composition geometry and ASCII symbols must validate before rendering. These residuals describe glyph attributes, never arbitrary pixel samples.
 
 The encoder estimates a global cell motion offset from repeated complete glyph compositions. It compares zero-motion prediction, the estimated motion prediction, spatial planes, and composition commands using their actual compressed sizes. Every choice reconstructs exactly the same ASCII composition.
+
+## Compact composition fields
+
+Version 5 tags 8 and 9 use the same packet header, zlib envelope, timing and inflation limits as other visual packets. Their expanded payload starts with one prediction-mode byte and an unsigned little-endian 32-bit composition count `N`. Require `1 <= N <= baseCellCount` and an exact payload length of `5 + 5*N + 5*sum(layerCounts)` bytes. The count and minimum length must validate before allocating composition storage.
+
+Fields follow in this order: scale exponent, foreground layer count, background R, G, B, then each of four foreground slots in order, with ASCII code, reflection, R, G, B for each slot. Each field is a separate byte stream in row-major composition-origin order. Scale, layer count and background streams contain `N` entries. A foreground slot contains entries only for compositions whose layer count includes that slot. Unused slots, the fixed ASCII space and covered-cell offsets are not transmitted.
+
+Tag 8 accepts mode 0 (literal fields) or mode 1 (preceding-value differences). In mode 1, each field stream starts with a zero predictor; later entries predict from the preceding reconstructed value in that same stream. Subtract modulo 256 when encoding and add modulo 256 when decoding. Inactive foreground slots do not advance the predictor. Tag 9 accepts only mode 2 and requires a previous validated frame of identical dimensions and font. Scale and layer-count streams remain literal. Every other field predicts from the previous expanded frame at the destination composition's origin, even when that prior base cell was covered by a differently sized composition. Prediction uses the same byte offset, with modulo-256 subtraction and addition. No reference crosses a chunk.
+
+Reconstruct scale values first. Each exponent must be 0 through 3. Place each composition at the next uncovered base cell in row-major order, covering a square of `2^exponent` base cells on each axis. Reject overlap, out-of-bounds placement, excess compositions and incomplete coverage. Decode layer counts next, requiring 0 through 4, then derive all foreground-stream lengths before reading attributes. Restore the ASCII space, zero inactive slots and validate every glyph and reflection. Expand origins into the existing 28-byte cells, including each covered cell's own offsets. The resulting geometry and attributes must pass the same validation as command and plane packets. Reject trailing or missing bytes, invalid modes and missing temporal references.
+
+Encoders compare complete compressed packets against the existing command and plane candidates. All candidates reconstruct identical ASCII cells. Compact fields change serialization only; they introduce no pixel payload, replacement glyph masks, color quantization or additional fitting loss.
 
 ## Audio
 

@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/weft", "crates/weft-media", "crates/weft-cli", "crates/weft-wasm", "website/server"]
+members = ["crates/weft", "crates/weft-media", "crates/weft-cli", "crates/weft-wasm", "player/server"]
 default-members = ["crates/weft", "crates/weft-media", "crates/weft-cli"]
 resolver = "2"
 

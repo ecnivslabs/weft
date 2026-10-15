@@ -54,7 +54,7 @@ export function buildDocs(destination, assets) {
 <meta name="description" content="Weft documentation: ${escape(page.title)}.">
 <meta name="theme-color" content="#0f0d0e"><link rel="canonical" href="https://weft.ecnivs.com${page.url}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="${assets['landing.css']}"><link rel="stylesheet" href="${assets['site.css']}"><link rel="stylesheet" href="${assets['docs.css']}">
+<link rel="stylesheet" href="${assets['base.css']}"><link rel="stylesheet" href="${assets['site.css']}"><link rel="stylesheet" href="${assets['docs.css']}">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>

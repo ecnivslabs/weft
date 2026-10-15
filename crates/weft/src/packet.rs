@@ -80,7 +80,7 @@ pub(crate) fn decode_scene_inner(
         &data
     };
     validate_declaration(tag, bytes.len(), raw, spec)?;
-    if [5, 7].contains(&tag) {
+    if [5, 7, 9].contains(&tag) {
         scene::decode_previous(
             tag,
             bytes,
@@ -107,8 +107,8 @@ fn validate_declaration(
     let count = cells::dimensions(width, height)?;
     if declared == 0
         || declared > count * 38 + 1024
-        || ![4, 5, 6, 7].contains(&tag)
-        || ([5, 7].contains(&tag) && previous.is_none())
+        || ![4, 5, 6, 7, 8, 9].contains(&tag)
+        || ([5, 7, 9].contains(&tag) && previous.is_none())
         || font != "ascii-3x4-v2"
     {
         return Err(cells::invalid());

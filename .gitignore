@@ -1,6 +1,6 @@
 /target/
-/website/web/decoder.wasm
-/website/web/glyphs.json
+/player/web/decoder.wasm
+/player/web/glyphs.json
 /website/dist/
 **/node_modules/
 /data/
@@ -15,3 +15,7 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+/player/web/base.css
+/player/web/frame-theme.css
+/player/web/favicon.svg
+/player/web/fonts/

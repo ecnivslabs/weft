@@ -8,9 +8,12 @@ The workspace separates the visual codec from source ingestion, browser playback
 | `crates/weft-media` | FFprobe metadata, FFmpeg ingestion, synchronized audio and archive writing. |
 | `crates/weft-cli` | Encode, inspect and reconstruct commands. |
 | `crates/weft-wasm` | Browser ABI for the Rust decoder. |
-| `website/web` | Public landing page, image previews, native SCI player and decoder workers. |
-| `website/server` | Local HTTP ranges, ingestion API and persistent catalog. |
-| `website/tests` | Browser agreement, ingestion, playback and benchmark runners. |
+| `website/web` | Public landing page and image previews. |
+| `player/web` | Local SCI player and decoder workers. |
+| `player/server` | Local HTTP ranges, ingestion API and persistent catalog. |
+| `website/tests` | Public site and documentation checks. |
+| `player/tests` | Browser agreement, ingestion, playback and benchmark runners. |
+| `shared` | Common web assets and comparison preparation. |
 | `formats` | SCI format specification. |
 
 ## Ingestion
@@ -41,6 +44,6 @@ The local server binds to loopback by default and checks mutation origins and lo
 
 ## Compatibility
 
-SCI carries explicit presentation durations and timed seek records. Only internal container version 4, the scene-v1 codec and the fixed reflected ASCII font are supported. Historical containers, codecs and fonts fail explicitly. The local ingestion service regenerates obsolete archives from retained sources.
+SCI carries explicit presentation durations and timed seek records. New archives use internal container version 5; version 4 remains readable and reusable. Both versions retain the scene-v1 codec and fixed reflected ASCII font. Version 5 adds compact streams containing only composition origins and active attributes. Historical containers, codecs and fonts fail explicitly. The local ingestion service regenerates obsolete archives from retained sources.
 
 The normative font is `crates/weft/src/glyphs.json`. Rust and browser tests require identical definitions and reconstruction. [SCI](../formats/SCI.md) is the format contract; [integration](integration.md) describes the API boundaries.

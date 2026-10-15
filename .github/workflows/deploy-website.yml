@@ -21,9 +21,9 @@ jobs:
           cache: npm
           cache-dependency-path: website/package-lock.json
       - run: npm ci --prefix website
-      - run: npm run build:site --prefix website
+      - run: npm run build --prefix website
       - run: npx --prefix website playwright install --with-deps chromium
-      - run: npm run test:site --prefix website
+      - run: npm test --prefix website
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:

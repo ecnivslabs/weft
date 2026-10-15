@@ -4,6 +4,8 @@ use std::io;
 pub const CODEC: &str = "sci-ascii-scene-v1";
 pub const MAPPER: &str = "adaptive-layered-v2";
 pub const FONT: &str = "ascii-3x4-v2";
+pub const VERSION: u16 = 5;
+pub const PACKET_FORMAT: &str = "ascii-scene-fields-zlib";
 
 pub fn validate_video(video: &Value) -> io::Result<()> {
     if video["codec"] == CODEC

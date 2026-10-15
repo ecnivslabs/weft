@@ -148,6 +148,20 @@ pub fn packet(
     width: usize,
     height: usize,
 ) -> io::Result<Vec<u8>> {
+    packet_for_version(frame, previous, width, height, crate::format::VERSION)
+}
+
+/// Select packet candidates supported by the requested SCI container version.
+pub fn packet_for_version(
+    frame: &[u8],
+    previous: Option<&[u8]>,
+    width: usize,
+    height: usize,
+    version: u16,
+) -> io::Result<Vec<u8>> {
+    if ![4, 5].contains(&version) {
+        return Err(invalid());
+    }
     validate(frame, width, height)?;
     if let Some(previous) = previous {
         validate(previous, width, height)?;
@@ -157,8 +171,16 @@ pub fn packet(
     if spatial.len() < best.len() {
         best = spatial;
     }
+    if version == 5 {
+        for mode in [0, 1] {
+            let fields = compressed(8, &super::fields::encode(frame, None, mode))?;
+            if fields.len() < best.len() {
+                best = fields;
+            }
+        }
+    }
     if let Some(previous) = previous {
-        let predicted = predicted(frame, previous, width)?;
+        let predicted = predicted(frame, previous, width, version == 5)?;
         if predicted.len() < best.len() {
             best = predicted;
         }
@@ -175,10 +197,10 @@ pub fn packet_predicted(
 ) -> io::Result<Vec<u8>> {
     validate(frame, width, height)?;
     validate(previous, width, height)?;
-    predicted(frame, previous, width)
+    predicted(frame, previous, width, true)
 }
 
-fn predicted(frame: &[u8], previous: &[u8], width: usize) -> io::Result<Vec<u8>> {
+fn predicted(frame: &[u8], previous: &[u8], width: usize, fields: bool) -> io::Result<Vec<u8>> {
     let mut best = compressed(5, &commands(frame, Some(previous)))?;
     let temporal = compressed(
         7,
@@ -195,6 +217,12 @@ fn predicted(frame: &[u8], previous: &[u8], width: usize) -> io::Result<Vec<u8>>
         )?;
         if moved.len() < best.len() {
             best = moved;
+        }
+    }
+    if fields {
+        let compact = compressed(9, &super::fields::encode(frame, Some(previous), 2))?;
+        if compact.len() < best.len() {
+            best = compact;
         }
     }
     Ok(best)
@@ -291,6 +319,9 @@ pub(crate) fn decode_previous(
     width: usize,
     height: usize,
 ) -> io::Result<Vec<u8>> {
+    if [8, 9].contains(&tag) {
+        return super::fields::decode_previous(tag, data, previous, width, height);
+    }
     if [6, 7].contains(&tag) {
         return super::planes::decode_previous(tag, data, previous, width, height);
     }

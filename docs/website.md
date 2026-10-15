@@ -14,7 +14,7 @@ Use Node.js 22 or newer:
 
 ```sh
 npm ci --prefix website
-npm run build:site --prefix website
+npm run build --prefix website
 npm run preview --prefix website
 ```
 
@@ -26,21 +26,22 @@ Verify the public site with:
 
 ```sh
 npx --prefix website playwright install chromium
-npm run test:site --prefix website
+npm run test --prefix website
 ```
 
 This test checks automatic image animation, persistent correct and incorrect guesses, image-load recovery, hero motion, documentation links, reduced motion and responsive layouts. Set `SCREENSHOT_DIR` to save screenshots.
 
-## Native player
+## Local player
 
-The local Rust server serves `website/web/player.html`, independently of the public landing page. It retains the Rust WebAssembly decoder, progressive SCI delivery, synchronized audio, seeking and normal playback controls. Browser integration tests exercise that player.
+The local Rust server serves `player/web/player.html`, independently of the public landing page. It retains the Rust WebAssembly decoder, progressive SCI delivery, synchronized audio, seeking and normal playback controls. Browser integration tests exercise that player.
 
-Build its decoder before starting the server:
+Player sources, server, tests and benchmarks live under `player/`. The server executable is now `weft-player`, replacing `weft-website`. Build its decoder and shared assets before starting the server:
 
 ```sh
 rustup target add wasm32-unknown-unknown
-npm run build:web --prefix website
-cargo run -p weft-website --release --locked
+npm ci --prefix player
+npm run build --prefix player
+cargo run -p weft-player --release --locked
 ```
 
 ## GitHub Pages

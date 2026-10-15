@@ -1,0 +1,19 @@
+[package]
+name = "weft-player"
+publish = false
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license-file.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "weft-player"
+path = "src/main.rs"
+doc = false
+
+[dependencies]
+weft.workspace = true
+weft-media.workspace = true
+serde_json.workspace = true
+sha2.workspace = true

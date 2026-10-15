@@ -9,7 +9,10 @@ const hero = JSON.parse(readFileSync(join(website, 'media/hero.json')));
 const heroImage = readFileSync(join(website, 'web/assets/hero-knot.png'));
 if (hero.image !== 'hero-knot.png' || hero.width !== 960 || hero.height !== 720 || createHash('sha256').update(heroImage).digest('hex') !== hero.imageSha256) throw new Error('Hero image does not match its SCI preparation.');
 const files = [
-  'index.html', 'landing.css', 'site.css', 'docs.css', 'frame-theme.css', 'preview.js', 'hero.js', 'favicon.svg', 'assets/hero-knot.png',
+  'index.html', 'site.css', 'docs.css', 'preview.js', 'hero.js', 'assets/hero-knot.png',
+];
+const sharedFiles = [
+  'base.css', 'frame-theme.css', 'favicon.svg',
   ...['inter', 'space-grotesk', 'geist-mono'].flatMap(font => [`fonts/${font}-latin-wght-normal.woff2`, `fonts/${font}-LICENSE.txt`]),
 ];
 const mediaFiles = ['weft-preview.webp', 'source-preview.webp', 'source-poster.png', 'weft-poster.png'];
@@ -23,11 +26,12 @@ if (domain !== 'weft.ecnivs.com') throw new Error('Unexpected website domain.');
 
 const stage = mkdtempSync(join(website, '.site-build-'));
 try {
-  for (const file of files) {
+  for (const file of [...files, ...sharedFiles]) {
     mkdirSync(dirname(join(stage, file)), { recursive: true });
-    cpSync(join(website, 'web', file), join(stage, file));
+    const source = sharedFiles.includes(file) ? join(website, '../shared/web', file) : join(website, 'web', file);
+    cpSync(source, join(stage, file));
   }
-  const assets = Object.fromEntries(['landing.css','site.css','docs.css','preview.js','hero.js'].map(file => [file, `/${file}?v=${createHash('sha256').update(readFileSync(join(stage,file))).digest('hex').slice(0,12)}`]));
+  const assets = Object.fromEntries(['base.css','site.css','docs.css','preview.js','hero.js'].map(file => [file, `/${file}?v=${createHash('sha256').update(readFileSync(join(stage,file))).digest('hex').slice(0,12)}`]));
   mkdirSync(join(stage, 'assets'), { recursive: true });
   for (const name of mediaFiles) cpSync(join(website, '../docs/assets', name), join(stage, 'assets', name));
   cpSync(join(website, '../docs/assets/banner.png'), join(stage, 'assets/banner.png'));

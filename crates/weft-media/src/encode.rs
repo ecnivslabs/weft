@@ -310,10 +310,10 @@ pub fn encode_with_options(
                 .map(|metadata| metadata.len() + timeline.durations.len() as u64 * 4)
         })
         .collect::<io::Result<_>>()?;
-    let mut metadata = json!({"version":4, "timebase":1_000_000, "chunkSeconds":1, "chunks":timeline.chunks.len(), "chunkFrames":timeline.rate.fps().round() as u32,
+    let mut metadata = json!({"version":weft::format::VERSION, "timebase":1_000_000, "chunkSeconds":1, "chunks":timeline.chunks.len(), "chunkFrames":timeline.rate.fps().round() as u32,
         "fps":timeline.rate.fps(), "fpsNumerator":timeline.rate.numerator(), "fpsDenominator":timeline.rate.denominator(), "averageFps":timeline.source_frames as f64 / duration, "sourceFrames":timeline.source_frames,
         "duration":duration, "frames":timeline.durations.len(), "encoderProfile":options.fingerprint()?, "targetBitrate":options.target_bitrate,
-        "video":{"codec":weft::format::CODEC,"mapper":weft::format::MAPPER,"packetFormat":"ascii-scene-zlib","font":"ascii-3x4-v2","cellWidth":3,"cellHeight":4,"cellBytes":weft::scene::CELL_BYTES,"glyphTransform":"reflect-xy-v1"},
+        "video":{"codec":weft::format::CODEC,"mapper":weft::format::MAPPER,"packetFormat":weft::format::PACKET_FORMAT,"font":"ascii-3x4-v2","cellWidth":3,"cellHeight":4,"cellBytes":weft::scene::CELL_BYTES,"glyphTransform":"reflect-xy-v1"},
         "source":{"width":width,"height":height,"selectionCeilingNumerator":options.ceiling()?.numerator(),"selectionCeilingDenominator":options.ceiling()?.denominator(),"firstPts":timeline.first_pts}, "audio":if has_audio {json!({"codec":"opus","sampleRate":48000,"channels":2})} else {Value::Null},
         "qualities":qualities.iter().zip(&independent_sizes).map(|(q,independent)| {
             let bytes = records.iter().filter(|r| r.record.quality == q.height).map(|r| u64::from(r.record.length)).sum::<u64>();
@@ -327,7 +327,7 @@ pub fn encode_with_options(
     }
     file.seek(SeekFrom::Start(0))?;
     file.write_all(b"SCIV")?;
-    file.write_all(&4_u16.to_le_bytes())?;
+    file.write_all(&weft::format::VERSION.to_le_bytes())?;
     file.write_all(&u16::from(has_audio).to_le_bytes())?;
     file.write_all(&(json.len() as u32).to_le_bytes())?;
     file.write_all(&(count as u32).to_le_bytes())?;

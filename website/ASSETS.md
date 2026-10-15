@@ -2,7 +2,7 @@
 
 ## Cartoon comparison
 
-The source is a four-second visual excerpt from **Fossils**, a cat-and-dog cartoon by Piti Yindee. The creator released the film’s visuals under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/). The [archived creator description](https://archive.org/download/youtube-27lZiillddg/20210603-27lZiillddg-Original_Short_Film_-_Fossils.description) records that dedication, and the [Commons license review](https://commons.wikimedia.org/wiki/File:Piti_Yindee_-_Fossils_(2021).webm) confirms it. The [source recipe](media/sample.json) pins the download, original-file hash, excerpt and preparation settings. Attribution is not required for these visuals.
+The source is a four-second visual excerpt from **Fossils**, a cat-and-dog cartoon by Piti Yindee. The creator released the film’s visuals under [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/). The [archived creator description](https://archive.org/download/youtube-27lZiillddg/20210603-27lZiillddg-Original_Short_Film_-_Fossils.description) records that dedication, and the [Commons license review](https://commons.wikimedia.org/wiki/File:Piti_Yindee_-_Fossils_(2021).webm) confirms it. The [source recipe](../shared/media/sample.json) pins the download, original-file hash, excerpt and preparation settings. Attribution is not required for these visuals.
 
 The original soundtrack is excluded. Its music performance has separate CC BY-SA terms, so the retained ingestion clip replaces all original audio with silence. Its SCI preparations contain a synchronized silent stereo Opus track at 48 kHz. The public animated images have no audio. These images demonstrate a codec comparison, not an endorsement by the film’s creator.
 
@@ -10,7 +10,7 @@ The excerpt begins at 24 seconds and retains 96 source frames at 24 FPS, without
 
 Source and decoded frames receive the same Lanczos resize to 400×225 and 24 FPS preview cadence, then lossless animated WebP encoding. They repeat the selected excerpt without adding a transition or reversing its motion. Matching native PNGs preserve frame 24, at one second. Use those PNGs for inspecting pixel differences: preview resizing can conceal them, and the fitting remains lossy.
 
-The comparison images and posters are stored once under `docs/assets/`. The public build copies the required images into its artifact and verifies their [recorded settings and hashes](../docs/assets/fidelity.json). Native player assets remain separate because its poster and SCI archive use a different, 360p preparation. Source footage and the maximum-quality archive stay under ignored `videos/fossils-sample/` storage. No conventional video file is published.
+The comparison images and posters are stored once under `docs/assets/`. The public build copies the required images into its artifact and verifies their [recorded settings and hashes](../docs/assets/fidelity.json). The local player SCI archive remains separate because it uses a different, 360p preparation. Source footage and the maximum-quality archive stay under ignored `videos/fossils-sample/` storage. No conventional video file is published.
 
 ### Reproduce
 
@@ -18,7 +18,7 @@ Use Node.js 22 or newer, FFmpeg with HTTPS, FFV1, libopus and animated WebP supp
 
 ```sh
 cargo build --release --locked
-node website/scripts/prepare-preview.mjs
+node shared/scripts/prepare-preview.mjs
 ```
 
 The script reuses the retained ingestion clip, prepares it from a retained original when available, or retrieves the specified excerpt. It verifies the retained original’s hash before extraction. HTTPS certificate validation and bounded connection retries remain enabled. The source recipe pins the decoded source-frame hash. The script validates the source, encodes and decodes actual SCI frames, then prepares the images and the smaller native-player fixture. All processing finishes in a temporary directory before public assets are replaced. Codec or FFmpeg changes can alter archive bytes; the manifest identifies the particular preparation.
@@ -27,7 +27,7 @@ No media preparation runs during the public site build. Update the recipe delibe
 
 ## Published SCI sample
 
-`web/sample.sci` is a 360p preparation of the same excerpt at its native frame rate. Its identity is recorded in [web/sample.json](web/sample.json). The first decoded frame provides `web/assets/poster.png`. The sample demonstrates the representation and a short playback path, not sustained streaming performance or a bandwidth advantage.
+`player/web/sample.sci` is a 360p preparation of the same excerpt at its native frame rate. Its identity is recorded in [player/web/sample.json](../player/web/sample.json). The sample demonstrates the representation and a short playback path, not sustained streaming performance or a bandwidth advantage.
 
 The Pages artifact excludes SCI archives and decoder files. The sample remains downloadable from the repository and serves the local native player. Historical source footage remains in ignored research storage with its original license obligations.
 
@@ -41,10 +41,10 @@ The Office Walk, Winter Drive and Floorball Game footage comes from [UVG-VCM](ht
 
 The adapted reel, original typography contribution and reel-derived ASCII reconstructions are under CC BY-SA 4.0. Preserve these credits when redistributing them. Media rights remain separate from the software license.
 
-The [reel recipe](scripts/reel.json) pins source URLs, sizes and checksums. Rebuild locally with Node.js 22 or newer and FFmpeg with FFV1, drawtext and a monospace font:
+The [reel recipe](../player/scripts/reel.json) pins source URLs, sizes and checksums. Rebuild locally with Node.js 22 or newer and FFmpeg with FFV1, drawtext and a monospace font:
 
 ```sh
-node website/scripts/create-reel.mjs
+node player/scripts/create-reel.mjs
 ```
 
 The builder verifies downloads and the final timeline, isolates temporary files, and refuses to overwrite a destination. Creation needs approximately 20 GiB of free space. `WEFT_REEL_FONT` selects a local font file.
@@ -63,6 +63,6 @@ node website/scripts/prepare-hero.mjs
 
 ## Fonts and identity
 
-Inter, Space Grotesk and Geist Mono are bundled locally under the SIL Open Font License 1.1. Their copyright and license notices are in [web/fonts/inter-LICENSE.txt](web/fonts/inter-LICENSE.txt) and [web/fonts/space-grotesk-LICENSE.txt](web/fonts/space-grotesk-LICENSE.txt) and [web/fonts/geist-mono-LICENSE.txt](web/fonts/geist-mono-LICENSE.txt).
+Inter, Space Grotesk and Geist Mono are bundled locally under the SIL Open Font License 1.1. Their copyright and license notices are in [shared/web/fonts/inter-LICENSE.txt](../shared/web/fonts/inter-LICENSE.txt) and [shared/web/fonts/space-grotesk-LICENSE.txt](../shared/web/fonts/space-grotesk-LICENSE.txt) and [shared/web/fonts/geist-mono-LICENSE.txt](../shared/web/fonts/geist-mono-LICENSE.txt).
 
 The square play mark and README banner are project identity artwork. They are not codec-output previews. The website palette follows the ecnivs frame: near-black, warm charcoal, cream, ginger and bronze.

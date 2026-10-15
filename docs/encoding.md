@@ -42,7 +42,7 @@ These options prepare archives. They are not viewer modes. Expensive offline fit
 
 ## Format compatibility
 
-The encoder writes one `.sci` representation: `sci-ascii-scene-v1`. Its internal container version is 4. Legacy containers, two-color profiles and experimental scene versions are no longer supported. Re-encode their retained source media before playback.
+The encoder writes one `.sci` representation: `sci-ascii-scene-v1`. New archives use internal container version 5. Existing version 4 archives remain playable and reusable. Compact field packets compete with existing command and plane packets using actual compressed lengths, preserving identical decoded compositions. Container versions 1 through 3, two-color profiles and experimental scene versions are no longer supported. Re-encode their retained source media before playback.
 
 Fitting and delivery options participate in cache identity, so ingestion does not reuse archives prepared with incompatible settings.
 

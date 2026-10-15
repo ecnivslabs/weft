@@ -7,23 +7,32 @@ fn fixture() -> Vec<u8> {
 }
 
 fn fixture_codec(codec: &str) -> Vec<u8> {
-    let metadata = json!({"version":4,"timebase":1000000,"chunkSeconds":1,"fps":30,"fpsNumerator":30,"fpsDenominator":1,"chunkFrames":30,"chunks":2,"frames":3,"duration":1.1,
-        "video":{"codec":codec,"packetFormat":"ascii-scene-zlib","font":"ascii-3x4-v2","cellWidth":3,"cellHeight":4,"cellBytes":28,"glyphTransform":"reflect-xy-v1"},
+    fixture_version(codec, 4, 4)
+}
+
+fn fixture_version(codec: &str, version: u16, packet_version: u16) -> Vec<u8> {
+    let packet_format = if version == 4 {
+        "ascii-scene-zlib"
+    } else {
+        "ascii-scene-fields-zlib"
+    };
+    let metadata = json!({"version":version,"timebase":1000000,"chunkSeconds":1,"fps":30,"fpsNumerator":30,"fpsDenominator":1,"chunkFrames":30,"chunks":2,"frames":3,"duration":1.1,
+        "video":{"codec":codec,"packetFormat":packet_format,"font":"ascii-3x4-v2","cellWidth":3,"cellHeight":4,"cellBytes":28,"glyphTransform":"reflect-xy-v1"},
         "audio":null,"qualities":[{"height":4,"columns":3,"rows":4}]});
     let metadata = serde_json::to_vec(&metadata).unwrap();
     let mut encoder = scene::Encoder::new(scene::Options::default()).unwrap();
     let a = encoder.map_frame(&[37, 119, 201].repeat(12), 3, 4).unwrap();
     let b = encoder.map_frame(&[201, 37, 119].repeat(12), 3, 4).unwrap();
     let mut first = 33333_u32.to_le_bytes().to_vec();
-    first.extend(scene::packet(&a, None, 3, 4).unwrap());
+    first.extend(scene::packet_for_version(&a, None, 3, 4, packet_version).unwrap());
     first.extend(966667_u32.to_le_bytes());
-    first.extend(scene::packet(&b, Some(&a), 3, 4).unwrap());
+    first.extend(scene::packet_for_version(&b, Some(&a), 3, 4, packet_version).unwrap());
     let mut last = 100000_u32.to_le_bytes().to_vec();
-    last.extend(scene::packet(&b, None, 3, 4).unwrap());
+    last.extend(scene::packet_for_version(&b, None, 3, 4, packet_version).unwrap());
     let index = 32 + metadata.len() as u64;
     let mut archive = vec![0; 32];
     archive[..4].copy_from_slice(b"SCIV");
-    archive[4..6].copy_from_slice(&4_u16.to_le_bytes());
+    archive[4..6].copy_from_slice(&version.to_le_bytes());
     archive[8..12].copy_from_slice(&(metadata.len() as u32).to_le_bytes());
     archive[12..16].copy_from_slice(&2_u32.to_le_bytes());
     archive[16..24].copy_from_slice(&index.to_le_bytes());
@@ -65,11 +74,40 @@ fn current_archive_seeks_and_removed_versions_fail_explicitly() {
     ] {
         assert!(Archive::open(Cursor::new(fixture_codec(codec))).is_err());
     }
-    for version in [1u16, 2, 3, 5] {
+    for version in [1u16, 2, 3, 6] {
         let mut unsupported = fixture();
         unsupported[4..6].copy_from_slice(&version.to_le_bytes());
         assert!(Archive::open(Cursor::new(unsupported)).is_err());
     }
+}
+
+#[test]
+fn compact_archives_preserve_v4_pixels_seeks_and_timestamps() {
+    let mut legacy = Archive::open(Cursor::new(fixture())).unwrap();
+    let mut compact =
+        Archive::open(Cursor::new(fixture_version(weft::format::CODEC, 5, 5))).unwrap();
+    for index in [2, 0, 1, 2] {
+        assert_eq!(
+            legacy.frame(4, index).unwrap(),
+            compact.frame(4, index).unwrap()
+        );
+    }
+    for chunk in [1, 0] {
+        let mut a = legacy.video_chunk(4, chunk).unwrap();
+        let mut b = compact.video_chunk(4, chunk).unwrap();
+        loop {
+            let first = a.next_frame().unwrap();
+            let second = b.next_frame().unwrap();
+            assert_eq!(first, second);
+            assert_eq!(a.presentation(), b.presentation());
+            if first.is_none() {
+                break;
+            }
+        }
+    }
+    let mut disguised =
+        Archive::open(Cursor::new(fixture_version(weft::format::CODEC, 4, 5))).unwrap();
+    assert!(disguised.frame(4, 0).is_err());
 }
 
 struct SparseArchive {

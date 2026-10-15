@@ -6,7 +6,7 @@ Weft is a Rust ASCII video codec from ecnivs. Contributions can improve glyph fi
 
 Read [the introduction](docs/introduction.md), [architecture](docs/architecture.md), and [SCI](formats/SCI.md). Check the affected callers and tests before choosing a design.
 
-The core crate must stay independent of FFmpeg, HTTP, catalog storage and browser assets. Source ingestion belongs in `weft-media`; application behavior belongs in `website/server`. Removed experiments and their measurements remain available in repository history. New research must establish correctness and cost before entering production.
+The core crate must stay independent of FFmpeg, HTTP, catalog storage and browser assets. Source ingestion belongs in `weft-media`; application behavior belongs in `player/server`. Removed experiments and their measurements remain available in repository history. New research must establish correctness and cost before entering production.
 
 Visual packets must describe ASCII symbols and their attributes. A conventional video stream, source pixel payload or playback fallback does not meet the project design.
 
@@ -16,10 +16,10 @@ Use Rust 1.89 or newer and Node.js 22 or newer. Install FFmpeg with libopus, FFp
 
 ```sh
 rustup target add wasm32-unknown-unknown
-npm ci --prefix website
-npx --prefix website playwright install chromium
+npm ci --prefix player
+npx --prefix player playwright install chromium
 cargo build --workspace --release --locked
-npm run build:web --prefix website
+npm run build --prefix player
 ```
 
 The reusable codec does not need Node.js or media tools. Those dependencies support ingestion and browser validation.
@@ -30,9 +30,9 @@ Match the surrounding Rust or JavaScript conventions. Keep modules focused, prop
 
 When changing encoding, define the format rules before optimizing the implementation. Test encoder and decoder agreement, malformed input, independent seeks and compatibility. Use a new codec or font identifier when old readers cannot interpret the new representation. Earlier readers must reject unsupported profiles explicitly.
 
-`crates/weft/src/glyphs.json` is the normative font. `npm run build:web --prefix website` copies it into the browser assets alongside the WebAssembly decoder. Edit the normative font and rebuild; tests require exact agreement. Browser reconstruction must match Rust output pixel for pixel, including the WebGL2 path and CPU recovery.
+`crates/weft/src/glyphs.json` is the normative font. `npm run build --prefix player` copies it into the browser assets alongside the WebAssembly decoder. Edit the normative font and rebuild; tests require exact agreement. Browser reconstruction must match Rust output pixel for pixel, including the WebGL2 path and CPU recovery.
 
-Do not commit source footage, private catalogs, retained library archives or build output. The licensed `website/web/sample.sci`, sample posters and WebP previews are intentional public assets. Preserve applicable media licenses and update the recorded hashes when replacing them. The current CC0 comparison images require no attribution; the film soundtrack is excluded. Keep one canonical set in `docs/assets/`, with source and license evidence in `website/media/sample.json`.
+Do not commit source footage, private catalogs, retained library archives or build output. The licensed `player/web/sample.sci`, sample posters and WebP previews are intentional public assets. Preserve applicable media licenses and update the recorded hashes when replacing them. The current CC0 comparison images require no attribution; the film soundtrack is excluded. Keep one canonical set in `docs/assets/`, with source and license evidence in `shared/media/sample.json`.
 
 ## Verification
 
@@ -43,13 +43,14 @@ cargo fmt --all --check
 cargo clippy --workspace --all-targets --locked -- -D warnings
 cargo test --workspace --locked
 cargo build --workspace --release --locked
-npm run build:web --prefix website
+npm run build --prefix player
+npm test --prefix player
+npm run test:ingestion --prefix player
+npm run test:native --prefix player
+npm run test:e2e --prefix player
+npm ci --prefix website
+npm run build --prefix website
 npm test --prefix website
-npm run test:ingestion --prefix website
-npm run test:native --prefix website
-npm run test:e2e --prefix website
-npm run build:site --prefix website
-npm run test:site --prefix website
 ```
 
 CI runs Rust checks on Linux, macOS and Windows and checks the minimum Rust version separately. Avoid platform-specific paths and shell assumptions. Browser changes need desktop and phone checks, controls, seeking, audio, failure handling and cached playback. The static site suite checks preview playback, comparison guesses and persistent results, docs navigation and responsive layouts. SCI playback is verified separately by the native player and end-to-end suites.

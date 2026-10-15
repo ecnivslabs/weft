@@ -1,0 +1,1504 @@
+{
+  "measuredUtc": "2026-10-15T10:01:06.293815+00:00",
+  "methodology": {
+    "baseline": "Version 4, existing command and plane candidates, production flate2 level 3",
+    "candidate": "Version 5, same fitting and compressor, compact field candidates added",
+    "content": "Complete stored excerpts with unchanged seek boundaries and exact encoded audio payloads; all-tier excerpt contains first three shared chunks, ending at 250000 microseconds",
+    "warmups": 1,
+    "measuredAlternatingPasses": 5,
+    "decodeModes": [
+      "cells",
+      "pixels"
+    ],
+    "concurrency": "One benchmark process at a time; no concurrent encoding or rendering jobs. CPU frequency and other host activity were not controlled.",
+    "transferredMediaBytes": "Header, actual metadata, full index, selected rendition and audio body bytes. Excludes HTTP headers, decoder assets and unrequested padding.",
+    "limitations": [
+      "Four 1080p excerpts span only 2 through 4.004 seconds.",
+      "Each all-tier case spans only 0.25 seconds and 15 source events.",
+      "No sustained all-tier maximum-speed claim.",
+      "No controlled ingestion-speed or hardware energy comparison.",
+      "Exact equality is against existing ASCII output, not source video."
+    ]
+  },
+  "sources": [
+    {
+      "name": "cartoon",
+      "source": "videos/cartoon-sample/maximum.sci",
+      "bytes": 29040772,
+      "sha256": "546234c7073590396e42ef4aecb8b34ebef9115d3556b06803ca47b64e619960"
+    },
+    {
+      "name": "fossils",
+      "source": "videos/fossils-sample/maximum.sci",
+      "bytes": 79723143,
+      "sha256": "dc0416c2d788d12e35d36c72b1f127caada19e9cfe55557c70aa3b54c51be0a0"
+    },
+    {
+      "name": "weave",
+      "source": "videos/kinetic-weave/maximum.sci",
+      "bytes": 125134556,
+      "sha256": "eceaf45caa5ac55c279312a13304754c67b9f824e65bdfb6a097f9a3c6e00a65"
+    },
+    {
+      "name": "detail",
+      "source": "videos/readme-fidelity.sci",
+      "bytes": 290577041,
+      "sha256": "ce41bee372b49b9ac4d140aa2399ba0885628c5937be3cbbf6e7aa41be13af72"
+    },
+    {
+      "name": "all-tiers",
+      "source": "first three shared chunks of retained 120-second all-tier archive",
+      "bytes": 77605626,
+      "sha256": "9adb68ffcc5d334ada463e4f6e63cde46b7e8468a1bd6fc4c5c6acf6e4203bf2"
+    }
+  ],
+  "initialFailedGate": {
+    "reason": "Raster-wide scatter writes and repeated geometry validation caused a 42.7 percent median cell-decoding regression on fossils.",
+    "resolution": "Gather attributes into a hot composition, specialize prediction modes, validate geometry once and construct followers from validated origins.",
+    "measurement": {
+      "host": {
+        "platform": "linux",
+        "arch": "x64",
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "node": "v26.11.1"
+      },
+      "height": 1080,
+      "mode": "cells",
+      "warmups": 1,
+      "measuredIterations": 5,
+      "frames": 96,
+      "timeline": [
+        1920,
+        1080,
+        96,
+        4,
+        24,
+        1
+      ],
+      "outputAndTimingSha256": "8d653bc15331dccb7b5a0fa2dec8f0ed9d653fb0f2094d09e5098791ac8b5140",
+      "audioAndTimingSha256": "c9356fbd9f3905e0f743fc7a6535aebc7fd73e6f4f2867ee45694d510a80fd40",
+      "results": [
+        {
+          "path": "fossils-legacy.sci",
+          "version": 4,
+          "moduleSha256": "17db5b2ef9a5f4e6748103db3d46e4c567f4673283d12e2becceec0d570f1fc4",
+          "archiveBytes": 79714407,
+          "transferredMediaBytes": 79711113,
+          "tags": {
+            "4": 5,
+            "5": 19,
+            "7": 72
+          },
+          "milliseconds": [
+            1228.7915879999991,
+            1210.3613339999984,
+            1215.9357589999981,
+            1218.6304769999806,
+            1236.8382640000054
+          ],
+          "p95Milliseconds": [
+            17.616871000000174,
+            17.04229200000009,
+            17.474286000000575,
+            17.84506500000134,
+            17.932757999999012
+          ],
+          "medianMillisecondsPerFrame": 12.694067468749799,
+          "medianP95Milliseconds": 17.616871000000174,
+          "medianFirstFrameMilliseconds": 24.11160799999925
+        },
+        {
+          "path": "fossils-fields.sci",
+          "version": 5,
+          "moduleSha256": "b4347b0c687be2b96d051eca42ecf71a229354ecc7a21946015d869e3e1ffc22",
+          "archiveBytes": 68155149,
+          "transferredMediaBytes": 68151862,
+          "tags": {
+            "8": 5,
+            "9": 91
+          },
+          "milliseconds": [
+            1739.0781090000023,
+            1769.1030859999973,
+            1735.422343000013,
+            1733.148959000031,
+            1741.6062189999975
+          ],
+          "p95Milliseconds": [
+            21.064884999999776,
+            20.72563799999989,
+            20.64571199999955,
+            20.449665000000095,
+            20.759368999999424
+          ],
+          "medianMillisecondsPerFrame": 18.115396968750023,
+          "medianP95Milliseconds": 20.72563799999989,
+          "medianFirstFrameMilliseconds": 20.80341799999951
+        }
+      ],
+      "transferredBytesSavedPercent": 14.501429681454836,
+      "medianDecodeChangePercent": 42.70758378546853,
+      "p95DecodeChangePercent": 17.64653325780545
+    }
+  },
+  "gate": {
+    "maximumAllowedMedianRegressionPercent": 5,
+    "maximumAllowedP95RegressionPercent": 5,
+    "passed": true
+  },
+  "results": [
+    {
+      "host": {
+        "platform": "linux",
+        "arch": "x64",
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "node": "v26.11.1"
+      },
+      "height": 1080,
+      "mode": "cells",
+      "warmups": 1,
+      "measuredIterations": 5,
+      "frames": 15,
+      "timeline": [
+        1920,
+        1080,
+        15,
+        0.25,
+        60,
+        1
+      ],
+      "outputAndTimingSha256": "448f747d457c7792e66826eea6dedf0a69eb1452f9dd3ea5d1fb117f7f995f45",
+      "audioAndTimingSha256": "b6a14b5ad748d8a9184026d925ccc1e7c13bf11225b30ef18955aa3641715762",
+      "results": [
+        {
+          "path": "all-tiers-legacy.sci",
+          "version": 4,
+          "moduleSha256": "17db5b2ef9a5f4e6748103db3d46e4c567f4673283d12e2becceec0d570f1fc4",
+          "archiveBytes": 77605626,
+          "transferredMediaBytes": 43863045,
+          "tags": {
+            "6": 10,
+            "7": 5
+          },
+          "milliseconds": [
+            485.365861,
+            465.35777600000074,
+            482.65726799999857,
+            479.47202000000016,
+            489.1454309999981
+          ],
+          "p95Milliseconds": [
+            52.92004700000007,
+            39.08553800000027,
+            51.66956500000015,
+            39.85920100000021,
+            53.82564000000002
+          ],
+          "medianMillisecondsPerFrame": 32.177151199999905,
+          "medianP95Milliseconds": 51.66956500000015,
+          "medianFirstFrameMilliseconds": 51.66956500000015
+        },
+        {
+          "path": "all-tiers-after.sci",
+          "version": 5,
+          "moduleSha256": "3110512a7a39264c1eb97217db7824dc879bdbecf4d84a650559c07872833e9b",
+          "archiveBytes": 71604196,
+          "transferredMediaBytes": 39893985,
+          "tags": {
+            "8": 15
+          },
+          "milliseconds": [
+            362.4658380000001,
+            376.94070799999963,
+            364.80449199999885,
+            378.48829399999886,
+            363.0685250000015
+          ],
+          "p95Milliseconds": [
+            26.57462499999997,
+            37.067004,
+            26.97602599999982,
+            37.30438200000026,
+            26.79114600000048
+          ],
+          "medianMillisecondsPerFrame": 24.32029946666659,
+          "medianP95Milliseconds": 26.97602599999982,
+          "medianFirstFrameMilliseconds": 26.97602599999982
+        }
+      ],
+      "transferredBytesSavedPercent": 9.04875619100316,
+      "medianDecodeChangePercent": -24.417487068691578,
+      "p95DecodeChangePercent": -47.791265515783344
+    },
+    {
+      "host": {
+        "platform": "linux",
+        "arch": "x64",
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "node": "v26.11.1"
+      },
+      "height": 360,
+      "mode": "cells",
+      "warmups": 1,
+      "measuredIterations": 5,
+      "frames": 15,
+      "timeline": [
+        639,
+        360,
+        15,
+        0.25,
+        60,
+        1
+      ],
+      "outputAndTimingSha256": "6bd5cb139890b70411fe7b82f4a5712405fafa0936c77aa5e859ec9f076ff6a9",
+      "audioAndTimingSha256": "b6a14b5ad748d8a9184026d925ccc1e7c13bf11225b30ef18955aa3641715762",
+      "results": [
+        {
+          "path": "all-tiers-legacy.sci",
+          "version": 4,
+          "moduleSha256": "17db5b2ef9a5f4e6748103db3d46e4c567f4673283d12e2becceec0d570f1fc4",
+          "archiveBytes": 77605626,
+          "transferredMediaBytes": 4987966,
+          "tags": {
+            "6": 3,
+            "7": 12
+          },
+          "milliseconds": [
+            45.44005499999997,
+            50.72457200000014,
+            46.44769800000006,
+            46.999408000000244,
+            49.364821000000234
+          ],
+          "p95Milliseconds": [
+            5.021205000000009,
+            6.171399000000008,
+            5.1495100000000775,
+            4.999090000000024,
+            8.873493000000053
+          ],
+          "medianMillisecondsPerFrame": 3.133293866666683,
+          "medianP95Milliseconds": 5.1495100000000775,
+          "medianFirstFrameMilliseconds": 5.1495100000000775
+        },
+        {
+          "path": "all-tiers-after.sci",
+          "version": 5,
+          "moduleSha256": "3110512a7a39264c1eb97217db7824dc879bdbecf4d84a650559c07872833e9b",
+          "archiveBytes": 71604196,
+          "transferredMediaBytes": 4761825,
+          "tags": {
+            "8": 7,
+            "9": 8
+          },
+          "milliseconds": [
+            48.04155300000002,
+            56.376854000000094,
+            48.4004910000001,
+            50.5038840000002,
+            46.150775000000294
+          ],
+          "p95Milliseconds": [
+            3.7946349999999995,
+            8.334144999999978,
+            3.8665829999999914,
+            3.9807100000000446,
+            3.7428770000000213
+          ],
+          "medianMillisecondsPerFrame": 3.226699400000007,
+          "medianP95Milliseconds": 3.8665829999999914,
+          "medianFirstFrameMilliseconds": 3.8665829999999914
+        }
+      ],
+      "transferredBytesSavedPercent": 4.5337317856617325,
+      "medianDecodeChangePercent": 2.981065208310385,
+      "p95DecodeChangePercent": -24.91357430124549
+    },
+    {
+      "host": {
+        "platform": "linux",
+        "arch": "x64",
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "node": "v26.11.1"
+      },
+      "height": 480,
+      "mode": "cells",
+      "warmups": 1,
+      "measuredIterations": 5,
+      "frames": 15,
+      "timeline": [
+        852,
+        480,
+        15,
+        0.25,
+        60,
+        1
+      ],
+      "outputAndTimingSha256": "715fe231ccc6c0388c0d91e7c2fee514757c1e9d9fddbbe61d58e308d6a18894",
+      "audioAndTimingSha256": "b6a14b5ad748d8a9184026d925ccc1e7c13bf11225b30ef18955aa3641715762",
+      "results": [
+        {
+          "path": "all-tiers-legacy.sci",
+          "version": 4,
+          "moduleSha256": "17db5b2ef9a5f4e6748103db3d46e4c567f4673283d12e2becceec0d570f1fc4",
+          "archiveBytes": 77605626,
+          "transferredMediaBytes": 8878514,
+          "tags": {
+            "6": 4,
+            "7": 11
+          },
+          "milliseconds": [
+            93.03199399999994,
+            83.75837899999999,
+            89.03078300000027,
+            83.2977589999997,
+            84.01684499999965
+          ],
+          "p95Milliseconds": [
+            15.336905999999999,
+            8.915542999999957,
+            13.864045000000033,
+            9.376513000000045,
+            8.455050000000028
+          ],
+          "medianMillisecondsPerFrame": 5.601122999999976,
+          "medianP95Milliseconds": 9.376513000000045,
+          "medianFirstFrameMilliseconds": 9.376513000000045
+        },
+        {
+          "path": "all-tiers-after.sci",
+          "version": 5,
+          "moduleSha256": "3110512a7a39264c1eb97217db7824dc879bdbecf4d84a650559c07872833e9b",
+          "archiveBytes": 71604196,
+          "transferredMediaBytes": 8416681,
+          "tags": {
+            "8": 14,
+            "9": 1
+          },
+          "milliseconds": [
+            91.214249,
+            87.98132599999985,
+            81.86361499999998,
+            82.44676199999958,
+            82.29279999999972
+          ],
+          "p95Milliseconds": [
+            8.383665000000008,
+            6.321875999999975,
+            6.21997900000008,
+            6.220235000000002,
+            6.371330999999827
+          ],
+          "medianMillisecondsPerFrame": 5.496450799999972,
+          "medianP95Milliseconds": 6.321875999999975,
+          "medianFirstFrameMilliseconds": 6.302794000000063
+        }
+      ],
+      "transferredBytesSavedPercent": 5.201692535485103,
+      "medianDecodeChangePercent": -1.8687716731092041,
+      "p95DecodeChangePercent": -32.57753708654866
+    },
+    {
+      "host": {
+        "platform": "linux",
+        "arch": "x64",
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "node": "v26.11.1"
+      },
+      "height": 720,
+      "mode": "cells",
+      "warmups": 1,
+      "measuredIterations": 5,
+      "frames": 15,
+      "timeline": [
+        1281,
+        720,
+        15,
+        0.25,
+        60,
+        1
+      ],
+      "outputAndTimingSha256": "2ce88e9d8649c8f5b67783b130d6c71df40568ea7f2372b34dc666d726df877c",
+      "audioAndTimingSha256": "b6a14b5ad748d8a9184026d925ccc1e7c13bf11225b30ef18955aa3641715762",
+      "results": [
+        {
+          "path": "all-tiers-legacy.sci",
+          "version": 4,
+          "moduleSha256": "17db5b2ef9a5f4e6748103db3d46e4c567f4673283d12e2becceec0d570f1fc4",
+          "archiveBytes": 77605626,
+          "transferredMediaBytes": 19880087,
+          "tags": {
+            "6": 7,
+            "7": 8
+          },
+          "milliseconds": [
+            205.26700000000017,
+            191.5885360000002,
+            198.43491999999992,
+            186.41822799999977,
+            199.8162420000017
+          ],
+          "p95Milliseconds": [
+            28.02223499999991,
+            18.39331399999992,
+            25.47183700000005,
+            17.49345600000015,
+            28.9519650000002
+          ],
+          "medianMillisecondsPerFrame": 13.228994666666662,
+          "medianP95Milliseconds": 25.47183700000005,
+          "medianFirstFrameMilliseconds": 25.47183700000005
+        },
+        {
+          "path": "all-tiers-after.sci",
+          "version": 5,
+          "moduleSha256": "3110512a7a39264c1eb97217db7824dc879bdbecf4d84a650559c07872833e9b",
+          "archiveBytes": 71604196,
+          "transferredMediaBytes": 18535719,
+          "tags": {
+            "8": 15
+          },
+          "milliseconds": [
+            182.49655499999983,
+            181.96842299999912,
+            175.83564400000046,
+            180.95839899999828,
+            181.52944200000047
+          ],
+          "p95Milliseconds": [
+            14.69667800000002,
+            21.603018999999904,
+            13.348435999999992,
+            20.524379999999837,
+            14.139332000000195
+          ],
+          "medianMillisecondsPerFrame": 12.101962800000031,
+          "medianP95Milliseconds": 14.69667800000002,
+          "medianFirstFrameMilliseconds": 14.69667800000002
+        }
+      ],
+      "transferredBytesSavedPercent": 6.7623848929836194,
+      "medianDecodeChangePercent": -8.519406765704074,
+      "p95DecodeChangePercent": -42.302245417164094
+    },
+    {
+      "host": {
+        "platform": "linux",
+        "arch": "x64",
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "node": "v26.11.1"
+      },
+      "height": 1080,
+      "mode": "cells",
+      "warmups": 1,
+      "measuredIterations": 5,
+      "frames": 96,
+      "timeline": [
+        1920,
+        1080,
+        96,
+        4.004,
+        24000,
+        1001
+      ],
+      "outputAndTimingSha256": "f86d93c07ccf9eba1de44c4209d6529ae9fa5af3002d42aea39acd82813193c8",
+      "audioAndTimingSha256": "5030193ef92266b0d70bc2d8d465b9435b68fc43f72b6d6f00282eb52df6d171",
+      "results": [
+        {
+          "path": "cartoon-legacy.sci",
+          "version": 4,
+          "moduleSha256": "17db5b2ef9a5f4e6748103db3d46e4c567f4673283d12e2becceec0d570f1fc4",
+          "archiveBytes": 29031940,
+          "transferredMediaBytes": 29028688,
+          "tags": {
+            "5": 64,
+            "6": 5,
+            "7": 27
+          },
+          "milliseconds": [
+            805.0954110000002,
+            791.6716270000015,
+            803.5876980000039,
+            779.1012869999886,
+            791.196122999987
+          ],
+          "p95Milliseconds": [
+            33.37737599999991,
+            33.44850000000042,
+            32.99883500000033,
+            32.67278599999918,
+            32.7441089999993
+          ],
+          "medianMillisecondsPerFrame": 8.246579447916682,
+          "medianP95Milliseconds": 32.99883500000033,
+          "medianFirstFrameMilliseconds": 48.09359500000028
+        },
+        {
+          "path": "cartoon-fields.sci",
+          "version": 5,
+          "moduleSha256": "3110512a7a39264c1eb97217db7824dc879bdbecf4d84a650559c07872833e9b",
+          "archiveBytes": 27565975,
+          "transferredMediaBytes": 27562731,
+          "tags": {
+            "5": 63,
+            "7": 22,
+            "8": 5,
+            "9": 6
+          },
+          "milliseconds": [
+            759.4899499999988,
+            799.1936529999957,
+            748.4892900000023,
+            786.0892409999942,
+            749.0891150000098
+          ],
+          "p95Milliseconds": [
+            22.984811999999692,
+            23.934736000000157,
+            22.12271899999996,
+            24.026011999998445,
+            22.23789299999953
+          ],
+          "medianMillisecondsPerFrame": 7.91135364583332,
+          "medianP95Milliseconds": 22.984811999999692,
+          "medianFirstFrameMilliseconds": 25.09563999999955
+        }
+      ],
+      "transferredBytesSavedPercent": 5.050028440830667,
+      "medianDecodeChangePercent": -4.065028466657761,
+      "p95DecodeChangePercent": -30.346595569208834
+    },
+    {
+      "host": {
+        "platform": "linux",
+        "arch": "x64",
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "node": "v26.11.1"
+      },
+      "height": 1080,
+      "mode": "cells",
+      "warmups": 1,
+      "measuredIterations": 5,
+      "frames": 120,
+      "timeline": [
+        1920,
+        1080,
+        120,
+        2,
+        60,
+        1
+      ],
+      "outputAndTimingSha256": "2bfb4adf08d029395fb860f93f9c6125ce508e0e03d078963528f08f8e5a0463",
+      "audioAndTimingSha256": "0c8bbff0deaca514abd127d52118c0a64f39683949c9500df67b8965fcba3beb",
+      "results": [
+        {
+          "path": "detail-legacy.sci",
+          "version": 4,
+          "moduleSha256": "17db5b2ef9a5f4e6748103db3d46e4c567f4673283d12e2becceec0d570f1fc4",
+          "archiveBytes": 290571281,
+          "transferredMediaBytes": 290568003,
+          "tags": {
+            "4": 40,
+            "5": 45,
+            "6": 23,
+            "7": 12
+          },
+          "milliseconds": [
+            3442.075711999989,
+            3434.8403869999966,
+            3486.7852530000055,
+            3501.289623000008,
+            3734.4802189999536
+          ],
+          "p95Milliseconds": [
+            33.421875,
+            33.375317999998515,
+            34.22256800000105,
+            33.912168000002566,
+            36.87745599999471
+          ],
+          "medianMillisecondsPerFrame": 29.056543775000044,
+          "medianP95Milliseconds": 33.912168000002566,
+          "medianFirstFrameMilliseconds": 31.00492099999974
+        },
+        {
+          "path": "detail-fields.sci",
+          "version": 5,
+          "moduleSha256": "3110512a7a39264c1eb97217db7824dc879bdbecf4d84a650559c07872833e9b",
+          "archiveBytes": 237797456,
+          "transferredMediaBytes": 237794184,
+          "tags": {
+            "8": 120
+          },
+          "milliseconds": [
+            2642.926109999996,
+            2661.532640999998,
+            4150.929396000003,
+            2702.938756999967,
+            2752.8343010000026
+          ],
+          "p95Milliseconds": [
+            23.263629999999466,
+            23.358080999998492,
+            222.64540300000226,
+            23.95126999999775,
+            26.062229000002844
+          ],
+          "medianMillisecondsPerFrame": 22.524489641666392,
+          "medianP95Milliseconds": 23.95126999999775,
+          "medianFirstFrameMilliseconds": 22.46729200000118
+        }
+      ],
+      "transferredBytesSavedPercent": 18.162295385290584,
+      "medianDecodeChangePercent": -22.48049246295344,
+      "p95DecodeChangePercent": -29.372636983881605
+    },
+    {
+      "host": {
+        "platform": "linux",
+        "arch": "x64",
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "node": "v26.11.1"
+      },
+      "height": 1080,
+      "mode": "cells",
+      "warmups": 1,
+      "measuredIterations": 5,
+      "frames": 96,
+      "timeline": [
+        1920,
+        1080,
+        96,
+        4,
+        24,
+        1
+      ],
+      "outputAndTimingSha256": "8d653bc15331dccb7b5a0fa2dec8f0ed9d653fb0f2094d09e5098791ac8b5140",
+      "audioAndTimingSha256": "c9356fbd9f3905e0f743fc7a6535aebc7fd73e6f4f2867ee45694d510a80fd40",
+      "results": [
+        {
+          "path": "fossils-legacy.sci",
+          "version": 4,
+          "moduleSha256": "17db5b2ef9a5f4e6748103db3d46e4c567f4673283d12e2becceec0d570f1fc4",
+          "archiveBytes": 79714407,
+          "transferredMediaBytes": 79711113,
+          "tags": {
+            "4": 5,
+            "5": 19,
+            "7": 72
+          },
+          "milliseconds": [
+            1255.230182999997,
+            1232.5983810000016,
+            1258.0145329999923,
+            1234.4438899999932,
+            1239.87789899997
+          ],
+          "p95Milliseconds": [
+            17.66377300000022,
+            17.91837899999973,
+            17.922139999998763,
+            18.507997999999134,
+            18.65266200000042
+          ],
+          "medianMillisecondsPerFrame": 12.915394781249688,
+          "medianP95Milliseconds": 17.922139999998763,
+          "medianFirstFrameMilliseconds": 23.70483200000126
+        },
+        {
+          "path": "fossils-fields.sci",
+          "version": 5,
+          "moduleSha256": "3110512a7a39264c1eb97217db7824dc879bdbecf4d84a650559c07872833e9b",
+          "archiveBytes": 68155149,
+          "transferredMediaBytes": 68151862,
+          "tags": {
+            "8": 5,
+            "9": 91
+          },
+          "milliseconds": [
+            1186.1661569999992,
+            1197.4778320000078,
+            1177.0593599999975,
+            1197.3760970000058,
+            1174.1655010000122
+          ],
+          "p95Milliseconds": [
+            14.987955000000056,
+            14.833801999999196,
+            14.795421000000715,
+            15.495116000000053,
+            14.562973000000056
+          ],
+          "medianMillisecondsPerFrame": 12.355897468749992,
+          "medianP95Milliseconds": 14.833801999999196,
+          "medianFirstFrameMilliseconds": 16.424188999999387
+        }
+      ],
+      "transferredBytesSavedPercent": 14.501429681454836,
+      "medianDecodeChangePercent": -4.332018664361403,
+      "p95DecodeChangePercent": -17.23197118201164
+    },
+    {
+      "host": {
+        "platform": "linux",
+        "arch": "x64",
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "node": "v26.11.1"
+      },
+      "height": 1080,
+      "mode": "cells",
+      "warmups": 1,
+      "measuredIterations": 5,
+      "frames": 240,
+      "timeline": [
+        1920,
+        1080,
+        240,
+        4,
+        60,
+        1
+      ],
+      "outputAndTimingSha256": "47ef3467c48f3c4ef38be4b690cdacd0f2cae047b62ed6483c93d8b29f1121ca",
+      "audioAndTimingSha256": "7a677611ffcf81dd1bd7b5e290b2639e2d218d02896844754b916629dcd618a8",
+      "results": [
+        {
+          "path": "weave-legacy.sci",
+          "version": 4,
+          "moduleSha256": "17db5b2ef9a5f4e6748103db3d46e4c567f4673283d12e2becceec0d570f1fc4",
+          "archiveBytes": 125112284,
+          "transferredMediaBytes": 125108993,
+          "tags": {
+            "4": 8,
+            "5": 232
+          },
+          "milliseconds": [
+            2137.5848360000064,
+            2178.305179999994,
+            2151.766176000023,
+            2166.574993000013,
+            2148.294755999963
+          ],
+          "p95Milliseconds": [
+            9.797649000000092,
+            10.211654000000635,
+            9.89193200000227,
+            9.981615000000602,
+            9.997624999999971
+          ],
+          "medianMillisecondsPerFrame": 8.965692400000096,
+          "medianP95Milliseconds": 9.981615000000602,
+          "medianFirstFrameMilliseconds": 14.270889999999781
+        },
+        {
+          "path": "weave-fields.sci",
+          "version": 5,
+          "moduleSha256": "3110512a7a39264c1eb97217db7824dc879bdbecf4d84a650559c07872833e9b",
+          "archiveBytes": 108792638,
+          "transferredMediaBytes": 108789354,
+          "tags": {
+            "8": 240
+          },
+          "milliseconds": [
+            1673.6388349999997,
+            1700.330123000007,
+            1693.5094530000133,
+            1700.3504800000155,
+            1670.1760740000063
+          ],
+          "p95Milliseconds": [
+            7.819314000000304,
+            7.966699999999037,
+            7.95214599999963,
+            8.140853000000789,
+            7.823492999999871
+          ],
+          "medianMillisecondsPerFrame": 7.056289387500056,
+          "medianP95Milliseconds": 7.95214599999963,
+          "medianFirstFrameMilliseconds": 8.455266999999367
+        }
+      ],
+      "transferredBytesSavedPercent": 13.044337268384854,
+      "medianDecodeChangePercent": -21.296771373731495,
+      "p95DecodeChangePercent": -20.33207051164416
+    },
+    {
+      "host": {
+        "platform": "linux",
+        "arch": "x64",
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "node": "v26.11.1"
+      },
+      "height": 1080,
+      "mode": "pixels",
+      "warmups": 1,
+      "measuredIterations": 5,
+      "frames": 15,
+      "timeline": [
+        1920,
+        1080,
+        15,
+        0.25,
+        60,
+        1
+      ],
+      "outputAndTimingSha256": "9e880694a4e23aecea606b44b1e79ad9a256ed0084aca3c6b33c90ebba704e08",
+      "audioAndTimingSha256": "b6a14b5ad748d8a9184026d925ccc1e7c13bf11225b30ef18955aa3641715762",
+      "results": [
+        {
+          "path": "all-tiers-legacy.sci",
+          "version": 4,
+          "moduleSha256": "17db5b2ef9a5f4e6748103db3d46e4c567f4673283d12e2becceec0d570f1fc4",
+          "archiveBytes": 77605626,
+          "transferredMediaBytes": 43863045,
+          "tags": {
+            "6": 10,
+            "7": 5
+          },
+          "milliseconds": [
+            682.5503090000002,
+            665.5237020000004,
+            684.8448170000001,
+            665.6964909999979,
+            699.8543140000011
+          ],
+          "p95Milliseconds": [
+            68.29374499999994,
+            52.767723999999816,
+            70.50209600000017,
+            51.26732799999991,
+            68.97493499999928
+          ],
+          "medianMillisecondsPerFrame": 45.503353933333344,
+          "medianP95Milliseconds": 68.29374499999994,
+          "medianFirstFrameMilliseconds": 68.29374499999994
+        },
+        {
+          "path": "all-tiers-after.sci",
+          "version": 5,
+          "moduleSha256": "3110512a7a39264c1eb97217db7824dc879bdbecf4d84a650559c07872833e9b",
+          "archiveBytes": 71604196,
+          "transferredMediaBytes": 39893985,
+          "tags": {
+            "8": 15
+          },
+          "milliseconds": [
+            551.7216449999999,
+            572.2334300000016,
+            562.6698680000018,
+            574.3290409999981,
+            553.9846290000014
+          ],
+          "p95Milliseconds": [
+            39.760299999999916,
+            53.36235600000009,
+            39.98739999999998,
+            55.098527000000104,
+            39.44783700000062
+          ],
+          "medianMillisecondsPerFrame": 37.51132453333345,
+          "medianP95Milliseconds": 39.98739999999998,
+          "medianFirstFrameMilliseconds": 39.98739999999998
+        }
+      ],
+      "transferredBytesSavedPercent": 9.04875619100316,
+      "medianDecodeChangePercent": -17.56360511734797,
+      "p95DecodeChangePercent": -41.447932017785796
+    },
+    {
+      "host": {
+        "platform": "linux",
+        "arch": "x64",
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "node": "v26.11.1"
+      },
+      "height": 360,
+      "mode": "pixels",
+      "warmups": 1,
+      "measuredIterations": 5,
+      "frames": 15,
+      "timeline": [
+        639,
+        360,
+        15,
+        0.25,
+        60,
+        1
+      ],
+      "outputAndTimingSha256": "dfb105077a21cc2b7e816db9787e8d1475a7d249e630cffc29e218035b268385",
+      "audioAndTimingSha256": "b6a14b5ad748d8a9184026d925ccc1e7c13bf11225b30ef18955aa3641715762",
+      "results": [
+        {
+          "path": "all-tiers-legacy.sci",
+          "version": 4,
+          "moduleSha256": "17db5b2ef9a5f4e6748103db3d46e4c567f4673283d12e2becceec0d570f1fc4",
+          "archiveBytes": 77605626,
+          "transferredMediaBytes": 4987966,
+          "tags": {
+            "6": 3,
+            "7": 12
+          },
+          "milliseconds": [
+            70.67839700000007,
+            68.62337600000001,
+            71.4186490000003,
+            66.41999399999986,
+            71.04196700000023
+          ],
+          "p95Milliseconds": [
+            7.384849000000031,
+            6.119561000000033,
+            11.915756999999985,
+            6.208451999999966,
+            10.584793999999988
+          ],
+          "medianMillisecondsPerFrame": 4.711893133333338,
+          "medianP95Milliseconds": 7.384849000000031,
+          "medianFirstFrameMilliseconds": 6.208451999999966
+        },
+        {
+          "path": "all-tiers-after.sci",
+          "version": 5,
+          "moduleSha256": "3110512a7a39264c1eb97217db7824dc879bdbecf4d84a650559c07872833e9b",
+          "archiveBytes": 71604196,
+          "transferredMediaBytes": 4761825,
+          "tags": {
+            "8": 7,
+            "9": 8
+          },
+          "milliseconds": [
+            68.630403,
+            76.63514999999978,
+            73.46434199999976,
+            69.36949500000003,
+            71.09750699999995
+          ],
+          "p95Milliseconds": [
+            5.062882000000002,
+            9.951433000000009,
+            7.442973000000052,
+            5.506502999999952,
+            6.392454999999927
+          ],
+          "medianMillisecondsPerFrame": 4.739833799999997,
+          "medianP95Milliseconds": 6.392454999999927,
+          "medianFirstFrameMilliseconds": 5.125970000000052
+        }
+      ],
+      "transferredBytesSavedPercent": 4.5337317856617325,
+      "medianDecodeChangePercent": 0.5929817565045736,
+      "p95DecodeChangePercent": -13.438243625564983
+    },
+    {
+      "host": {
+        "platform": "linux",
+        "arch": "x64",
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "node": "v26.11.1"
+      },
+      "height": 480,
+      "mode": "pixels",
+      "warmups": 1,
+      "measuredIterations": 5,
+      "frames": 15,
+      "timeline": [
+        852,
+        480,
+        15,
+        0.25,
+        60,
+        1
+      ],
+      "outputAndTimingSha256": "3909325cfd1614ebda455c017f009b49170f365b9d94705116eb962ca98d2998",
+      "audioAndTimingSha256": "b6a14b5ad748d8a9184026d925ccc1e7c13bf11225b30ef18955aa3641715762",
+      "results": [
+        {
+          "path": "all-tiers-legacy.sci",
+          "version": 4,
+          "moduleSha256": "17db5b2ef9a5f4e6748103db3d46e4c567f4673283d12e2becceec0d570f1fc4",
+          "archiveBytes": 77605626,
+          "transferredMediaBytes": 8878514,
+          "tags": {
+            "6": 4,
+            "7": 11
+          },
+          "milliseconds": [
+            130.5343929999998,
+            118.19792199999983,
+            126.82567900000004,
+            116.98408200000017,
+            135.52186499999993
+          ],
+          "p95Milliseconds": [
+            17.067994,
+            10.432244999999966,
+            17.014232999999876,
+            10.129871999999978,
+            20.324828000000025
+          ],
+          "medianMillisecondsPerFrame": 8.45504526666667,
+          "medianP95Milliseconds": 17.014232999999876,
+          "medianFirstFrameMilliseconds": 17.014232999999876
+        },
+        {
+          "path": "all-tiers-after.sci",
+          "version": 5,
+          "moduleSha256": "3110512a7a39264c1eb97217db7824dc879bdbecf4d84a650559c07872833e9b",
+          "archiveBytes": 71604196,
+          "transferredMediaBytes": 8416681,
+          "tags": {
+            "8": 14,
+            "9": 1
+          },
+          "milliseconds": [
+            128.44955100000004,
+            133.63911899999994,
+            118.57234400000038,
+            124.98916899999995,
+            118.58683900000028
+          ],
+          "p95Milliseconds": [
+            9.58495099999999,
+            16.443321000000083,
+            9.067976000000044,
+            14.523539999999912,
+            10.169202000000041
+          ],
+          "medianMillisecondsPerFrame": 8.332611266666664,
+          "medianP95Milliseconds": 10.169202000000041,
+          "medianFirstFrameMilliseconds": 9.22390200000001
+        }
+      ],
+      "transferredBytesSavedPercent": 5.201692535485103,
+      "medianDecodeChangePercent": -1.4480584803335361,
+      "p95DecodeChangePercent": -40.23120525033297
+    },
+    {
+      "host": {
+        "platform": "linux",
+        "arch": "x64",
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "node": "v26.11.1"
+      },
+      "height": 720,
+      "mode": "pixels",
+      "warmups": 1,
+      "measuredIterations": 5,
+      "frames": 15,
+      "timeline": [
+        1281,
+        720,
+        15,
+        0.25,
+        60,
+        1
+      ],
+      "outputAndTimingSha256": "1b3fcf88ffe821d88611982f446bc76bdd68f45ead9fb07dd585fc30d9266589",
+      "audioAndTimingSha256": "b6a14b5ad748d8a9184026d925ccc1e7c13bf11225b30ef18955aa3641715762",
+      "results": [
+        {
+          "path": "all-tiers-legacy.sci",
+          "version": 4,
+          "moduleSha256": "17db5b2ef9a5f4e6748103db3d46e4c567f4673283d12e2becceec0d570f1fc4",
+          "archiveBytes": 77605626,
+          "transferredMediaBytes": 19880087,
+          "tags": {
+            "6": 7,
+            "7": 8
+          },
+          "milliseconds": [
+            292.1414510000004,
+            279.32906500000036,
+            301.91637100000116,
+            282.3650180000009,
+            292.28804800000034
+          ],
+          "p95Milliseconds": [
+            33.05539599999997,
+            23.77642600000013,
+            32.695328000000245,
+            23.250657000000047,
+            34.03051000000005
+          ],
+          "medianMillisecondsPerFrame": 19.47609673333336,
+          "medianP95Milliseconds": 32.695328000000245,
+          "medianFirstFrameMilliseconds": 32.695328000000245
+        },
+        {
+          "path": "all-tiers-after.sci",
+          "version": 5,
+          "moduleSha256": "3110512a7a39264c1eb97217db7824dc879bdbecf4d84a650559c07872833e9b",
+          "archiveBytes": 71604196,
+          "transferredMediaBytes": 18535719,
+          "tags": {
+            "8": 15
+          },
+          "milliseconds": [
+            257.1102509999996,
+            271.84782300000006,
+            258.5642299999995,
+            271.6523459999994,
+            262.90459999999985
+          ],
+          "p95Milliseconds": [
+            18.941705999999954,
+            28.72621499999991,
+            19.17216899999994,
+            30.914956000000075,
+            19.046608000000106
+          ],
+          "medianMillisecondsPerFrame": 17.526973333333324,
+          "medianP95Milliseconds": 19.17216899999994,
+          "medianFirstFrameMilliseconds": 19.17216899999994
+        }
+      ],
+      "transferredBytesSavedPercent": 6.7623848929836194,
+      "medianDecodeChangePercent": -10.007772228118528,
+      "p95DecodeChangePercent": -41.36113575615514
+    },
+    {
+      "host": {
+        "platform": "linux",
+        "arch": "x64",
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "node": "v26.11.1"
+      },
+      "height": 1080,
+      "mode": "pixels",
+      "warmups": 1,
+      "measuredIterations": 5,
+      "frames": 96,
+      "timeline": [
+        1920,
+        1080,
+        96,
+        4.004,
+        24000,
+        1001
+      ],
+      "outputAndTimingSha256": "212b27c0577550988eda192fb2292dfb1d071022423d579097512b9e7076d794",
+      "audioAndTimingSha256": "5030193ef92266b0d70bc2d8d465b9435b68fc43f72b6d6f00282eb52df6d171",
+      "results": [
+        {
+          "path": "cartoon-legacy.sci",
+          "version": 4,
+          "moduleSha256": "17db5b2ef9a5f4e6748103db3d46e4c567f4673283d12e2becceec0d570f1fc4",
+          "archiveBytes": 29031940,
+          "transferredMediaBytes": 29028688,
+          "tags": {
+            "5": 64,
+            "6": 5,
+            "7": 27
+          },
+          "milliseconds": [
+            1436.9655109999976,
+            1409.2169269999986,
+            1395.7183979999936,
+            1397.2752629999777,
+            1431.696610999963
+          ],
+          "p95Milliseconds": [
+            39.85835700000007,
+            39.5967270000001,
+            38.128343000000314,
+            39.034810999999536,
+            40.08300999999847
+          ],
+          "medianMillisecondsPerFrame": 14.679342989583319,
+          "medianP95Milliseconds": 39.5967270000001,
+          "medianFirstFrameMilliseconds": 67.87577899999997
+        },
+        {
+          "path": "cartoon-fields.sci",
+          "version": 5,
+          "moduleSha256": "3110512a7a39264c1eb97217db7824dc879bdbecf4d84a650559c07872833e9b",
+          "archiveBytes": 27565975,
+          "transferredMediaBytes": 27562731,
+          "tags": {
+            "5": 63,
+            "7": 22,
+            "8": 5,
+            "9": 6
+          },
+          "milliseconds": [
+            1379.2477239999998,
+            1384.339827000007,
+            1239.9416590000055,
+            1432.7594299999982,
+            1360.6866870000013
+          ],
+          "p95Milliseconds": [
+            27.86012000000028,
+            30.28794999999991,
+            26.343650000000707,
+            29.605227000000014,
+            27.994101000000228
+          ],
+          "medianMillisecondsPerFrame": 14.367163791666664,
+          "medianP95Milliseconds": 27.994101000000228,
+          "medianFirstFrameMilliseconds": 44.522688000000926
+        }
+      ],
+      "transferredBytesSavedPercent": 5.050028440830667,
+      "medianDecodeChangePercent": -2.126656473237132,
+      "p95DecodeChangePercent": -29.301982459307418
+    },
+    {
+      "host": {
+        "platform": "linux",
+        "arch": "x64",
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "node": "v26.11.1"
+      },
+      "height": 1080,
+      "mode": "pixels",
+      "warmups": 1,
+      "measuredIterations": 5,
+      "frames": 120,
+      "timeline": [
+        1920,
+        1080,
+        120,
+        2,
+        60,
+        1
+      ],
+      "outputAndTimingSha256": "25b8ef9455b4e1af8dc2deaf13a8a9f79c30d4446414ead93907893feb6077c8",
+      "audioAndTimingSha256": "0c8bbff0deaca514abd127d52118c0a64f39683949c9500df67b8965fcba3beb",
+      "results": [
+        {
+          "path": "detail-legacy.sci",
+          "version": 4,
+          "moduleSha256": "17db5b2ef9a5f4e6748103db3d46e4c567f4673283d12e2becceec0d570f1fc4",
+          "archiveBytes": 290571281,
+          "transferredMediaBytes": 290568003,
+          "tags": {
+            "4": 40,
+            "5": 45,
+            "6": 23,
+            "7": 12
+          },
+          "milliseconds": [
+            5300.1824380000035,
+            5209.591258,
+            5219.52256100002,
+            5235.7109490000585,
+            5394.565295999979
+          ],
+          "p95Milliseconds": [
+            50.029499000000214,
+            47.89033300000301,
+            47.886834000004455,
+            48.06980499999918,
+            50.76334399999905
+          ],
+          "medianMillisecondsPerFrame": 43.630924575000485,
+          "medianP95Milliseconds": 48.06980499999918,
+          "medianFirstFrameMilliseconds": 48.889468000001216
+        },
+        {
+          "path": "detail-fields.sci",
+          "version": 5,
+          "moduleSha256": "3110512a7a39264c1eb97217db7824dc879bdbecf4d84a650559c07872833e9b",
+          "archiveBytes": 237797456,
+          "transferredMediaBytes": 237794184,
+          "tags": {
+            "8": 120
+          },
+          "milliseconds": [
+            4315.869274999988,
+            4342.782489999976,
+            4296.874269000036,
+            4327.1871100000135,
+            4439.0975730000355
+          ],
+          "p95Milliseconds": [
+            37.669293999999354,
+            38.02631499999552,
+            37.24140900000202,
+            37.834256000001915,
+            43.9474990000017
+          ],
+          "medianMillisecondsPerFrame": 36.05989258333344,
+          "medianP95Milliseconds": 37.834256000001915,
+          "medianFirstFrameMilliseconds": 37.739800000003015
+        }
+      ],
+      "transferredBytesSavedPercent": 18.162295385290584,
+      "medianDecodeChangePercent": -17.35244454573184,
+      "p95DecodeChangePercent": -21.29309449039254
+    },
+    {
+      "host": {
+        "platform": "linux",
+        "arch": "x64",
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "node": "v26.11.1"
+      },
+      "height": 1080,
+      "mode": "pixels",
+      "warmups": 1,
+      "measuredIterations": 5,
+      "frames": 96,
+      "timeline": [
+        1920,
+        1080,
+        96,
+        4,
+        24,
+        1
+      ],
+      "outputAndTimingSha256": "6d812aa18826371a47cfdddd0e41c71b9b750b12c9c8958cf51ea29d65e9bd80",
+      "audioAndTimingSha256": "c9356fbd9f3905e0f743fc7a6535aebc7fd73e6f4f2867ee45694d510a80fd40",
+      "results": [
+        {
+          "path": "fossils-legacy.sci",
+          "version": 4,
+          "moduleSha256": "17db5b2ef9a5f4e6748103db3d46e4c567f4673283d12e2becceec0d570f1fc4",
+          "archiveBytes": 79714407,
+          "transferredMediaBytes": 79711113,
+          "tags": {
+            "4": 5,
+            "5": 19,
+            "7": 72
+          },
+          "milliseconds": [
+            2176.1001770000075,
+            2219.8844150000023,
+            2250.32152199998,
+            2238.277358000003,
+            2225.8700379999973
+          ],
+          "p95Milliseconds": [
+            28.04706199999964,
+            29.269467000000077,
+            30.35624199999802,
+            30.477224000002025,
+            28.586448000001837
+          ],
+          "medianMillisecondsPerFrame": 23.18614622916664,
+          "medianP95Milliseconds": 29.269467000000077,
+          "medianFirstFrameMilliseconds": 43.05025800000021
+        },
+        {
+          "path": "fossils-fields.sci",
+          "version": 5,
+          "moduleSha256": "3110512a7a39264c1eb97217db7824dc879bdbecf4d84a650559c07872833e9b",
+          "archiveBytes": 68155149,
+          "transferredMediaBytes": 68151862,
+          "tags": {
+            "8": 5,
+            "9": 91
+          },
+          "milliseconds": [
+            2084.6827390000026,
+            2128.36888299999,
+            2083.448340999992,
+            2118.205703999989,
+            2104.9854370000066
+          ],
+          "p95Milliseconds": [
+            26.495420000000195,
+            26.53252700000121,
+            26.69127700000172,
+            26.597710999998526,
+            26.118333999998868
+          ],
+          "medianMillisecondsPerFrame": 21.926931635416736,
+          "medianP95Milliseconds": 26.53252700000121,
+          "medianFirstFrameMilliseconds": 30.99245300000075
+        }
+      ],
+      "transferredBytesSavedPercent": 14.501429681454836,
+      "medianDecodeChangePercent": -5.430892142679122,
+      "p95DecodeChangePercent": -9.35083648772579
+    },
+    {
+      "host": {
+        "platform": "linux",
+        "arch": "x64",
+        "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+        "node": "v26.11.1"
+      },
+      "height": 1080,
+      "mode": "pixels",
+      "warmups": 1,
+      "measuredIterations": 5,
+      "frames": 240,
+      "timeline": [
+        1920,
+        1080,
+        240,
+        4,
+        60,
+        1
+      ],
+      "outputAndTimingSha256": "7e585d21be5082a775c25d722c0a5eea713e885832df4554c0cb180d30cdd5b5",
+      "audioAndTimingSha256": "7a677611ffcf81dd1bd7b5e290b2639e2d218d02896844754b916629dcd618a8",
+      "results": [
+        {
+          "path": "weave-legacy.sci",
+          "version": 4,
+          "moduleSha256": "17db5b2ef9a5f4e6748103db3d46e4c567f4673283d12e2becceec0d570f1fc4",
+          "archiveBytes": 125112284,
+          "transferredMediaBytes": 125108993,
+          "tags": {
+            "4": 8,
+            "5": 232
+          },
+          "milliseconds": [
+            3639.0252119999896,
+            3626.2232939999813,
+            3650.9766300000556,
+            3644.403026000029,
+            3654.9538570000514
+          ],
+          "p95Milliseconds": [
+            16.421250999999756,
+            16.60148399999889,
+            16.58179899999959,
+            16.538869000003615,
+            16.977802000001248
+          ],
+          "medianMillisecondsPerFrame": 15.185012608333455,
+          "medianP95Milliseconds": 16.58179899999959,
+          "medianFirstFrameMilliseconds": 24.870027000000846
+        },
+        {
+          "path": "weave-fields.sci",
+          "version": 5,
+          "moduleSha256": "3110512a7a39264c1eb97217db7824dc879bdbecf4d84a650559c07872833e9b",
+          "archiveBytes": 108792638,
+          "transferredMediaBytes": 108789354,
+          "tags": {
+            "8": 240
+          },
+          "milliseconds": [
+            2982.515933000017,
+            2862.5753929999883,
+            2869.9257289999987,
+            2857.944295999885,
+            2824.5223280000355
+          ],
+          "p95Milliseconds": [
+            13.855645999999979,
+            13.22168099999908,
+            13.240976999997656,
+            13.245590999998967,
+            12.991235000001325
+          ],
+          "medianMillisecondsPerFrame": 11.927397470833284,
+          "medianP95Milliseconds": 13.240976999997656,
+          "medianFirstFrameMilliseconds": 18.752056999999695
+        }
+      ],
+      "transferredBytesSavedPercent": 13.044337268384854,
+      "medianDecodeChangePercent": -21.45283129835802,
+      "p95DecodeChangePercent": -20.147524403124283
+    }
+  ],
+  "toolchain": {
+    "rustc": "1.98.0 (88d9e12ae 2026-08-18)",
+    "cargo": "1.98.0 (797e8a9bc 2026-08-05)",
+    "baselineCodecRevision": "6f6f3e5ddc8977d12fb0dd68203a1db341eca100"
+  }
+}

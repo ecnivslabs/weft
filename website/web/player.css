@@ -1,7 +1,0 @@
-.page-width { max-width: 960px; margin: auto; padding: 24px; }
-.wordmark { font-size: 28px; font-weight: 700; }
-#video-title { margin-top: 24px; font-size: 20px; }
-#video-details { color: var(--secondary); font-size: 14px; }
-.theater-mode main { max-width: 1440px; }
-.theater-mode .player { height: 70vh; aspect-ratio: auto; }
-@media (max-width: 600px) { .theater-mode .player { height: auto; aspect-ratio: 16 / 9; } }
