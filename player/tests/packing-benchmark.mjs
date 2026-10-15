@@ -8,6 +8,8 @@ import { Decoder } from '../web/wasm.js';
 
 const [before, after, heightText, beforeModule, afterModule, mode = 'cells'] = process.argv.slice(2);
 const height = Number(heightText);
+assert.ok(process.env.TEST_CORRECTNESS_ONLY === undefined || ['0', '1'].includes(process.env.TEST_CORRECTNESS_ONLY), 'Invalid correctness-only declaration.');
+const correctnessOnly = process.env.TEST_CORRECTNESS_ONLY === '1';
 assert.ok(before && after && [360, 480, 720, 1080].includes(height) && ['cells', 'pixels'].includes(mode),
   'Usage: node player/tests/packing-benchmark.mjs BEFORE.sci AFTER.sci HEIGHT [BEFORE.wasm AFTER.wasm [cells|pixels]]');
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -40,7 +42,7 @@ try {
   let expected;
   let expectedAudio;
   let expectedTimeline;
-  for (let iteration = 0; iteration < 6; iteration++) {
+  for (let iteration = 0; iteration < (correctnessOnly ? 1 : 6); iteration++) {
     for (const sample of iteration % 2 ? samples.toReversed() : samples) {
       const { quality, metadata, records } = sample;
       const timeline = [quality.columns, quality.rows, metadata.frames, metadata.duration, metadata.fpsNumerator, metadata.fpsDenominator];
@@ -87,13 +89,14 @@ try {
   }
   const results = samples.map(sample => ({ path: sample.path, version: sample.header.version, moduleSha256: sample.moduleSha256,
     archiveBytes: sample.header.size, transferredMediaBytes: sample.transferredMediaBytes, tags: sample.tags,
-    milliseconds: sample.milliseconds, p95Milliseconds: sample.p95Milliseconds,
+    ...(!correctnessOnly ? { milliseconds: sample.milliseconds, p95Milliseconds: sample.p95Milliseconds,
     medianMillisecondsPerFrame: median(sample.milliseconds) / sample.metadata.frames,
-    medianP95Milliseconds: median(sample.p95Milliseconds), medianFirstFrameMilliseconds: median(sample.firstFrameMilliseconds) }));
+    medianP95Milliseconds: median(sample.p95Milliseconds), medianFirstFrameMilliseconds: median(sample.firstFrameMilliseconds) } : {}) }));
   console.log(JSON.stringify({ host: { platform: platform(), arch: arch(), cpu: cpus()[0]?.model, node: process.version }, height, mode,
-    warmups: 1, measuredIterations: 5, frames: samples[0].metadata.frames, timeline: expectedTimeline,
+    performanceComparison: !correctnessOnly, warmups: correctnessOnly ? 0 : 1, measuredIterations: correctnessOnly ? 0 : 5,
+    verifiedPasses: correctnessOnly ? 1 : 6, frames: samples[0].metadata.frames, timeline: expectedTimeline,
     outputAndTimingSha256: expected, audioAndTimingSha256: expectedAudio, results,
     transferredBytesSavedPercent: 100 * (1 - results[1].transferredMediaBytes / results[0].transferredMediaBytes),
-    medianDecodeChangePercent: 100 * (results[1].medianMillisecondsPerFrame / results[0].medianMillisecondsPerFrame - 1),
-    p95DecodeChangePercent: 100 * (results[1].medianP95Milliseconds / results[0].medianP95Milliseconds - 1) }, null, 2));
+    ...(!correctnessOnly ? { medianDecodeChangePercent: 100 * (results[1].medianMillisecondsPerFrame / results[0].medianMillisecondsPerFrame - 1),
+    p95DecodeChangePercent: 100 * (results[1].medianP95Milliseconds / results[0].medianP95Milliseconds - 1) } : {}) }, null, 2));
 } finally { for (const sample of samples) closeSync(sample.file); }

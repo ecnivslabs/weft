@@ -70,6 +70,8 @@ Repacking preserves the original fitted ASCII compositions, presentation duratio
 
 The packing runner reads bounded ranges, checks every chunk checksum, alternates one warm-up and five measured passes, and requires identical complete output and presentation hashes. It also checks exact audio bytes and synchronized boundaries. Results include all stored archive bytes and requested media body bytes, with audio, actual metadata and the complete index. Requested body bytes exclude HTTP headers and unrequested padding. The runner reports median decode cost, per-pass p95 frame cost and first-frame decoding; first-frame decoding excludes network and renderer setup and is not startup delay. Use the streaming runner for those costs and sustained playback.
 
+For a large archive correctness audit, set `TEST_CORRECTNESS_ONLY=1` on the same packing command. It verifies one complete paired pass and reports output, timing, audio and byte counts, with `performanceComparison: false` and zero measured iterations. It emits no decoding-cost comparison and cannot establish a speed improvement.
+
 Save the baseline WASM before rebuilding. Compare WASM inflation and browser playback before enabling a packing change by default. A candidate must reduce delivered bytes without more than five percent regression in median or p95 decoding on the declared corpus. Keep unchanged existing packets when they compress better. Corpus excerpts and failed gates must remain visible in the report.
 
 ## Browser and delivery

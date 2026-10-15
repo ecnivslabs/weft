@@ -64,6 +64,19 @@ Complete 360p encoding comparisons alternate one warm-up and three measured enco
 
 That variation prompted a separate comparison with both binaries restricted to physical performance cores 0, 2, 4 and 6 on the recorded i5-12500H host. The governor, frequency policy and other user applications remain unchanged. Cartoon median encoding increases from 11.419 to 11.751 seconds, 2.91 percent; fossils increases from 14.023 to 14.781 seconds, 5.40 percent. These results expose an encoding cost for the smaller files and faster decoder. They do not establish an encoding-speed improvement or real-time preparation.
 
+The longer version 6 audit repacks the retained 106-chunk mixed-detail prefix, preserving 602 events over 10.033 seconds at every tier. Its complete size falls from 2872063351 to 2345589908 bytes, including every rendition and audio. That 18.33 percent saving includes the earlier compact-field and compressor changes. A single complete correctness pass per tier verifies all 2408 expanded ASCII frames, presentation times, encoded audio and synchronized chunk boundaries against version 4; that audit reports no decoder timings.
+
+Three separate Chromium loopback trials per tier request ten source seconds at 2x, with manual quality fixed, the default CPU renderer and unchanged resource budgets:
+
+| Tier | Waiting events in each trial | Uninterrupted trials |
+| :--- | :--- | :--- |
+| 360p | 0, 0, 0 | 3 of 3 |
+| 480p | 1, 0, 0 | 2 of 3 |
+| 720p | 20, 20, 20 | 0 of 3 |
+| 1080p | 32, 32, 32 | 0 of 3 |
+
+Every trial reaches the requested source frontier, but the strict all-tier gate fails. At 1080p, advancing ten source seconds takes 20.38 through 20.58 wall seconds, with 14.66 through 14.85 seconds of sampled buffering. First-frame startup is 839 through 948 ms, followed by 174 through 198 ms of separate play preparation. The report retains actual transferred bytes, source consumption, memory reservations and decoder, reconstruction and worker-delivery timings. No paired version 4 playback comparison was run in this batch, so these absolute results do not establish a streaming-speed improvement. They directly contradict uninterrupted maximum-speed playback on this host.
+
 The implementation adds no dependency, copied third-party implementation, media asset or font. These packing results do not establish a patent clearance, indistinguishable source fidelity, uninterrupted playback or superiority over H.266.
 
 ## H.266 in MP4 comparison
