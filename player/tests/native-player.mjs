@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { once } from 'node:events';
 import { deflateSync } from 'node:zlib';
+import { FRAME_BYTES } from '../web/delivery.js';
 import { setTimeout as delay } from 'node:timers/promises';
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ?? 'playwright');
 const root = resolve(import.meta.dirname, '../..');
@@ -347,6 +348,7 @@ try {
   const autoStreamVerification = await page.evaluate(async () => {
     const { Stream } = await import('/stream.js');
     const { PixelRenderer } = await import('/renderer.js');
+    const { FRAME_BYTES } = await import('/delivery.js');
     const canvas = document.createElement('canvas'); document.body.append(canvas);
     const quality = document.createElement('select');
     let failure;
@@ -372,7 +374,7 @@ try {
       const frames = stream.frames;
       if (failure || frames.nextOrdinal !== 180 || frames.metrics.skippedSeekFrames !== 0 || frames.metrics.lateDecoded !== 0 || frames.metrics.sourceConsumed !== 180) throw new Error(failure || 'Auto policy omitted source events.');
       if (frames.policy.metrics.samples < 1 || frames.policy.metrics.epochs.length < 2 || frames.metrics.visibleDrawMilliseconds === undefined || frames.metrics.presentationQueueMilliseconds === undefined) throw new Error(`Auto policy did not observe the live pooled visible-canvas path: ${JSON.stringify({ metrics: frames.metrics, policy: frames.policy.metrics, hidden: document.hidden })}`);
-      if (frames.queueBytes + frames.reservedBytes > 32 * 1024 * 1024) throw new Error('Auto policy exceeded presentation reservations.');
+      if (frames.queueBytes + frames.reservedBytes > FRAME_BYTES) throw new Error('Auto policy exceeded presentation reservations.');
       return { sourceEvents: frames.metrics.sourceConsumed, visibleDraws: frames.metrics.painted, epochs: frames.policy.metrics.epochs.length, selected: frames.policy.mode, measuredSamples: frames.policy.metrics.samples, seekOwnership: true, qualityOwnership: true };
     } finally { stream.reset(); await stream.clock.context.close(); canvas.remove(); }
   });
@@ -423,7 +425,7 @@ try {
   });
   await page.waitForFunction(()=>window.testPlayer.stream.renderer.canvas.height===1080 && window.testPlayer.stream.currentTime>1.5);
   const metrics = await page.evaluate(()=>({height:document.querySelector('canvas').height, ...window.testPlayer.stream.frames.metrics}));
-  assert.ok(metrics.frameBytes<=32*1024*1024);
+  assert.ok(metrics.frameBytes<=FRAME_BYTES);
   await page.waitForFunction(()=>window.testPlayer.stream.ended);
   const finalFrontier = await page.evaluate(() => {
     const stream = window.testPlayer.stream;

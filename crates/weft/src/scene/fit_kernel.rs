@@ -62,8 +62,9 @@ pub(super) fn prepared(pixels: [[u8; 3]; 12], layers: u8) -> Cell {
             }
         }
         let count = mask.count_ones() as i32;
-        let color: [u8; 3] =
-            std::array::from_fn(|channel| ((sums[channel] + count / 2) / count) as u8);
+        let color: [u8; 3] = std::array::from_fn(|channel| {
+            glyph_fit::mean(sums[channel] as u32, count as u32) as u8
+        });
         choice.error = sums[3]
             + (0..3)
                 .map(|channel| {

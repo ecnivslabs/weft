@@ -15,7 +15,8 @@ function epoch(policy, cost, position, workload = 'full') {
 }
 
 test('automatic rendering is explicit and fixed boolean policies remain fixed', () => {
-  assert.deepEqual(rendererOptions(), { gpu: true, automaticRenderer: false });
+  assert.deepEqual(rendererOptions(), { gpu: false, automaticRenderer: false });
+  assert.deepEqual(rendererOptions({ gpu: true }), { gpu: true, automaticRenderer: false });
   assert.deepEqual(rendererOptions({ gpu: false }), { gpu: false, automaticRenderer: false });
   assert.deepEqual(rendererOptions({ renderer: 'auto' }), { gpu: false, automaticRenderer: true });
   for (const options of [{ gpu: 'false' }, { renderer: 'gpu' }, { renderer: 'auto', gpu: true }]) assert.throws(() => rendererOptions(options), /renderer policy/);

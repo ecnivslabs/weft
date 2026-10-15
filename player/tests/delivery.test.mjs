@@ -20,10 +20,10 @@ test('delivery horizon follows playback time rather than a fixed next chunk', ()
 
 test('delivery window honors byte budget and includes audio memory reservations', () => {
   const source = reader(16 * 1024 * 1024);
-  assert.equal(deliveryWindow(source, 360, 0, 2).last, 3);
+  assert.equal(deliveryWindow(source, 360, 0, 2).last, 4);
   source.metadata.audio = { channels: 2 }; source.audio = { sampleRate: 48000 };
   source.records = new Map(source.timelines.get(360).map(record => [`0:${record.chunk}`, { decoded: 960 }]));
-  assert.equal(deliveryWindow(source, 360, 0, 2).last, 2);
+  assert.equal(deliveryWindow(source, 360, 0, 2).last, 3);
   assert.throws(() => deliveryWindow(source, 999, 0));
   assert.throws(() => deliveryWindow(source, 360, NaN));
   assert.throws(() => deliveryWindow(source, 360, 0, 0));

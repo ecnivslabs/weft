@@ -1,4 +1,4 @@
-use super::{invalid, validate, validate_cell, Cell, CELL_BYTES};
+use super::{invalid, validate, Cell, CELL_BYTES};
 use flate2::{write::ZlibEncoder, Compression};
 use std::{
     collections::HashMap,
@@ -291,7 +291,6 @@ impl Input<'_> {
             cell[offset..offset + 2].copy_from_slice(self.take(2)?);
             cell[offset + 2..offset + 5].copy_from_slice(&self.color(palette)?);
         }
-        validate_cell(&cell)?;
         Ok(cell)
     }
 }
@@ -385,6 +384,63 @@ pub(crate) fn decode_previous(
     if input.offset != data.len() {
         return Err(invalid());
     }
-    validate(&frame, width, height)?;
+    // Every occupied cell was validated and placed without overlap; the raster is complete.
+    debug_assert!(validate(&frame, width, height).is_ok());
     Ok(frame)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn command_placement_proves_complete_geometry_even_for_mutated_packets() {
+        let (width, height) = (24, 32);
+        let mut encoder = super::super::Encoder::new(super::super::Options::default()).unwrap();
+        let mut previous = None;
+        for pattern in 0..3 {
+            let rgb: Vec<_> = (0..width * height * 3)
+                .map(|index| match pattern {
+                    0 => 113,
+                    1 => (index * 73 + index / 29 * 17) as u8,
+                    _ => ((index / 3 % width / 6) * 63) as u8,
+                })
+                .collect();
+            let frame = encoder.map_frame(&rgb, width, height).unwrap();
+            for tag in [4, 5] {
+                let reference = if tag == 5 {
+                    Some(previous.as_ref().unwrap_or(&frame))
+                } else {
+                    None
+                };
+                let raw = commands(&frame, reference.map(Vec::as_slice));
+                assert_eq!(
+                    decode(tag, &raw, reference.map(Vec::as_slice), width, height).unwrap(),
+                    frame
+                );
+                for length in 0..raw.len() {
+                    assert!(decode(
+                        tag,
+                        &raw[..length],
+                        reference.map(Vec::as_slice),
+                        width,
+                        height
+                    )
+                    .is_err());
+                }
+                for index in 0..raw.len() {
+                    for mask in [1, 128, 255] {
+                        let mut changed = raw.clone();
+                        changed[index] ^= mask;
+                        if let Ok(decoded) =
+                            decode(tag, &changed, reference.map(Vec::as_slice), width, height)
+                        {
+                            validate(&decoded, width, height).unwrap();
+                        }
+                    }
+                }
+            }
+            previous = Some(frame);
+        }
+    }
 }

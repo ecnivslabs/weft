@@ -42,6 +42,11 @@ export class DecoderPool {
     this.pending.sort((a, b) => a.packets[a.next].time - b.packets[b.next].time);
   }
 
+  async prepare(width, height) {
+    await Promise.all(this.slots.map(slot => slot.decoder.prepare?.(width, height)));
+    if (this.closed) throw new DOMException('Stream closed.', 'AbortError');
+  }
+
   pump(position, horizon, width, height, format, font) {
     if (this.closed) return;
     this.position = position; this.horizon = horizon;

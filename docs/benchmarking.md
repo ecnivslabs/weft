@@ -75,7 +75,7 @@ Save the baseline WASM before rebuilding. Compare WASM inflation and browser pla
 
 ```sh
 node player/tests/browser-playback-benchmark.mjs ARCHIVE 360 480 720 1080
-node player/tests/streaming-benchmark.mjs ARCHIVE 360 480 720 1080
+TEST_RENDERERS=default TEST_REQUIRE_UNINTERRUPTED=1 node player/tests/streaming-benchmark.mjs ARCHIVE 360 480 720 1080
 npm run test:native --prefix player
 npm run test:e2e --prefix player
 npm ci --prefix website
@@ -86,6 +86,8 @@ npm test --prefix website
 The browser decoder comparison checks CPU and WebGL output hashes and completed graphics work. Its short decoder sample excludes network, audio scheduling and presentation, so it cannot pass a sustained streaming gate.
 
 Streaming reports must include first-frame delay, cold seeking, total transferred bytes, buffering, audio synchronization, source events consumed and resource cost. Fix manual quality during a tier test. At 60 FPS and 2x speed the pipeline must consume 120 source events per wall-clock second; display refresh is a separate limit.
+
+`TEST_PLAYBACK_RATE` selects a speed from 0.25 through 2; its default is 2. The streaming runner accepts `default`, `cpu`, `gpu` and `auto` renderer policies through `TEST_RENDERERS`. The default policy exercises the product default rather than forcing a renderer. `TEST_REQUIRE_UNINTERRUPTED=1` fails unless every trial reaches its requested source time with zero waiting events, zero sampled buffering time, complete contiguous source consumption and wall time within five percent plus 250 ms of the requested playback speed. The JSON report is emitted before a failed gate. Startup and play preparation remain separate measurements. A passed short excerpt is not evidence for every network, device or longer source.
 
 Native player and end-to-end tests verify SCI playback. Public-site tests exercise image previews and documentation; they do not measure SCI streaming. Short sample tests do not establish maximum-speed performance for long videos, every resolution or mobile hardware.
 

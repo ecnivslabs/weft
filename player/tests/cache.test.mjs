@@ -26,19 +26,20 @@ test('weighted request reservations include cancelled active work until it settl
 test('leased packet backing stores remain accounted while cache admission waits', async () => {
   const reader = new SciReader('/fixture', {});
   const entry = key => ({ key, controller: new AbortController() });
-  const cost = CACHE_BYTES / 4;
+  const cost = 16 * 1024 * 1024;
+  const slots = CACHE_BYTES / cost;
   const leases = [];
-  for (let chunk=0;chunk<4;chunk++) {
+  for (let chunk=0;chunk<slots;chunk++) {
     await reader.publish(entry(`360:${chunk}`), [{chunk}], cost);
     leases.push(reader.retain(360, chunk));
   }
-  reader.trim(4, 360, false, 4);
-  assert.equal(reader.cacheBytes, CACHE_BYTES); assert.equal(reader.cache.size, 4);
+  reader.trim(slots, 360, false, slots);
+  assert.equal(reader.cacheBytes, CACHE_BYTES); assert.equal(reader.cache.size, slots);
   let admitted = false;
-  const pending = reader.publish(entry('360:4'), [{}], cost).then(() => {admitted=true;});
+  const pending = reader.publish(entry(`360:${slots}`), [{}], cost).then(() => {admitted=true;});
   await settle(); assert.equal(admitted,false);
   leases[0].release(); await pending;
-  assert.equal(reader.cacheBytes,CACHE_BYTES); assert.equal(reader.cache.size,4);
+  assert.equal(reader.cacheBytes,CACHE_BYTES); assert.equal(reader.cache.size,slots);
   assert.equal(reader.get(360,0),undefined);
   for (const lease of leases) lease.release();
   assert.equal(reader.cacheBytes,cost); assert.equal(reader.leases.size,0);

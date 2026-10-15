@@ -1,9 +1,10 @@
-export const CACHE_BYTES = 64 * 1024 * 1024;
+export const CACHE_BYTES = 80 * 1024 * 1024;
 export const REQUEST_BYTES = 48 * 1024 * 1024;
 export const MAX_REQUESTS = 8;
 export const MAX_RECORDS = 128;
 export const MAX_WINDOW_CHUNKS = 64;
-export const FRAME_BYTES = 32 * 1024 * 1024;
+export const FRAME_BYTES = 64 * 1024 * 1024;
+export const MAX_FRAME_EVENTS = 16;
 export const DECODER_BYTES = 384 * 1024 * 1024;
 
 export function audioBytes(record, sampleRate = 48000) {

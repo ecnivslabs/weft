@@ -94,7 +94,13 @@ pub fn validate(frame: &[u8], width: usize, height: usize) -> io::Result<()> {
 }
 
 pub(crate) fn paint(cell: &[u8]) -> io::Result<[[u8; 3]; 12]> {
-    let mut pixels = [[cell[4], cell[5], cell[6]]; 12];
+    paint_channels::<3>(cell)
+}
+
+fn paint_channels<const CHANNELS: usize>(cell: &[u8]) -> io::Result<[[u8; CHANNELS]; 12]> {
+    let mut background = [255; CHANNELS];
+    background[..3].copy_from_slice(&cell[4..7]);
+    let mut pixels = [background; 12];
     let mut uncovered = 4095;
     for layer in cell[8..8 + usize::from(cell[7]) * 5]
         .as_chunks::<5>()
@@ -103,9 +109,11 @@ pub(crate) fn paint(cell: &[u8]) -> io::Result<[[u8; 3]; 12]> {
         .rev()
     {
         let mask = cells::glyph(layer[0], "ascii-3x4-v2", layer[1])?;
+        let mut color = [255; CHANNELS];
+        color[..3].copy_from_slice(&layer[2..5]);
         let mut visible = mask & uncovered;
         while visible != 0 {
-            pixels[visible.trailing_zeros() as usize].copy_from_slice(&layer[2..5]);
+            pixels[visible.trailing_zeros() as usize] = color;
             visible &= visible - 1;
         }
         uncovered &= !mask;
@@ -158,17 +166,22 @@ fn draw<const CHANNELS: usize>(
         {
             continue;
         }
-        let pixels = paint(cell)?;
+        let pixels = paint_channels::<CHANNELS>(cell)?;
         let scale = 1 << cell[0];
         let x = index % columns * 3;
         let y = index / columns * 4;
+        if scale == 1 {
+            for (sy, row) in pixels.as_chunks::<3>().0.iter().enumerate() {
+                let offset = ((y + sy) * width + x) * CHANNELS;
+                output[offset..offset + 3 * CHANNELS].copy_from_slice(row.as_flattened());
+            }
+            continue;
+        }
         for sy in 0..4 * scale {
             for sx in 0..3 * scale {
                 let offset = ((y + sy) * width + x + sx) * CHANNELS;
-                output[offset..offset + 3].copy_from_slice(&pixels[sy / scale * 3 + sx / scale]);
-                if CHANNELS == 4 {
-                    output[offset + 3] = 255;
-                }
+                output[offset..offset + CHANNELS]
+                    .copy_from_slice(&pixels[(sy >> cell[0]) * 3 + (sx >> cell[0])]);
             }
         }
     }

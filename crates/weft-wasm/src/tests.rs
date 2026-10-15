@@ -168,6 +168,25 @@ fn owned_temporal_cells_preserve_configuration_and_invalidate_after_errors() {
 }
 
 #[test]
+fn cached_cpu_surface_tracks_last_rendered_frame_across_deferred_decodes() {
+    super::reset();
+    let mut current = frame();
+    for step in 0..5 {
+        current[4] = step * 31;
+        assert_eq!(load(&current, u32::from(step == 0)), 1);
+        assert_eq!(super::pixels_length(), 0);
+        if step == 1 || step == 2 {
+            continue;
+        }
+        assert_eq!(super::render_current_cells(), 1);
+        let mut expected = Vec::new();
+        weft::scene::render_rgba(&current, 384, 96, &mut expected).unwrap();
+        super::STATE.with_borrow(|state| assert_eq!(state.surface.pixels(), expected));
+    }
+    super::reset();
+}
+
+#[test]
 fn owned_render_rejects_configuration_mismatch_and_removed_profiles() {
     for (width, height, font) in [(387, 96, 1), (384, 100, 1), (384, 96, 0)] {
         super::reset();

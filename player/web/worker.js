@@ -11,6 +11,12 @@ export class WorkerDecoder {
       if (data.error) pending.reject(new Error(data.error));
       else {
         this.memoryBytes = data.memoryBytes;
+        if (pending.preparing) {
+          data.bitmap?.close();
+          if (data.prepared !== true) pending.reject(new Error('SCI worker did not prepare its decoder.'));
+          else pending.resolve();
+          return;
+        }
         const expected = pending.renderDecision;
         if (expected && ['epoch', 'sourceFrame', 'width', 'height', 'format', 'gpu', 'releaseGpu'].some(key => data.renderDecision?.[key] !== expected[key])) {
           data.bitmap?.close(); pending.reject(new Error('SCI renderer result ownership does not match its request.')); return;
@@ -31,13 +37,28 @@ export class WorkerDecoder {
         || !Number.isSafeInteger(renderDecision.sourceFrame) || renderDecision.sourceFrame < 0 || renderDecision.sourceFrame !== packet.sourceFrame || renderDecision.width !== width || renderDecision.height !== height || renderDecision.format !== cellBytes) return Promise.reject(new Error('Invalid SCI renderer decision ownership.'));
       renderDecision = { ...renderDecision };
     } else if (renderDecision !== undefined) return Promise.reject(new Error('Fixed SCI renderer received an automatic decision.'));
+    return this.#send({ type: 'decode', packet, width, height, cellBytes, reset, font, present, renderDecision });
+  }
+
+  prepare(width, height) {
+    if (!Number.isInteger(width) || !Number.isInteger(height) || width < 3 || height < 4 || width > 4096 || height > 1080 || width % 3 || height % 4) return Promise.reject(new Error('Invalid SCI decoder dimensions.'));
+    return this.#send({ type: 'prepare', width, height });
+  }
+
+  #send(request) {
+    if (this.closed) return Promise.reject(new DOMException('Stream closed.', 'AbortError'));
     if (this.pending.size >= 8) return Promise.reject(new Error('SCI decoder queue limit exceeded.'));
     return new Promise((resolve, reject) => {
       const id = ++this.sequence;
-      this.pending.set(id, { resolve, reject, renderDecision });
+      this.pending.set(id, { resolve, reject, renderDecision: request.renderDecision, preparing: request.type === 'prepare' });
       try {
-        const bytes=packet.bytes.slice();
-        this.worker.postMessage({ id, packet:{...packet,bytes}, width, height, cellBytes, reset, font, present, renderDecision, automaticRenderer: this.automaticRenderer, deferredRendering: this.deferredRendering, module: this.module, gpu: this.gpu, nativeInflation: this.nativeInflation },[bytes.buffer]);
+        const message = { ...request, id, automaticRenderer: this.automaticRenderer, deferredRendering: this.deferredRendering, module: this.module, gpu: this.gpu, nativeInflation: this.nativeInflation };
+        const transfers = [];
+        if (request.packet) {
+          const bytes = request.packet.bytes.slice();
+          message.packet = { ...request.packet, bytes }; transfers.push(bytes.buffer);
+        }
+        this.worker.postMessage(message, transfers);
         this.module = undefined;
       } catch (error) { this.pending.delete(id); reject(error); }
     });

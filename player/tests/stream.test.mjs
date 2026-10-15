@@ -6,11 +6,33 @@ Object.defineProperty(globalThis, 'localStorage', { value: {getItem:()=>null,set
 
 class AudioStub {
   constructor() {this.currentTime=0;this.sampleRate=48000;}
+  async resume() {}
   createGain(){return {gain:{setValueAtTime(){}},connect(){}};}
 }
+
+test('play and resume reuse prepared decoder ownership and wait for bounded lead', async () => {
+  const oldAudio = globalThis.AudioContext;
+  globalThis.AudioContext = AudioStub;
+  try {
+    const { stream } = fixture();
+    let prepared = 0, closed = 0;
+    const frames = stream.frames = { quality: 360, chunk: 1, async catchup(position, rate, lead) {
+      prepared++; assert.equal(position, .5); assert.equal(rate, 2); assert.equal(lead, 16 / 60);
+    }, close() { closed++; } };
+    stream.clock.position = .5; stream.clock.rate = 2; stream.clock.context.currentTime = 10;
+    stream.metadata.fps = 1; stream.clock.rate = 100;
+    assert.equal(stream.playbackLead(), 1);
+    stream.metadata.fps = 60; stream.clock.rate = 2;
+    stream.seek = () => assert.fail('Prepared playback restarted its decoder');
+    await stream.play(); assert.equal(stream.frames, frames); assert.equal(stream.clock.buffering, false);
+    stream.pause(); await stream.play();
+    assert.equal(prepared, 2); assert.equal(closed, 0);
+    stream.reset(); assert.equal(closed, 1);
+  } finally { globalThis.AudioContext = oldAudio; }
+});
 class WorkerStub {
   static messages=[];
-  postMessage(data) {WorkerStub.messages.push(data);queueMicrotask(()=>this.onmessage({data:{id:data.id,pixels:new Uint8ClampedArray(4),renderDecision:data.renderDecision}}));}
+  postMessage(data) {WorkerStub.messages.push(data);queueMicrotask(()=>this.onmessage({data:{id:data.id,prepared:data.type==='prepare',pixels:new Uint8ClampedArray(4),renderDecision:data.renderDecision}}));}
   terminate(){}
 }
 function fixture(options) {
@@ -108,7 +130,7 @@ test('automatic renderer starts each atomic preparation on CPU and activates onl
     assert.equal(previous.policy.enabled, true); assert.equal(previous.policy.mode, 'cpu');
     const seeking = stream.seek(2); requests[1].resolve(); await seeking;
     assert.equal(previous.closed, true); assert.notEqual(stream.frames.policy, previous.policy);
-    assert.ok(WorkerStub.messages.every(message => message.automaticRenderer && message.renderDecision.epoch === -1 && !message.renderDecision.gpu));
+    assert.ok(WorkerStub.messages.filter(message => message.type !== 'prepare').every(message => message.automaticRenderer && message.renderDecision.epoch === -1 && !message.renderDecision.gpu));
     stream.reset();
   } finally { globalThis.AudioContext = oldAudio; globalThis.Worker = oldWorker; globalThis.fetch = oldFetch; }
 });

@@ -1,6 +1,6 @@
 const WORKLOADS = new Set(['same', 'sparse', 'partial', 'full']);
 export function rendererOptions(options = {}) {
-  const { gpu = true, renderer } = options;
+  const { gpu = false, renderer } = options;
   if (typeof gpu !== 'boolean' || (renderer !== undefined && renderer !== 'auto') || (renderer !== undefined && Object.hasOwn(options, 'gpu'))) throw new Error('Invalid SCI renderer policy.');
   return { gpu: renderer === 'auto' ? false : gpu, automaticRenderer: renderer === 'auto' };
 }

@@ -139,7 +139,10 @@ export class Stream extends EventTarget {
     const sample = Math.min(position, Math.max(0, this.duration - 0.000001));
     const ready = frames.prepare(sample, this.playbackRate);
     this.prefetch();
-    try { await ready; }
+    try {
+      await ready;
+      if (!this.paused) await frames.catchup(sample, this.playbackRate, this.playbackLead());
+    }
     catch (error) { frames.close(); if (epoch === this.epoch && operation === this.operation) throw error; return; }
     if (epoch !== this.epoch || operation !== this.operation) { frames.close(); return; }
     this.frames = frames; this.preparingFrames = null; this.quality = quality;
@@ -171,7 +174,7 @@ export class Stream extends EventTarget {
     try {
       if (this.metadata.audio) { await reader.load(0, current); audio = reader.retain(0, current); }
       if (epoch !== this.epoch || operation !== this.operation || frames !== this.frames) return;
-      await frames.catchup(Math.min(this.clock.position, Math.max(0, this.duration - 0.000001)), this.playbackRate);
+      await frames.catchup(Math.min(this.clock.position, Math.max(0, this.duration - 0.000001)), this.playbackRate, this.playbackLead());
       if (epoch !== this.epoch || operation !== this.operation || frames !== this.frames) return;
       this.draw(); this.message(''); this.updateWindow();
       if (!this.paused) { this.clock.run(); this.schedule(); this.prefetch(); this.emit('playing'); }
@@ -206,17 +209,28 @@ export class Stream extends EventTarget {
   }
 
   async play() {
-    if (!this.metadata) return;
+    if (!this.metadata || !this.paused) return;
     const epoch = this.epoch;
     const intent = this.intent = (this.intent ?? 0) + 1;
-    this.clock.playing = true;
+    this.clock.freeze(); this.clock.playing = true;
     this.emit('play');
     await this.clock.context.resume();
     if (epoch !== this.epoch || intent !== this.intent || this.paused) return;
     if (this.ended || this.clock.position >= this.duration) await this.seek(0);
-    else await this.seek(this.clock.position);
+    else if (!this.frames || this.preparingFrames) await this.seek(this.clock.position);
+    else {
+      const frames = this.frames;
+      this.clock.freeze();
+      this.updateWindow(); this.prefetch();
+      try { await frames.catchup(this.clock.position, this.playbackRate, this.playbackLead()); }
+      catch (error) { if (epoch !== this.epoch || intent !== this.intent || frames !== this.frames) return; throw error; }
+      if (epoch !== this.epoch || intent !== this.intent || this.paused || frames !== this.frames) return;
+      this.clock.run(); this.schedule(); this.prefetch();
+    }
     if (epoch === this.epoch && intent === this.intent && !this.paused) this.tick();
   }
+
+  playbackLead() { return Math.min(1, 0.2 * this.playbackRate, 16 / this.metadata.fps); }
 
   pause() { this.intent = (this.intent ?? 0) + 1; this.clock.pause(); this.emit('pause'); }
 

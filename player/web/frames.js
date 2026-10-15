@@ -1,5 +1,5 @@
 import { DecoderPool, decoderModule, partition } from './decode-pool.js';
-import { FRAME_BYTES, decoderCount, shouldPaint } from './delivery.js';
+import { FRAME_BYTES, MAX_FRAME_EVENTS, decoderCount, shouldPaint } from './delivery.js';
 import { codecFormat } from './sci.js';
 import { RendererPolicy, rendererOptions } from './calibration.js';
 
@@ -17,7 +17,7 @@ export class AsciiFrames {
     this.position = 0;
     this.displayedEnd = -1;
     this.completed = new Map(); this.consumedEnd = -Infinity;
-    this.reservations = 0; this.reservedBytes = 0; this.displayRate = Infinity; this.leases = new Set();
+    this.reservations = 0; this.reservedBytes = 0; this.inflight = new Map(); this.displayRate = Infinity; this.leases = new Set();
     this.metrics = { decoded: 0, dropped: 0, consumed: 0, lateDecoded: 0, skippedSeekFrames: 0, discoveredFrames: 0, sourceConsumed: 0, reconstructed: 0, deferred: 0, painted: 0, decodeMilliseconds: 0, frameBytes: 0 };
     this.decodeWallMilliseconds = 0;
     Object.defineProperty(this.metrics, 'decodeWallMilliseconds', { enumerable: true, get: () => this.decodeWallMilliseconds + (this.reservations ? performance.now() - this.busyStarted : 0) });
@@ -41,27 +41,47 @@ export class AsciiFrames {
     this.pool = new DecoderPool(workers, { module, deferredRendering: true, ...this.decoderOptions, automaticRenderer: Boolean(this.policy) }, {
       decide: (packet, width, height, format, present) => this.policy?.request(packet, width, height, format, present, this.position),
       paint: packet => shouldPaint(packet, this.position, this.metadata.duration, this.metadata.fps, this.rate, this.displayRate, this.displayedEnd < 0),
-      reserve: (packet, present) => {
-        if (this.completed.size + this.reservations >= 8 || this.queue.length + this.reservations >= 8 || this.queueBytes + this.reservedBytes + (present ? this.frameBytes : 0) > FRAME_BYTES) return false;
-        if (!this.reservations) this.busyStarted = performance.now();
-        this.reservations++; this.reservedBytes += present ? this.frameBytes : 0; return true;
-      },
+      reserve: (packet, present) => this.reserve(packet, present),
       release: (packet, present) => {
         this.reservations--; this.reservedBytes -= present ? this.frameBytes : 0;
+        this.inflight.delete(packet.sourceFrame);
         if (!this.reservations) this.decodeWallMilliseconds += performance.now() - this.busyStarted;
       },
       accept: (frame, packet, elapsed) => this.accept({ ...frame, width: this.width, height: this.height }, packet, elapsed),
       complete: segment => { if (!--segment.batch.remaining) { segment.batch.lease.release(); this.leases.delete(segment.batch.lease); } },
       fail: error => this.reject(error),
     });
+    const preparingAt = performance.now();
+    await this.pool.prepare(this.width, this.height);
+    this.metrics.decoderPreparationMilliseconds = performance.now() - preparingAt;
+    if (this.closed) throw new DOMException('Stream closed.', 'AbortError');
     const ready = new Promise((resolve, reject) => { this.waiter = { resolve, reject }; });
     this.pump(position, rate);
     await ready;
   }
 
-  async catchup(position, rate = 1) {
-    if (this.ready(position)) return;
-    const ready = new Promise((resolve, reject) => { this.waiter = { resolve, reject }; });
+  reserve(packet, present) {
+    const future = Number.isSafeInteger(packet.sourceFrame) && packet.sourceFrame > this.nextOrdinal;
+    const contiguous = item => item.time < this.consumedEnd && item.end > this.position;
+    // Reserve missing frontier work, without reserving its already in-flight image twice.
+    const spareEvent = Number(future && !this.inflight.has(this.nextOrdinal));
+    const spareQueue = Number(spareEvent && !this.queue.some(contiguous));
+    const spareImage = Number(future && !this.inflight.get(this.nextOrdinal) && !this.queue.some(item => item.bytes > 0 && contiguous(item)));
+    if (this.completed.size + this.reservations + spareEvent >= MAX_FRAME_EVENTS || this.queue.length + this.reservations + spareQueue >= MAX_FRAME_EVENTS
+      || this.queueBytes + this.reservedBytes + (Number(present) + spareImage) * this.frameBytes > FRAME_BYTES) return false;
+    if (!this.reservations) this.busyStarted = performance.now();
+    this.reservations++; this.reservedBytes += present ? this.frameBytes : 0;
+    this.inflight.set(packet.sourceFrame, present);
+    return true;
+  }
+
+  async catchup(position, rate = 1, lead = 0) {
+    if (!Number.isFinite(lead) || lead < 0 || lead > 1) throw new Error('Invalid SCI playback lead.');
+    const available = () => this.ready(position) && (lead === 0 || this.consumedEnd >= Math.min(this.metadata.duration, position + lead)
+      || this.queue.length >= MAX_FRAME_EVENTS || this.queueBytes + this.frameBytes > FRAME_BYTES);
+    if (available()) return;
+    this.waiter?.reject(new DOMException('Playback preparation superseded.', 'AbortError'));
+    const ready = new Promise((resolve, reject) => { this.waiter = { resolve, reject, available }; });
     this.pump(position, rate);
     await ready;
   }
@@ -101,7 +121,7 @@ export class AsciiFrames {
       } else lease.release();
       this.chunk++;
     }
-    this.pool.pump(position, position + Math.min(1, 0.125 * rate), this.width, this.height, codecFormat(this.metadata.video), this.metadata.video.font);
+    this.pool.pump(position, position + Math.min(1, 0.25 * rate), this.width, this.height, codecFormat(this.metadata.video), this.metadata.video.font);
   }
 
   reject(error) {
@@ -149,7 +169,7 @@ export class AsciiFrames {
       this.queue.sort((a, b) => a.time - b.time);
       this.metrics.frameBytes = Math.max(this.metrics.frameBytes, this.queueBytes);
     } else { frame.bitmap?.close(); this.metrics.dropped++; this.metrics.lateDecoded++; }
-    if (this.waiter && this.ready(this.position)) { this.waiter.resolve(); this.waiter = null; }
+    if (this.waiter && (this.waiter.available ? this.waiter.available() : this.ready(this.position))) { this.waiter.resolve(); this.waiter = null; }
   }
 
   ready(position) {
@@ -189,6 +209,7 @@ export class AsciiFrames {
     this.waiter?.reject(new DOMException('Stream closed.', 'AbortError')); this.waiter = null;
     for (const item of this.queue) item.frame.bitmap?.close();
     this.queue = []; this.queueBytes = 0; this.completed.clear();
+    this.inflight.clear();
   }
 
   activateRenderer(position) { this.policy?.activate(position); }

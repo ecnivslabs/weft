@@ -10,7 +10,7 @@ The production profile is `sci-ascii-scene-v1`, with adaptive layered glyph fitt
 
 Experimental scene versions and temporal fitting were removed from production. They did not establish the efficiency goal. The current encoder and decoder support one visual representation.
 
-Bounded delivery, independent seeking, persistent cache reuse and Rust/browser agreement are implemented and tested. Sustained 2x playback across every tier remains unverified. Short tests and median decoder timings cannot establish that target.
+Bounded delivery, independent seeking, persistent cache reuse and Rust/browser agreement are implemented and tested. Uninterrupted 2x playback has not been achieved at every tier; the latest mixed-detail trials still fail that target. Short tests and median decoder timings cannot establish that target.
 
 ## Compact field packing measurements
 
@@ -41,7 +41,7 @@ The [browser report](measurements/compact-fields-browser.json) verifies exact CP
 
 Three loopback streaming trials requested four seconds of the cartoon excerpt at 1080p and 2x. Chromium used SwiftShader software WebGL. Median startup was 422.9 ms, but median buffering was 8.64 seconds. The largest reserved presentation buffer was 33177600 bytes, below 32 MiB. These trials reached the requested source frontier but **failed uninterrupted maximum-speed playback**. They provide no sustained all-tier claim. The packing comparison counts each required media range once; the browser report separately records actual transferred SCI bytes, including repeated requests.
 
-These results do not establish indistinguishable source fidelity, lower bandwidth than conventional video codecs, sustained 2x playback at all tiers, or lower energy use. The all-tier excerpt is particularly short. Encoding tries more candidates; no controlled end-to-end ingestion-speed result is claimed. The new packer adds no dependency, copied third-party implementation, font or media asset.
+These results do not establish indistinguishable source fidelity, lower bandwidth than conventional video codecs, sustained 2x playback at all tiers, or lower energy use. The all-tier excerpt is particularly short. Those packing trials did not measure local encoding speed or source-download time; the newer encoding measurements below are separate. The new packer adds no dependency, copied third-party implementation, font or media asset.
 
 ## H.266 in MP4 comparison
 
@@ -61,6 +61,51 @@ Independent decoding verifies every MP4 frame, presentation timestamp and durati
 The VVC IDR intervals are approximately 0.667 seconds for cartoon and 1.333 seconds for fossils. SCI retains its own independent chunk boundaries. Seek cost is not matched or measured. Search encode times are single-run diagnostics, with no controlled SCI encoding-speed comparison. No browser startup, buffering, decoder resource or sustained playback advantage is established by these files. Two short excerpts do not characterize long-form streaming or the full corpus.
 
 An initial direct remux of an elementary VVC stream discarded a displayed frame and produced incorrect timing. That setup was rejected. The retained results use a temporary FFmpeg build with integrated `libvvenc` encoding and proper presentation timestamps. VVC tools remain outside the product; no conventional codec was added to SCI or playback, and no product dependency was added. The [VVenC license](https://github.com/fraunhoferhhi/vvenc/blob/v1.14.0/LICENSE.txt) requires notices when redistributing its software and grants no patent rights. This benchmark does not establish clearance to integrate or distribute H.266 commercially.
+
+## Encoding and playback speed
+
+The [speed report](measurements/speed.json) records the before/after binaries, matching compiler versions, source and module hashes, every measured run, resource limits and failed playback gates. The baseline is `d13b8ee`. Final benchmarks ran sequentially on the recorded Intel i5-12500H host. Other user applications remained running; CPU frequency and affinity were not pinned. These results describe these inputs and conditions, not every device.
+
+The encoder now uses exact reciprocal color means, returns uniform regions as ASCII spaces, and prunes coarse fitting only when a squared-error lower bound proves it cannot beat the children. Native compression uses the existing zlib-rs backend already used by WASM. No dependency was added. Alternating one warm-up and three measured local encodes preserved every reconstructed pixel, presentation duration, dimension and frame count:
+
+| Excerpt | 360p median before | 360p median after | Elapsed-time reduction |
+| :--- | ---: | ---: | ---: |
+| cartoon, 96 events | 10.857 s | 9.388 s | 13.5% |
+| fossils, 96 events | 10.308 s | 9.546 s | 7.4% |
+
+Complete SCI sizes changed from 3902030 to 3883512 bytes and from 9290933 to 9179865 bytes respectively, including audio and container overhead. A separate synthetic uniform 1080p60 hold also preserved exact output; its timing is a regression check, not evidence for general video encoding performance. These remain offline preparation times, not real-time encoding or source-download measurements.
+
+The decoder retains immutable validated frames in both output paths, avoids repeated reference validation, and reuses the last CPU surface across deferred events. Command placement proves complete validated coverage before publishing a frame. Mutation and truncation tests independently validate every accepted result. RGBA reconstruction writes complete rows for base cells and preserves scaled glyph output. Alternating one warm-up and five measured WASM passes on the same 1080p archives gave:
+
+| Excerpt | RGBA ms/event before | RGBA ms/event after | Elapsed-time reduction |
+| :--- | ---: | ---: | ---: |
+| cartoon | 13.596 | 9.235 | 32.1% |
+| fossils | 20.703 | 16.257 | 21.5% |
+
+All pixel, presentation and decoder-comparison audio hashes matched. These decoder timings exclude network, worker initialization and visible-canvas presentation. They do not establish uninterrupted playback.
+
+The player defaults to CPU reconstruction, warms worker modules and CPU surfaces before starting its clock, and reuses its decoder pool on play and resume. Preparation requests bounded contiguous lead. Future chains preserve capacity for missing frontier work without reserving an already in-flight image twice. The image budget increased from 32 to 64 MiB, the source-event queue from eight to sixteen, the compressed/audio cache from 64 to 80 MiB, and the decoding horizon from 125 to 250 ms of wall time. This costs 48 MiB of additional buffer budget. The four-worker ceiling, 48 MiB request bound and 384 MiB decoder working-set estimate remain. These are not a bound on total browser or graphics-driver memory.
+
+Three 1080p loopback trials per animation requested four source seconds at 2x, using CPU reconstruction for both revisions. Cartoon waiting events fell from 11, 14 and 18 to zero in every trial. Its new median observed playback time was 2.027 seconds, after separate startup and play preparation. Fossils fell from 19, 18 and 17 waiting events to 1, 2 and 3; sampled buffering remained 10.1, 115.5 and 75.6 ms. Both clips still use the original stored SCI, without source conversion or fidelity changes.
+
+The reduction in waiting also costs preparation time: cartoon median startup increased from 207.6 to 240.1 ms, and play preparation from 89.6 to 199.3 ms. Those intervals are excluded from observed playback. The larger buffer budgets and code changes were measured together; the stream comparison does not isolate their individual effects.
+
+The longer stress test retains the first 106 complete shared chunks of the existing two-minute mixed-detail archive, with 602 events and 10.033 seconds at every tier. Payloads, audio and seek boundaries were copied unchanged; only prefix metadata and offsets were rewritten. Trials requested ten source seconds, three times per tier and speed, with manual quality fixed:
+
+| Tier | Waiting events at 1x | Waiting events at 2x |
+| :--- | :--- | :--- |
+| 360p | 0, 0, 0 | 0, 0, 0 |
+| 480p | 0, 0, 0 | 0, 0, 2 |
+| 720p | 1, 1, 0 | 21, 18, 17 |
+| 1080p | 52, 52, 58 | 34, 33, 32 |
+
+The 1080p 1x trials took 20.9 to 22.3 wall seconds to advance ten source seconds; the 2x trials took 17.0 to 18.6 seconds. This is a sustained decoding and reconstruction bottleneck, not a passed speed test. Every trial reached its source frontier within the wall-time limit, but the strict 2x all-tier uninterrupted gate failed and returned a nonzero exit status. No claim covers the rest of the two-minute source or broader live-action content.
+
+Correctness tests can pass while buffering persists. A separate 360p correctness run on a 1.5 Mbit/s link with 100 ms latency recorded roughly 11.2 seconds to first frame and 7.6 seconds for a cold seek, with repeated buffering. That fixture's 13.24 MB SCI represents ten seconds, exceeding the tested link's capacity. Faster decoding alone cannot eliminate that bandwidth shortfall.
+
+A forced 100 ms independent-checkpoint experiment was rejected: the cartoon archive grew to 12.54 MB at 360p, and 1080p repacking exceeded a 16 MiB shared-chunk bound. No checkpoint policy was shipped. A separate intermediate SIMD microbenchmark showed only a small completed-pixel improvement; a second decoder bundle was not added. The raw report retains both experiments and an early lead-preparation deadlock that received regression tests.
+
+The result is faster encoding and decoding with unchanged ASCII output, timing and supported archive versions. **The zero-buffering target remains unmet**, including on this host's loopback stress test. Further work must reduce actual per-event decoding, reconstruction and delivery cost while measuring bytes, fidelity, startup and memory together.
 
 ## Historical measurements
 

@@ -6,12 +6,15 @@ import { once } from 'node:events';
 import { createHash } from 'node:crypto';
 import { cpus, platform, arch } from 'node:os';
 import { parseHeader, parseIndex, asciiPackets, codecFormat } from '../web/sci.js';
+import { CACHE_BYTES, FRAME_BYTES, MAX_FRAME_EVENTS, REQUEST_BYTES } from '../web/delivery.js';
 
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ?? 'playwright');
 const [archive, ...heightTexts] = process.argv.slice(2);
 const heights = heightTexts.length ? heightTexts.map(Number) : [360,480,720,1080];
 assert.ok(archive && heights.every(height=>[360,480,720,1080].includes(height)), 'Usage: node player/tests/streaming-benchmark.mjs ARCHIVE [HEIGHT...]');
 const seconds = Number(process.env.TEST_SECONDS ?? 10);
+const playbackRate = Number(process.env.TEST_PLAYBACK_RATE ?? 2);
+assert.ok(Number.isFinite(playbackRate) && playbackRate >= .25 && playbackRate <= 2, 'Invalid playback speed.');
 const iterations = Number(process.env.TEST_ITERATIONS ?? 3);
 const latency = Number(process.env.TEST_LATENCY_MS ?? 0);
 const throughput = Number(process.env.TEST_BYTES_PER_SECOND ?? -1);
@@ -20,10 +23,12 @@ assert.ok(seconds>0 && seconds<=120 && Number.isInteger(iterations) && iteration
 const variants = [{name:'candidate',directory:resolve(process.env.TEST_CANDIDATE_WEB ?? resolve(import.meta.dirname,'../web'))}];
 if(process.env.TEST_BASELINE_WEB)variants.unshift({name:'baseline',directory:resolve(process.env.TEST_BASELINE_WEB)});
 const renderers = (process.env.TEST_RENDERERS ?? 'gpu').split(',');
-assert.ok(renderers.length >= 1 && renderers.length <= 3 && new Set(renderers).size === renderers.length && renderers.every(renderer => ['gpu', 'cpu', 'auto'].includes(renderer)));
+assert.ok(renderers.length >= 1 && renderers.length <= 4 && new Set(renderers).size === renderers.length && renderers.every(renderer => ['default', 'gpu', 'cpu', 'auto'].includes(renderer)));
 assert.ok(process.env.TEST_BASELINE_CPU_SUPPORTED === undefined || ['0','1'].includes(process.env.TEST_BASELINE_CPU_SUPPORTED), 'Invalid baseline CPU capability declaration.');
+assert.ok(process.env.TEST_REQUIRE_UNINTERRUPTED === undefined || ['0','1'].includes(process.env.TEST_REQUIRE_UNINTERRUPTED), 'Invalid uninterrupted-playback gate.');
+const requireUninterrupted = process.env.TEST_REQUIRE_UNINTERRUPTED === '1';
 const baselineCpuSupported = process.env.TEST_BASELINE_CPU_SUPPORTED === '1';
-assert.ok(variants.length === 1 || renderers.every(renderer => renderer === 'gpu') || (baselineCpuSupported && renderers.every(renderer => renderer === 'cpu')), 'Historical baseline assets do not provide a CPU renderer policy without an explicit capability declaration.');
+assert.ok(variants.length === 1 || renderers.every(renderer => ['gpu', 'default'].includes(renderer)) || (baselineCpuSupported && renderers.every(renderer => renderer === 'cpu')), 'Historical baseline assets do not provide a CPU renderer policy without an explicit capability declaration.');
 const assets = new Set(['stream.js','frames.js','sci.js','ascii.js','audio.js','storage.js','renderer.js','worker.js','decoder-worker.js','wasm.js','decoder.wasm','glyphs.json','gpu.js','delivery.js','decode-pool.js','checksum.js','integrity-worker.js','opus.js','calibration.js']);
 function fingerprintModules() { return variants.map(variant => {
   const hash = createHash('sha256'); const shared = createHash('sha256');
@@ -94,18 +99,18 @@ try {
     network.on('Network.loadingFinished',event=>{const item=transfers.get(event.requestId);if(item)item.finished=event.encodedDataLength;});
     try {
       await page.goto(base);
-      const result=await page.evaluate(async ({height,variant,renderer,seconds,maximumWallSeconds})=>{
+      const result=await page.evaluate(async ({height,variant,renderer,seconds,maximumWallSeconds,playbackRate})=>{
         localStorage.setItem('weft:quality-v4',JSON.stringify(String(height)));
         const {Stream}=await import(`/${variant}/stream.js`);const {PixelRenderer}=await import(`/${variant}/renderer.js`);
         let playbackError=null;
-        const stream=new Stream(new PixelRenderer(document.querySelector('canvas')),document.querySelector('select'),(message,error)=>{if(error)playbackError=message;},renderer==='auto'?{renderer:'auto'}:{gpu:renderer==='gpu'});
+        const stream=new Stream(new PixelRenderer(document.querySelector('canvas')),document.querySelector('select'),(message,error)=>{if(error)playbackError=message;},renderer==='default'?{}:renderer==='auto'?{renderer:'auto'}:{gpu:renderer==='gpu'});
         const probe=new OffscreenCanvas(1,1).getContext('webgl2');const extension=probe?.getExtension('WEBGL_debug_renderer_info');
         const webgl=probe?{vendor:probe.getParameter(extension?extension.UNMASKED_VENDOR_WEBGL:probe.VENDOR),renderer:probe.getParameter(extension?extension.UNMASKED_RENDERER_WEBGL:probe.RENDERER)}:null;
         probe?.getExtension('WEBGL_lose_context')?.loseContext();
         let waitingEvents=0;stream.addEventListener('waiting',()=>waitingEvents++);
         const startup=performance.now();await stream.load({media:'/archive.sci'});
         if(!stream.metadata || stream.quality!==height)throw new Error('Requested stream was not prepared.');
-        const startupMilliseconds=performance.now()-startup;stream.playbackRate=2;
+        const startupMilliseconds=performance.now()-startup;stream.playbackRate=playbackRate;
         const playStarted=performance.now();await stream.play();
         const preparationMilliseconds=performance.now()-playStarted;
         const target=Math.min(seconds,stream.duration);const started=performance.now();
@@ -133,19 +138,26 @@ try {
             decodedFramesConsumedBeforeObservationEnd:(stream.frames?.metrics.consumed??0)+(stream.frames?.metrics.lateDecoded??0),
             frameMetrics:{...stream.frames?.metrics},readerMetrics:{...stream.reader?.metrics},webgl,userAgent:navigator.userAgent,hardwareConcurrency:navigator.hardwareConcurrency,diagnostics};
         } finally {stream.reset();await stream.clock.context.close();}
-      },{height,variant:variant.name,renderer,seconds,maximumWallSeconds});
+      },{height,variant:variant.name,renderer,seconds,maximumWallSeconds,playbackRate});
       assert.deepEqual(errors,[]);
-      assert.ok(result.maxReservedFrameBytes<=32*1024*1024);assert.ok(result.maxCacheBytes<=64*1024*1024);assert.ok(result.maxRequestBytes<=48*1024*1024);assert.ok(result.maxWorkers<=4);
+      assert.ok(result.maxReservedFrameBytes<=FRAME_BYTES);assert.ok(result.maxCacheBytes<=CACHE_BYTES);assert.ok(result.maxRequestBytes<=REQUEST_BYTES);assert.ok(result.maxWorkers<=4);
       if (renderer === 'cpu') {
         const actual = result.frameMetrics.renderers ?? {};
         assert.ok(actual.canvas2d > 0 && actual.canvas2d === result.frameMetrics.reconstructed && Object.keys(actual).every(name => name === 'canvas2d'), 'CPU policy did not reconstruct every image through canvas2d.');
       }
-      results.push({iteration,variant:variant.name,rendererPolicy:renderer,...result,transferredSciBytes:[...transfers.values()].reduce((sum,item)=>sum+(item.finished??item.body),0)});
+      const sourceEvents = archiveIdentity.intersectingRecords.find(record => record.height === height).sourceEventsFullyElapsedByRequestedTime;
+      const uninterrupted = result.outcome === 'reached' && result.waitingEvents === 0 && result.bufferingMilliseconds === 0
+        && result.contiguousSourceFramesConsumed >= sourceEvents
+        && result.playbackMilliseconds <= Math.min(seconds, result.duration) / result.playbackRate * 1050 + 250;
+      results.push({uninterrupted,iteration,variant:variant.name,rendererPolicy:renderer,...result,transferredSciBytes:[...transfers.values()].reduce((sum,item)=>sum+(item.finished??item.body),0)});
     } finally {await context.close();}
   }
   assert.deepEqual(fingerprintModules(), moduleIdentities, 'Playback assets changed during the measurement window.');
   assert.equal(driverIdentity(), driverSha256, 'Playback driver changed during the measurement window.');
   console.log(JSON.stringify({started,finished:new Date().toISOString(),assetsUnchanged:true,host:{platform:platform(),arch:arch(),cpu:cpus()[0]?.model,logicalCpus:cpus().length},archive:archiveIdentity,
     modules:moduleIdentities,driverSha256,baselineCpuSupported,moduleOnly,
+    candidateBudgets:{presentationBytes:FRAME_BYTES,sourceEventQueue:MAX_FRAME_EVENTS,compressedAndAudioCacheBytes:CACHE_BYTES,inflightRequestBytes:REQUEST_BYTES},
+    uninterruptedGate:{required:requireUninterrupted,passed:results.every(result=>result.uninterrupted)},
     network:{latencyMilliseconds:latency,downloadBytesPerSecond:throughput},renderers,iterations,maximumWallSecondsPerTrial:maximumWallSeconds,requestedVideoSeconds:seconds,includesAudio:true,includesTransport:true,includesPresentation:true,results},null,2));
+  if (requireUninterrupted) assert.ok(results.every(result=>result.uninterrupted), 'Sustained playback stalled or failed to consume the source timeline at the requested speed.');
 } finally {await browser?.close();await new Promise(resolve=>server.close(resolve));}

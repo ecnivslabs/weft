@@ -1,7 +1,73 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { AsciiFrames } from '../web/frames.js';
+import { FRAME_BYTES, MAX_FRAME_EVENTS } from '../web/delivery.js';
 import { RendererPolicy } from '../web/calibration.js';
+import { DecoderPool, partition } from '../web/decode-pool.js';
+
+test('future images leave capacity for an earlier chain after its deferred predecessor finishes', async () => {
+  for (const presentFirst of [false, true]) {
+    const frames = new AsciiFrames({ metadata: { duration: 1, fps: 60 } }, 1080, { draw() {} }, error => { throw error; });
+    frames.frameBytes = FRAME_BYTES / 4; frames.nextOrdinal = 0; frames.position = .01;
+    const workers = [];
+    const pool = frames.pool = new DecoderPool(4, {}, {
+      paint: packet => presentFirst || packet.sourceFrame !== 0,
+      reserve: (packet, present) => frames.reserve(packet, present),
+      release: (packet, present) => { frames.reservations--; frames.reservedBytes -= present ? frames.frameBytes : 0; frames.inflight.delete(packet.sourceFrame); },
+      accept: (frame, packet) => frames.accept(frame, packet, 1), complete() {}, fail: error => { throw error; },
+    }, () => {
+      const worker = { calls: [], decode(packet, width, height, format, reset, font, present) {
+        this.calls.push(packet.sourceFrame);
+        return new Promise((resolve, reject) => { this.pending = { resolve: () => resolve({ consumed: !present }), reject }; });
+      }, finish() { const pending = this.pending; this.pending = null; pending.resolve(); }, close() { this.pending?.reject(new DOMException('Closed', 'AbortError')); } };
+      workers.push(worker); return worker;
+    });
+    const packets = Array.from({ length: 6 }, (_, index) => ({ sourceFrame: index, tag: index === 1 ? 7 : 6, time: index / 100, end: (index + 1) / 100 }));
+    pool.add(partition(packets, 0)); pool.pump(.01, 1, 1920, 1080, 28, 'ascii-3x4-v2');
+    const settle = () => new Promise(resolve => setImmediate(resolve));
+    assert.ok(workers.every(worker => worker.pending), 'Available worker capacity was reserved twice');
+    for (const worker of workers.slice(1)) { worker.finish(); await settle(); }
+    assert.equal(frames.queue.length, 3);
+    assert.ok(!workers.some(worker => worker.calls.includes(5)));
+    workers[0].finish(); await settle();
+    assert.deepEqual(workers[0].calls, [0, 1]);
+    assert.equal(frames.reservedBytes + frames.queueBytes, FRAME_BYTES);
+    frames.close(); await settle(); assert.equal(frames.reservations, 0);
+  }
+});
+
+test('playback lead waits for contiguous source work, clamps at end and rejects on close', async () => {
+  const frames = new AsciiFrames({ metadata: { duration: .3, fps: 10 } }, 360, { draw() {} }, error => { throw error; });
+  frames.frameBytes = 48; frames.pump = () => {}; frames.nextOrdinal = 0;
+  frames.accept({}, { sourceFrame: 0, time: 0, end: .1 }, 1);
+  let ready = false;
+  const pending = frames.catchup(0, 2, .2).then(() => { ready = true; });
+  frames.accept({}, { sourceFrame: 2, time: .2, end: .3 }, 1);
+  await Promise.resolve(); assert.equal(ready, false);
+  frames.accept({}, { sourceFrame: 1, time: .1, end: .2 }, 1);
+  await pending; assert.equal(ready, true);
+  await frames.catchup(.25, 2, .2);
+  await assert.rejects(frames.catchup(0, 2, NaN), /playback lead/);
+  const closed = frames.catchup(.3, 1, 0);
+  frames.close(); await assert.rejects(closed, { name: 'AbortError' });
+});
+
+test('lead preparation cannot deadlock behind a full future queue', async () => {
+  for (const frameBytes of [48, 1920 * 1080 * 4]) {
+    const frames = new AsciiFrames({ metadata: { duration: 10, fps: 60 } }, 1080, { draw() {} }, error => { throw error; });
+    frames.frameBytes = frameBytes; frames.pump = () => {}; frames.nextOrdinal = 0;
+    frames.accept({}, { sourceFrame: 0, time: 0, end: .01 }, 1);
+    const pending = frames.catchup(0, 2, .1);
+    const limit = frameBytes === 48 ? MAX_FRAME_EVENTS : Math.floor(FRAME_BYTES / frameBytes);
+    for (let index = 1; index < limit; index++) {
+      frames.accept({}, { sourceFrame: index + 10, time: .15 + index / 60, end: .15 + (index + 1) / 60 }, 1);
+    }
+    await pending;
+    assert.equal(frames.consumedEnd, .01);
+    assert.equal(frames.ready(0), true);
+    frames.close();
+  }
+});
 
 test('FPS cap discards already prepared images while consuming every source dependency and preserving the final image', () => {
   for (const rate of [1, 2]) {

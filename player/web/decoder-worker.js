@@ -26,6 +26,16 @@ export class FrameDecoder {
     this.preferGpu = decision.gpu && typeof this.decoder.exports.decode_cells === 'function' && typeof this.decoder.exports.render_current_cells === 'function';
   }
 
+  prepare(width, height) {
+    if (this.closed) throw new DOMException('Stream closed.', 'AbortError');
+    if (this.busy) throw new Error('SCI frame decoder already has a pending frame.');
+    if (!Number.isInteger(width) || !Number.isInteger(height) || width < 3 || height < 4 || width > 4096 || height > 1080 || width % 3 || height % 4) throw new Error('Invalid SCI decoder dimensions.');
+    if (this.preferGpu || typeof OffscreenCanvas !== 'function' || (this.canvas?.width === width && this.canvas.height === height)) return;
+    this.canvas = new OffscreenCanvas(width, height);
+    this.canvas.getContext('2d', { alpha: false }).fillRect(0, 0, width, height);
+    this.canvas.transferToImageBitmap().close();
+  }
+
   async decode(packet, width, height, format, reset, font, present = true, renderDecision) {
     if (this.closed) throw new DOMException('Stream closed.', 'AbortError');
     if (this.busy) throw new Error('SCI frame decoder already has a pending frame.');
@@ -67,7 +77,7 @@ export class FrameDecoder {
         decodedAt = performance.now();
         if (this.closed) throw new DOMException('Stream closed.', 'AbortError');
         if (!present) return result({ consumed: true, renderer: 'cells' });
-        plan = this.decoder.paintedPlan();
+        if ((this.gpu && this.preferGpu) || this.automaticRenderer) plan = this.decoder.paintedPlan();
         if (plan) cells = this.decoder.currentCells(width, height, format, false);
         if (this.gpu && this.preferGpu) {
           let bitmap;
@@ -118,6 +128,12 @@ if (typeof WorkerGlobalScope !== 'undefined' && self instanceof WorkerGlobalScop
         }
         manager = new FrameDecoder(await Decoder.open(module), { gpu: data.gpu, nativeInflation: data.nativeInflation, deferredRendering: data.deferredRendering, automaticRenderer: data.automaticRenderer });
       }
+      if (data.type === 'prepare') {
+        manager.prepare(data.width, data.height);
+        self.postMessage({ id: data.id, prepared: true, memoryBytes: manager.decoder.exports.memory.buffer.byteLength });
+        return;
+      }
+      if (data.type !== undefined && data.type !== 'decode') throw new Error('Invalid SCI worker operation.');
       const frame = await manager.decode(data.packet, data.width, data.height, data.cellBytes, data.reset, data.font, data.present, data.renderDecision);
       self.postMessage({ id: data.id, ...frame }, frame.bitmap ? [frame.bitmap] : frame.pixels ? [frame.pixels.buffer] : []);
     } catch (error) { self.postMessage({ id: data.id, error: error.message }); }

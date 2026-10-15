@@ -10,8 +10,8 @@ struct State {
     input: Vec<u8>,
     previous: Option<Arc<scene::Frame>>,
     painted: painted::Painted,
-    output: Vec<u8>,
     surface: scene::Surface,
+    rendered: bool,
     error: Vec<u8>,
     configuration: Option<(usize, usize, u32, bool)>,
 }
@@ -109,6 +109,7 @@ fn decode_input(
     STATE.with_borrow_mut(|state| {
         state.error.clear();
         state.painted.invalidate_plan();
+        state.rendered = false;
         let result = (|| {
             if format != 28 {
                 return Err(std::io::Error::other("Unsupported SCI representation"));
@@ -135,60 +136,31 @@ fn decode_input(
                     "Decoder dimensions changed without reset",
                 ));
             }
-            let previous = if render {
-                if reset == 0 {
-                    state.surface.cells()
-                } else {
-                    None
-                }
-            } else {
-                state.previous.as_ref().map(|frame| frame.cells())
-            };
+            let previous = state.previous.as_ref().map(Arc::as_ref);
             let spec = packet::FrameSpec {
                 width,
                 height,
                 font: font_name,
             };
-            if !render {
-                let previous = state.previous.as_ref().map(Arc::as_ref);
-                let frame = if expanded {
-                    if state.input.len() != declared as usize {
-                        return Err(std::io::Error::other(
-                            "Expanded packet length does not match declaration",
-                        ));
-                    }
-                    packet::decode_scene_expanded(tag as u8, &state.input, previous, spec)?
-                } else {
-                    packet::decode_scene(
-                        tag as u8,
-                        declared as usize,
-                        &state.input,
-                        previous,
-                        spec,
-                    )?
-                };
-                state.previous = Some(Arc::new(frame));
-                state.output.clear();
-                state.surface = scene::Surface::default();
-                return Ok(());
-            }
             let frame = if expanded {
                 if state.input.len() != declared as usize {
                     return Err(std::io::Error::other(
                         "Expanded packet length does not match declaration",
                     ));
                 }
-                packet::decode_expanded(tag as u8, &state.input, previous, spec)?
+                packet::decode_scene_expanded(tag as u8, &state.input, previous, spec)?
             } else {
-                packet::decode(tag as u8, declared as usize, &state.input, previous, spec)?
+                packet::decode_scene(tag as u8, declared as usize, &state.input, previous, spec)?
             };
-            state.output.clear();
-            state.surface.update(frame, width, height)?;
-            state.previous = None;
+            let frame = Arc::new(frame);
+            if render {
+                state.surface.update_owned(Arc::clone(&frame))?;
+                state.rendered = true;
+            }
+            state.previous = Some(frame);
             Ok::<(), std::io::Error>(())
         })();
         if let Err(error) = result {
-            state.output.clear();
             state.surface = scene::Surface::default();
             state.previous = None;
             state.painted.clear();
@@ -204,20 +176,20 @@ fn decode_input(
 #[cfg_attr(target_arch = "wasm32", no_mangle)]
 pub extern "C" fn pixels() -> usize {
     STATE.with_borrow(|state| {
-        if state.surface.cells().is_some() {
+        if state.rendered {
             state.surface.pixels().as_ptr() as usize
         } else {
-            state.output.as_ptr() as usize
+            0
         }
     })
 }
 #[cfg_attr(target_arch = "wasm32", no_mangle)]
 pub extern "C" fn pixels_length() -> usize {
     STATE.with_borrow(|state| {
-        if state.surface.cells().is_some() {
+        if state.rendered {
             state.surface.pixels().len()
         } else {
-            state.output.len()
+            0
         }
     })
 }
@@ -239,12 +211,16 @@ pub extern "C" fn render_current_cells() -> u32 {
             if spec.width != width || spec.height != height || font != 1 {
                 return Err(std::io::Error::other("Owned frame configuration changed"));
             }
-            frame.render_rgba(&mut state.output)
+            state.surface.update_owned(Arc::clone(frame))
         })();
         match result {
-            Ok(()) => 1,
+            Ok(()) => {
+                state.rendered = true;
+                1
+            }
             Err(error) => {
-                state.output.clear();
+                state.rendered = false;
+                state.surface = scene::Surface::default();
                 state.painted.clear();
                 state.error.extend_from_slice(error.to_string().as_bytes());
                 0
@@ -256,19 +232,33 @@ pub extern "C" fn render_current_cells() -> u32 {
 #[cfg_attr(target_arch = "wasm32", no_mangle)]
 pub extern "C" fn frame() -> usize {
     STATE.with_borrow(|state| {
-        state
-            .previous
-            .as_ref()
-            .map_or(0, |frame| frame.cells().as_ptr() as usize)
+        if state
+            .configuration
+            .is_some_and(|configuration| !configuration.3)
+        {
+            state
+                .previous
+                .as_ref()
+                .map_or(0, |frame| frame.cells().as_ptr() as usize)
+        } else {
+            0
+        }
     })
 }
 #[cfg_attr(target_arch = "wasm32", no_mangle)]
 pub extern "C" fn frame_length() -> usize {
     STATE.with_borrow(|state| {
-        state
-            .previous
-            .as_ref()
-            .map_or(0, |frame| frame.cells().len())
+        if state
+            .configuration
+            .is_some_and(|configuration| !configuration.3)
+        {
+            state
+                .previous
+                .as_ref()
+                .map_or(0, |frame| frame.cells().len())
+        } else {
+            0
+        }
     })
 }
 

@@ -2,6 +2,8 @@ use super::{paint, Cell, CELL_BYTES};
 use crate::{cells, glyph_fit};
 use std::{collections::HashMap, io, sync::OnceLock};
 
+#[path = "fit_bounds.rs"]
+mod bounds;
 #[path = "fit_kernel.rs"]
 mod kernel;
 use kernel::prepared as fit;
@@ -197,6 +199,31 @@ impl Encoder {
         cell
     }
 
+    fn candidate(
+        &mut self,
+        rgb: &[u8],
+        width: usize,
+        x: usize,
+        y: usize,
+        exponent: u8,
+    ) -> io::Result<(Cell, u64, u64)> {
+        let scale = 1 << exponent;
+        let cell = self.patch(rgb, width, x * 3, y * 4, exponent);
+        let pixels = paint(&cell)?;
+        let mut error = 0;
+        for sy in 0..scale * 4 {
+            for sx in 0..scale * 3 {
+                let offset = ((y * 4 + sy) * width + x * 3 + sx) * 3;
+                for c in 0..3 {
+                    error += (i32::from(rgb[offset + c])
+                        - i32::from(pixels[sy / scale * 3 + sx / scale][c]))
+                    .pow(2) as u64;
+                }
+            }
+        }
+        Ok((cell, error, 6 + u64::from(cell[7]) * 5))
+    }
+
     fn region(
         &mut self,
         rgb: &[u8],
@@ -214,22 +241,32 @@ impl Encoder {
         }
         let scale = 1 << exponent;
         let fits = x + scale <= columns && y + scale <= rows;
-        let mut candidate = None;
         if fits {
-            let cell = self.patch(rgb, width, x * 3, y * 4, exponent);
-            let pixels = paint(&cell)?;
-            let mut error = 0;
-            for sy in 0..scale * 4 {
-                for sx in 0..scale * 3 {
-                    let offset = ((y * 4 + sy) * width + x * 3 + sx) * 3;
-                    for c in 0..3 {
-                        error += (i32::from(rgb[offset + c])
-                            - i32::from(pixels[sy / scale * 3 + sx / scale][c]))
-                        .pow(2) as u64;
-                    }
+            if let Some(color) = bounds::uniform(rgb, width, x * 3, y * 4, scale) {
+                let mut cell = [0; CELL_BYTES];
+                cell[0] = exponent;
+                cell[3] = b' ';
+                for channel in 0..3 {
+                    cell[4 + channel] = quantize(color[channel], self.color_bits);
                 }
+                let error = color
+                    .iter()
+                    .zip(&cell[4..7])
+                    .map(|(&source, &value)| (i32::from(source) - i32::from(value)).pow(2) as u64)
+                    .sum::<u64>()
+                    * (12 * scale * scale) as u64;
+                super::place(frame, columns, y * columns + x, cell)?;
+                return Ok((error, 6));
             }
-            let bytes = 6 + u64::from(cell[7]) * 5;
+        }
+        let lower_bound = if fits && exponent > 0 {
+            bounds::error(rgb, width, x * 3, y * 4, scale)
+        } else {
+            0
+        };
+        let mut candidate = None;
+        if fits && lower_bound == 0 {
+            let (cell, error, bytes) = self.candidate(rgb, width, x, y, exponent)?;
             if error == 0 || exponent == 0 {
                 super::place(frame, columns, y * columns + x, cell)?;
                 return Ok((error, bytes));
@@ -243,8 +280,15 @@ impl Encoder {
             children.0 += child.0;
             children.1 += child.1;
         }
+        let penalty = u64::from(self.options.byte_penalty);
+        if fits && candidate.is_none() {
+            // Even unconstrained block colors cannot beat the children below this bound.
+            if lower_bound + penalty * 6 > children.0 + penalty * children.1 {
+                return Ok(children);
+            }
+            candidate = Some(self.candidate(rgb, width, x, y, exponent)?);
+        }
         if let Some((cell, error, bytes)) = candidate {
-            let penalty = u64::from(self.options.byte_penalty);
             if error + penalty * bytes <= children.0 + penalty * children.1 {
                 for sy in 0..scale {
                     for sx in 0..scale {

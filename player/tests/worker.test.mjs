@@ -8,6 +8,25 @@ class WorkerStub {
   terminate() { this.terminated = true; }
 }
 
+test('preparation initializes the worker before packets and validates its acknowledgment', async () => {
+  const original = globalThis.Worker; globalThis.Worker = WorkerStub;
+  try {
+    const module = {};
+    const decoder = new WorkerDecoder({ gpu: false, module });
+    await assert.rejects(decoder.prepare(4, 4), /dimensions/);
+    const preparing = decoder.prepare(1920, 1080);
+    const request = decoder.worker.messages[0];
+    assert.equal(request.type, 'prepare'); assert.equal(request.module, module); assert.equal(request.gpu, false);
+    decoder.worker.onmessage({ data: { id: request.id, prepared: true, memoryBytes: 65536 } });
+    await preparing; assert.equal(decoder.memoryBytes, 65536); assert.equal(decoder.module, undefined);
+    const invalid = decoder.prepare(3, 4);
+    decoder.worker.onmessage({ data: { id: decoder.worker.messages[1].id } });
+    await assert.rejects(invalid, /did not prepare/);
+    const pending = decoder.prepare(3, 4); decoder.close();
+    await assert.rejects(pending, { name: 'AbortError' });
+  } finally { globalThis.Worker = original; }
+});
+
 test('worker queue bounds pending packets and releases all requests on close', async () => {
   const original = globalThis.Worker; globalThis.Worker = WorkerStub;
   try {
