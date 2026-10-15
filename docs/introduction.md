@@ -24,7 +24,7 @@ Sources are not downloaded or converted again during playback. Quality settings 
 
 Supported rendition heights are 360, 480, 720 and 1080 pixels. These labels describe the rendered image, not character rows. Width rounds to a multiple of three to match the font. A 16:9 source can therefore produce 639x360, 852x480, 1281x720 and 1920x1080.
 
-Files use `.sci`, with internal container version 5 and one scene-v1 visual representation. Existing version 4 archives remain supported. Compact composition fields change packing without changing decoded ASCII cells or pixels. Historical containers, fonts and experimental scene versions are rejected. Regenerate those archives from retained sources. For inputs below 360p, the encoder creates a source-sized rendition with height rounded down to a multiple of four.
+Files use `.sci`, with internal container version 6 and one scene-v1 visual representation. Existing version 4 and 5 archives remain supported. Compact composition fields and reversible color differences change packing without changing decoded ASCII cells or pixels. Historical containers, fonts and experimental scene versions are rejected. Regenerate those archives from retained sources. For inputs below 360p, the encoder creates a source-sized rendition with height rounded down to a multiple of four.
 
 ## Next steps
 

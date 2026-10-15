@@ -59,7 +59,7 @@ impl<R: Read + Seek> Archive<R> {
         let version = u16_at(&header, 4);
         let record_bytes = 48;
         if &header[..4] != b"SCIV"
-            || ![4, 5].contains(&version)
+            || crate::format::packet_format(version).is_none()
             || audio > 1
             || !(2..=4096).contains(&length)
             || !(1..=100000).contains(&count)
@@ -286,7 +286,7 @@ impl Frames {
             .get(self.offset..self.offset + 9)
             .ok_or_else(invalid)?;
         let tag = header[0];
-        if self.version == 4 && [8, 9].contains(&tag) {
+        if !crate::format::supports_tag(self.version, tag) {
             return Err(invalid());
         }
         let declared = u32_at(header, 1) as usize;

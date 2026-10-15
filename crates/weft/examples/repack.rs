@@ -8,9 +8,9 @@ use weft::{archive::Archive, scene};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let arguments: Vec<_> = std::env::args().skip(1).collect();
-    if arguments.len() != 3 || !["4", "5"].contains(&arguments[2].as_str()) {
+    if arguments.len() != 3 || !["4", "5", "6"].contains(&arguments[2].as_str()) {
         return Err(
-            "Supply input SCI, new output SCI, and output container version (4 or 5)".into(),
+            "Supply input SCI, new output SCI, and output container version (4, 5 or 6)".into(),
         );
     }
     let destination = Path::new(&arguments[1]);
@@ -80,12 +80,7 @@ fn repack(source: &str, output: &mut File, version: u16) -> io::Result<serde_jso
     }
     let size = output.stream_position()?;
     metadata["version"] = version.into();
-    metadata["video"]["packetFormat"] = if version == 4 {
-        "ascii-scene-zlib"
-    } else {
-        "ascii-scene-fields-zlib"
-    }
-    .into();
+    metadata["video"]["packetFormat"] = weft::format::packet_format(version).unwrap().into();
     let audio: u64 = records
         .iter()
         .filter(|r| r.quality == 0)

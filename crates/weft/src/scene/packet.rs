@@ -1,9 +1,6 @@
+use super::compress::select;
 use super::{invalid, validate, Cell, CELL_BYTES};
-use flate2::{write::ZlibEncoder, Compression};
-use std::{
-    collections::HashMap,
-    io::{self, Write},
-};
+use std::{collections::HashMap, io};
 
 fn roots(frame: &[u8]) -> impl Iterator<Item = (usize, Cell)> + '_ {
     frame
@@ -127,21 +124,6 @@ fn commands(frame: &[u8], previous: Option<&[u8]>) -> Vec<u8> {
     bytes
 }
 
-pub(super) fn deflate(data: &[u8]) -> io::Result<Vec<u8>> {
-    let mut compressor = ZlibEncoder::new(Vec::new(), Compression::new(3));
-    compressor.write_all(data)?;
-    compressor.finish()
-}
-
-pub(super) fn compressed(tag: u8, data: &[u8]) -> io::Result<Vec<u8>> {
-    let compressed = deflate(data)?;
-    let mut output = vec![tag];
-    output.extend_from_slice(&(data.len() as u32).to_le_bytes());
-    output.extend_from_slice(&(compressed.len() as u32).to_le_bytes());
-    output.extend(compressed);
-    Ok(output)
-}
-
 pub fn packet(
     frame: &[u8],
     previous: Option<&[u8]>,
@@ -159,28 +141,32 @@ pub fn packet_for_version(
     height: usize,
     version: u16,
 ) -> io::Result<Vec<u8>> {
-    if ![4, 5].contains(&version) {
+    if crate::format::packet_format(version).is_none() {
         return Err(invalid());
     }
     validate(frame, width, height)?;
     if let Some(previous) = previous {
         validate(previous, width, height)?;
     }
-    let mut best = compressed(4, &commands(frame, None))?;
-    let spatial = compressed(6, &super::planes::encode(frame, None, width / 3, (0, 0)))?;
-    if spatial.len() < best.len() {
-        best = spatial;
-    }
-    if version == 5 {
+    let mut best = Vec::new();
+    select(&mut best, 4, &commands(frame, None))?;
+    select(
+        &mut best,
+        6,
+        &super::planes::encode(frame, None, width / 3, (0, 0)),
+    )?;
+    if version >= 5 {
         for mode in [0, 1] {
-            let fields = compressed(8, &super::fields::encode(frame, None, mode))?;
-            if fields.len() < best.len() {
-                best = fields;
+            let mut fields = super::fields::encode::<false>(frame, None, mode);
+            select(&mut best, 8, &fields)?;
+            if version >= 6 && mode == 1 {
+                super::fields::decorrelate(&mut fields);
+                select(&mut best, 10, &fields)?;
             }
         }
     }
     if let Some(previous) = previous {
-        let predicted = predicted(frame, previous, width, version == 5)?;
+        let predicted = predicted(frame, previous, width, version)?;
         if predicted.len() < best.len() {
             best = predicted;
         }
@@ -197,32 +183,32 @@ pub fn packet_predicted(
 ) -> io::Result<Vec<u8>> {
     validate(frame, width, height)?;
     validate(previous, width, height)?;
-    predicted(frame, previous, width, true)
+    predicted(frame, previous, width, crate::format::VERSION)
 }
 
-fn predicted(frame: &[u8], previous: &[u8], width: usize, fields: bool) -> io::Result<Vec<u8>> {
-    let mut best = compressed(5, &commands(frame, Some(previous)))?;
-    let temporal = compressed(
+fn predicted(frame: &[u8], previous: &[u8], width: usize, version: u16) -> io::Result<Vec<u8>> {
+    let mut best = Vec::new();
+    select(&mut best, 5, &commands(frame, Some(previous)))?;
+    select(
+        &mut best,
         7,
         &super::planes::encode(frame, Some(previous), width / 3, (0, 0)),
     )?;
-    if temporal.len() < best.len() {
-        best = temporal;
-    }
     let motion = motion(frame, previous, width / 3);
     if motion != (0, 0) {
-        let moved = compressed(
+        select(
+            &mut best,
             7,
             &super::planes::encode(frame, Some(previous), width / 3, motion),
         )?;
-        if moved.len() < best.len() {
-            best = moved;
-        }
     }
-    if fields {
-        let compact = compressed(9, &super::fields::encode(frame, Some(previous), 2))?;
-        if compact.len() < best.len() {
-            best = compact;
+    if version >= 5 {
+        let mut fields = super::fields::encode::<false>(frame, Some(previous), 2);
+        select(&mut best, 9, &fields)?;
+        // Both temporal field payloads coincide when the compositions are identical.
+        if version >= 6 && frame != previous {
+            super::fields::decorrelate(&mut fields);
+            select(&mut best, 11, &fields)?;
         }
     }
     Ok(best)
@@ -318,7 +304,7 @@ pub(crate) fn decode_previous(
     width: usize,
     height: usize,
 ) -> io::Result<Vec<u8>> {
-    if [8, 9].contains(&tag) {
+    if [8, 9, 10, 11].contains(&tag) {
         return super::fields::decode_previous(tag, data, previous, width, height);
     }
     if [6, 7].contains(&tag) {

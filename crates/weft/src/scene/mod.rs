@@ -1,5 +1,6 @@
 //! Adaptive, layered compositions of fixed ASCII glyphs.
 
+mod compress;
 mod fields;
 mod fit;
 mod frame;

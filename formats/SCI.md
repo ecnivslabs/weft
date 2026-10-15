@@ -2,7 +2,7 @@
 
 SCI is Weft's ASCII video archive format. Files use `.sci` and MIME type `application/vnd.weft.sci`. One visual representation is supported, with synchronized Opus audio and explicit presentation timing. The format contains ASCII symbols and appearance attributes, never a conventional video stream or source pixel planes.
 
-New archives use internal container version **5**. Version 4 remains readable with its original packet rules. Versions 1 through 3, two-color visual profiles and experimental scene-v2/v3 profiles are rejected. Container versions describe compatibility, not visual modes or filename extensions. Existing valid version 4 archives remain reusable without re-encoding.
+New archives use internal container version **6**. Versions 4 and 5 remain readable with their original packet rules. Versions 1 through 3, two-color visual profiles and experimental scene-v2/v3 profiles are rejected. Container versions describe compatibility, not visual modes or filename extensions. Existing valid version 4 and 5 archives remain reusable without re-encoding.
 
 ## Header and metadata
 
@@ -11,7 +11,7 @@ Integers are unsigned and little endian. The fixed header occupies 32 bytes.
 | Offset | Bytes | Meaning |
 | :--- | :--- | :--- |
 | 0 | 4 | Magic `SCIV` |
-| 4 | 2 | Internal version 4 or 5 |
+| 4 | 2 | Internal version 4, 5 or 6 |
 | 6 | 2 | Flags, bit 0 indicates audio; other bits zero |
 | 8 | 4 | UTF-8 JSON metadata length |
 | 12 | 4 | Index record count |
@@ -44,7 +44,7 @@ Metadata declares `chunks`, `frames`, `duration`, nominal rational `fpsNumerator
 
 A video packet starts with its unsigned 32-bit presentation duration in microseconds, followed by a nine-byte packet header (tag, uncompressed length, compressed length) and one zlib stream. Durations are positive and at most one second. Long source holds split into identical presentation events without introducing new motion. Metadata records sourceFrames and averageFps separately from presentation event counts. Delivery chunks span at most two seconds, including a trailing hold event. Their sum must equal the indexed chunk duration. References reset at each chunk. Source timestamps normalize to the first video frame and are retained to microsecond precision. Sources above the configured frame-rate ceiling drop frames using source timestamps, rather than generating new motion.
 
-The only visual profile is `sci-ascii-scene-v1`, mapper `adaptive-layered-v2`, font `ascii-3x4-v2`, transform `reflect-xy-v1`, and `cellBytes: 28`. Version 4 uses packet format `ascii-scene-zlib`; version 5 uses `ascii-scene-fields-zlib`. Packet tags are 4 (independent commands), 5 (predicted commands), 6 (spatial attribute planes), and 7 (motion-predicted attribute planes). Version 5 additionally permits tags 8 (independent composition fields) and 9 (temporal composition fields). Tags 5, 7, and 9 require a previous frame and cannot start a chunk. Version 4 rejects tags 8 and 9. All other tags and codec profiles are rejected.
+The only visual profile is `sci-ascii-scene-v1`, mapper `adaptive-layered-v2`, font `ascii-3x4-v2`, transform `reflect-xy-v1`, and `cellBytes: 28`. Version 4 uses packet format `ascii-scene-zlib`; version 5 uses `ascii-scene-fields-zlib`; version 6 uses `ascii-scene-color-fields-zlib`. Packet tags are 4 (independent commands), 5 (predicted commands), 6 (spatial attribute planes), and 7 (motion-predicted attribute planes). Versions 5 and 6 additionally permit tags 8 (independent composition fields) and 9 (temporal composition fields). Version 6 adds tags 10 (independent color-difference fields) and 11 (temporal color-difference fields). Tags 5, 7, 9 and 11 require a previous frame and cannot start a chunk. A version 4 archive rejects tags above 7; a version 5 archive rejects tags above 9. All other tags and codec profiles are rejected.
 
 The writer stages independently compressed ASCII frames before delivery packing. Packing reconstructs those compositions and selects temporal packets, then splits every rendition at a common boundary whenever any rendition would exceed 16 MiB. New boundary packets are independent. This bounds delivery payloads without changing fitted glyphs, colors, resolution, or source timing. Chunks may therefore be shorter than the one-second target. Temporary ASCII staging is limited to 64 GiB and is removed on completion or failure. Reserved index space may leave an unreferenced gap before payloads; viewers do not fetch that gap.
 
@@ -103,6 +103,14 @@ Tag 8 accepts mode 0 (literal fields) or mode 1 (preceding-value differences). I
 Reconstruct scale values first. Each exponent must be 0 through 3. Place each composition at the next uncovered base cell in row-major order, covering a square of `2^exponent` base cells on each axis. Reject overlap, out-of-bounds placement, excess compositions and incomplete coverage. Decode layer counts next, requiring 0 through 4, then derive all foreground-stream lengths before reading attributes. Restore the ASCII space, zero inactive slots and validate every glyph and reflection. Expand origins into the existing 28-byte cells, including each covered cell's own offsets. The resulting geometry and attributes must pass the same validation as command and plane packets. Reject trailing or missing bytes, invalid modes and missing temporal references.
 
 Encoders compare complete compressed packets against the existing command and plane candidates. All candidates reconstruct identical ASCII cells. Compact fields change serialization only; they introduce no pixel payload, replacement glyph masks, color quantization or additional fitting loss.
+
+## Color-difference composition fields
+
+Version 6 tags 10 and 11 retain the compact-field header, composition count, exact payload-length formula, geometry, layer-count rules and validation limits. Tag 10 accepts modes 0 and 1; tag 11 accepts only mode 2 and requires a previous validated frame. Symbols and reflections retain their original byte values. Each background and active foreground RGB triple is reversibly represented as `G`, `(R - G) mod 256`, `(B - G) mod 256`. Field order is scale, layer count, background G, R difference, B difference, then each foreground slot's ASCII code, reflection, G, R difference and B difference.
+
+Mode 0 transmits those transformed field values directly. Mode 1 predicts from the preceding transformed value in each field stream, starting at zero and skipping inactive slots. Mode 2 leaves scale and layer count literal and predicts every other transformed field from the previous expanded frame at the destination origin. Transform a reference RGB triple before using its value as a predictor, including when reference geometry or layer count differs. Attribute subtraction and addition remain modulo 256.
+
+Undo prediction first. For each reconstructed triple, restore `R = (R difference + G) mod 256` and `B = (B difference + G) mod 256`. Reconstruct ordinary RGB attributes before publishing the composition or using it as a later reference. Inactive slots remain zero. All 256 values of every RGB channel remain representable exactly. These fields encode ASCII appearance attributes, not source pixels; they change neither the fitted symbols nor their reconstruction. Older packet candidates remain valid in version 6 and can be selected when smaller.
 
 ## Audio
 

@@ -42,7 +42,9 @@ These options prepare archives. They are not viewer modes. Expensive offline fit
 
 ## Format compatibility
 
-The encoder writes one `.sci` representation: `sci-ascii-scene-v1`. New archives use internal container version 5. Existing version 4 archives remain playable and reusable. Compact field packets compete with existing command and plane packets using actual compressed lengths, preserving identical decoded compositions. Container versions 1 through 3, two-color profiles and experimental scene versions are no longer supported. Re-encode their retained source media before playback.
+The encoder writes one `.sci` representation: `sci-ascii-scene-v1`. New archives use internal container version 6. Existing version 4 and 5 archives remain playable and reusable. Compact fields, including reversible RGB color differences, compete with existing command and plane packets using actual compressed lengths, preserving identical decoded compositions. Compression stops a losing candidate once its emitted bytes cannot beat the current best packet; surviving packets retain complete zlib streams. Container versions 1 through 3, two-color profiles and experimental scene versions are no longer supported. Re-encode their retained source media before playback.
+
+The color-field trial reuses the ordinary field residuals and transforms their color planes in place. The writer tries preceding-value prediction for independent color fields and temporal prediction for changing frames. It skips a duplicate temporal color trial when the expanded compositions are identical. Readers also accept literal color fields. These choices bound added compression work without changing the format's reconstruction rules.
 
 Fitting and delivery options participate in cache identity, so ingestion does not reuse archives prepared with incompatible settings.
 

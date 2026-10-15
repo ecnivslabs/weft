@@ -90,7 +90,10 @@ impl Library {
                 return Err(io::Error::other("Invalid library entry"));
             }
             if entry["status"] == "preparing"
-                || !matches!(entry["format"].as_str(), Some("sci-v4" | "sci-v5"))
+                || !matches!(
+                    entry["format"].as_str(),
+                    Some("sci-v4" | "sci-v5" | "sci-v6")
+                )
                 || entry["encoderProfile"] != fingerprint
                 || !Path::new(text(entry, "path")).is_file()
             {
@@ -236,7 +239,7 @@ mod tests {
         fs::write(&archive, []).unwrap();
         let options = weft_media::EncodeOptions::default();
         let fingerprint = options.fingerprint().unwrap();
-        let entries: Vec<_> = ["sci-v4", "sci-v5", "sci-v3"].into_iter().enumerate().map(|(index, format)| {
+        let entries: Vec<_> = ["sci-v4", "sci-v5", "sci-v6", "sci-v3"].into_iter().enumerate().map(|(index, format)| {
             json!({"id":format!("{index:020x}"),"source":"retained.nut","title":"Retained","status":"ready","format":format,"encoderProfile":fingerprint,"path":archive})
         }).collect();
         fs::write(
@@ -248,7 +251,8 @@ mod tests {
         let entries = library.snapshot().unwrap();
         assert_eq!(entries[0]["status"], "ready");
         assert_eq!(entries[1]["status"], "ready");
-        assert_eq!(entries[2]["status"], "queued");
+        assert_eq!(entries[2]["status"], "ready");
+        assert_eq!(entries[3]["status"], "queued");
         drop(library);
         fs::remove_dir_all(root).unwrap();
     }

@@ -72,3 +72,38 @@ fn malformed_fields_fail_without_partial_output_or_unbounded_counts() {
     assert!(packet::decode_expanded(9, &valid, Some(&sample()), spec(6, 4)).is_err());
     scene::validate(&sample(), 6, 4).unwrap();
 }
+
+#[test]
+fn specified_color_difference_streams_restore_rgb_before_temporal_prediction() {
+    let expected = sample();
+    for (mode, layers, colors) in [
+        (0, [1, 0], [20, 21, 246, 246, 10, 10]),
+        (1, [1, 255], [20, 1, 246, 0, 10, 0]),
+    ] {
+        let mut raw = vec![mode, 2, 0, 0, 0, 0, 0];
+        raw.extend(layers);
+        raw.extend(colors);
+        raw.extend([b'#', 3, 50, 246, 10]);
+        assert_eq!(
+            packet::decode_expanded(10, &raw, None, spec(6, 4)).unwrap(),
+            expected
+        );
+        for length in 0..raw.len() {
+            assert!(packet::decode_expanded(10, &raw[..length], None, spec(6, 4)).is_err());
+        }
+        raw.push(0);
+        assert!(packet::decode_expanded(10, &raw, None, spec(6, 4)).is_err());
+    }
+    // Only the first background changes; transformed differences cross modulo-256 boundaries.
+    let raw = [
+        2, 2, 0, 0, 0, 0, 0, 1, 0, 230, 0, 17, 0, 245, 0, 0, 0, 0, 0, 0,
+    ];
+    let mut updated = expected.clone();
+    updated[4..7].copy_from_slice(&[1, 250, 249]);
+    assert_eq!(
+        packet::decode_expanded(11, &raw, Some(&expected), spec(6, 4)).unwrap(),
+        updated
+    );
+    assert!(packet::decode_expanded(11, &raw, None, spec(6, 4)).is_err());
+    assert!(packet::decode_expanded(10, &raw, None, spec(6, 4)).is_err());
+}

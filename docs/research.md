@@ -43,6 +43,29 @@ Three loopback streaming trials requested four seconds of the cartoon excerpt at
 
 These results do not establish indistinguishable source fidelity, lower bandwidth than conventional video codecs, sustained 2x playback at all tiers, or lower energy use. The all-tier excerpt is particularly short. Those packing trials did not measure local encoding speed or source-download time; the newer encoding measurements below are separate. The new packer adds no dependency, copied third-party implementation, font or media asset.
 
+## Reversible color-field packing
+
+Version 6 adds lossless green-channel color differences to compact composition fields. Each RGB attribute becomes green, red minus green and blue minus green, with arithmetic modulo 256. The ASCII symbols, reflections, layers, eight-bit colors, pixels, audio and presentation times remain identical. Versions 4 and 5 remain readable and reusable.
+
+The `colorFields` section of the [packing report](measurements/compact-fields.json) compares version 5 and 6 repacks with the same production level-3 compressor. Each complete excerpt alternates one warm-up and five measured passes. All expanded ASCII cells, rendered pixels, presentation times, encoded audio and seek boundaries match exactly. These are short excerpts, not sustained playback tests.
+
+| 1080p excerpt | Requested media bodies | Median cell decoding | p95 cell decoding |
+| :--- | ---: | ---: | ---: |
+| cartoon, 96 events | 3.11% smaller | -5.11% | -1.02% |
+| fossils, 96 events | 5.05% smaller | -8.92% | -11.02% |
+| weave, 240 events | 6.59% smaller | -5.15% | -5.94% |
+| detail, 120 events | 11.53% smaller | -12.05% | -8.79% |
+
+CPU pixel decoding improves by 3.48 through 11.35 percent in median cost. Its largest p95 increase is 2.14 percent on cartoon. Every final case passes the five percent median and p95 regression gate. Requested bodies include audio, header, actual metadata and the full index; they exclude HTTP headers, decoder assets and unrequested padding. Complete archive bytes are also recorded.
+
+The first color decoder failed, increasing median cell decoding by 23.23 percent on cartoon and 51.48 percent on fossils. Grouping color operations removed most of that cost, but subsequent full comparisons still exposed p95 regressions and a 5.65 percent median regression. Those failed batches remain in the report. The final decoder gathers only active fields and applies temporal color correction directly to RGB references, avoiding a transformed reference copy. The encoder transforms existing residual planes in place and stops compression candidates whose emitted bytes already exceed the winning size. No fidelity setting, frame count or validation rule changes.
+
+Complete 360p encoding comparisons alternate one warm-up and three measured encodes per binary. Every pixel, presentation time, dimension and frame count matches. Cartoon files shrink from 3883512 to 3845037 bytes; fossils from 9179865 to 8859609 bytes. Unpinned runs vary substantially: cartoon's final median improves while fossils increases by 60.71 percent. Both complete batches, including preliminary runs with almost unchanged medians, remain in the report.
+
+That variation prompted a separate comparison with both binaries restricted to physical performance cores 0, 2, 4 and 6 on the recorded i5-12500H host. The governor, frequency policy and other user applications remain unchanged. Cartoon median encoding increases from 11.419 to 11.751 seconds, 2.91 percent; fossils increases from 14.023 to 14.781 seconds, 5.40 percent. These results expose an encoding cost for the smaller files and faster decoder. They do not establish an encoding-speed improvement or real-time preparation.
+
+The implementation adds no dependency, copied third-party implementation, media asset or font. These packing results do not establish a patent clearance, indistinguishable source fidelity, uninterrupted playback or superiority over H.266.
+
 ## H.266 in MP4 comparison
 
 The version 5 archives were compared with genuine H.266/VVC MP4 files on two retained 1920 by 1080 excerpts. Each contains 96 source presentation events: cartoon runs for 4.004 seconds at 24000/1001 FPS; fossils runs for four seconds at 24 FPS. The [raw report](measurements/vvc-mp4.json) records sources, hashes, tool versions, every QP search trial and independent MP4 verification. The [benchmark guide](benchmarking.md#h-266-in-mp4) describes reproduction.
@@ -54,7 +77,9 @@ VVenC 1.14.0, medium preset, eight threads and perceptual QP adaptation encode t
 | cartoon | 27.566 | 2.197 | 35.575 dB | 35.268 dB | 0.987282 | 0.975806 |
 | fossils | 68.155 | 9.398 | 41.149 dB | 40.768 dB | 0.996569 | 0.994418 |
 
-The selected VVC outputs are within the declared 0.5 dB RGB-error matching threshold, at QP 27 and QP 7 respectively. Counting selected SCI media bodies rather than reserved file padding, VVC uses 92.03 percent fewer bytes for cartoon and 86.21 percent fewer for fossils. SCI therefore requires 12.54 and 7.25 times as many media bytes in these tests. Both selected VVC outputs have lower SSIM. This is an RGB-error-matched size comparison, not proof of equal perceived quality or equal performance across VVC profiles. The 4:2:0 conversion can impose a quality floor; this does not describe every H.266 encoder.
+The selected VVC outputs are within the declared 0.5 dB RGB-error matching threshold, at QP 27 and QP 7 respectively. Counting selected SCI media bodies rather than reserved file padding, VVC uses 92.03 percent fewer bytes for cartoon and 86.21 percent fewer for fossils. SCI therefore requires 12.54 and 7.25 times as many media bytes in these version 5 tests. Both selected VVC outputs have lower SSIM. This is an RGB-error-matched size comparison, not proof of equal perceived quality or equal performance across VVC profiles. The 4:2:0 conversion can impose a quality floor; this does not describe every H.266 encoder.
+
+The newer version 6 repacks occupy 26301074 and 63336966 complete bytes, including audio and container overhead. Their complete RGB, presentation and encoded-audio hashes match the original comparison exactly, so its fidelity measurements and retained VVC outputs remain applicable. SCI still requires 11.97 and 6.74 times the MP4 bytes, respectively. The new hash audit and byte counts appear in `colorFields.vvcComparison` in the packing report. This narrows the gap without reversing the result; no new VVC speed or playback comparison was run.
 
 Independent decoding verifies every MP4 frame, presentation timestamp and duration. Both outputs preserve all 96 frames at the requested cadence. Presented audio sample counts and PCM hashes match SCI exactly after trimming to each track's declared duration. Raw FFmpeg MP4 audio decoding exposes 456 and 648 trailing codec-padding samples per channel respectively; the audit records these rather than counting padding as additional presented audio. Silence does not establish speech or music fidelity.
 

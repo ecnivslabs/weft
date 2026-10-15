@@ -2,6 +2,38 @@ use serde_json::json;
 use std::io::{self, Cursor, Read, Seek, SeekFrom};
 use weft::{archive::Archive, scene};
 
+fn encode_fixture(frame: &[u8], previous: Option<&[u8]>, version: u16) -> Vec<u8> {
+    if version != 6 {
+        return scene::packet_for_version(frame, previous, 3, 4, version).unwrap();
+    }
+    use flate2::{write::ZlibEncoder, Compression};
+    use std::io::Write;
+    let colors = |cell: &[u8]| {
+        [
+            cell[5],
+            cell[4].wrapping_sub(cell[5]),
+            cell[6].wrapping_sub(cell[5]),
+        ]
+    };
+    let values = colors(frame);
+    let reference = previous.map(colors).unwrap_or([0; 3]);
+    let mut raw = vec![if previous.is_some() { 2 } else { 0 }, 1, 0, 0, 0, 0, 0];
+    raw.extend(
+        values
+            .iter()
+            .zip(reference)
+            .map(|(&value, previous)| value.wrapping_sub(previous)),
+    );
+    let mut encoder = ZlibEncoder::new(Vec::new(), Compression::new(3));
+    encoder.write_all(&raw).unwrap();
+    let compressed = encoder.finish().unwrap();
+    let mut packet = vec![if previous.is_some() { 11 } else { 10 }];
+    packet.extend((raw.len() as u32).to_le_bytes());
+    packet.extend((compressed.len() as u32).to_le_bytes());
+    packet.extend(compressed);
+    packet
+}
+
 fn fixture() -> Vec<u8> {
     fixture_codec("sci-ascii-scene-v1")
 }
@@ -11,11 +43,7 @@ fn fixture_codec(codec: &str) -> Vec<u8> {
 }
 
 fn fixture_version(codec: &str, version: u16, packet_version: u16) -> Vec<u8> {
-    let packet_format = if version == 4 {
-        "ascii-scene-zlib"
-    } else {
-        "ascii-scene-fields-zlib"
-    };
+    let packet_format = weft::format::packet_format(version).unwrap();
     let metadata = json!({"version":version,"timebase":1000000,"chunkSeconds":1,"fps":30,"fpsNumerator":30,"fpsDenominator":1,"chunkFrames":30,"chunks":2,"frames":3,"duration":1.1,
         "video":{"codec":codec,"packetFormat":packet_format,"font":"ascii-3x4-v2","cellWidth":3,"cellHeight":4,"cellBytes":28,"glyphTransform":"reflect-xy-v1"},
         "audio":null,"qualities":[{"height":4,"columns":3,"rows":4}]});
@@ -24,11 +52,11 @@ fn fixture_version(codec: &str, version: u16, packet_version: u16) -> Vec<u8> {
     let a = encoder.map_frame(&[37, 119, 201].repeat(12), 3, 4).unwrap();
     let b = encoder.map_frame(&[201, 37, 119].repeat(12), 3, 4).unwrap();
     let mut first = 33333_u32.to_le_bytes().to_vec();
-    first.extend(scene::packet_for_version(&a, None, 3, 4, packet_version).unwrap());
+    first.extend(encode_fixture(&a, None, packet_version));
     first.extend(966667_u32.to_le_bytes());
-    first.extend(scene::packet_for_version(&b, Some(&a), 3, 4, packet_version).unwrap());
+    first.extend(encode_fixture(&b, Some(&a), packet_version));
     let mut last = 100000_u32.to_le_bytes().to_vec();
-    last.extend(scene::packet_for_version(&b, None, 3, 4, packet_version).unwrap());
+    last.extend(encode_fixture(&b, None, packet_version));
     let index = 32 + metadata.len() as u64;
     let mut archive = vec![0; 32];
     archive[..4].copy_from_slice(b"SCIV");
@@ -74,7 +102,7 @@ fn current_archive_seeks_and_removed_versions_fail_explicitly() {
     ] {
         assert!(Archive::open(Cursor::new(fixture_codec(codec))).is_err());
     }
-    for version in [1u16, 2, 3, 6] {
+    for version in [1u16, 2, 3, 7] {
         let mut unsupported = fixture();
         unsupported[4..6].copy_from_slice(&version.to_le_bytes());
         assert!(Archive::open(Cursor::new(unsupported)).is_err());
@@ -108,6 +136,45 @@ fn compact_archives_preserve_v4_pixels_seeks_and_timestamps() {
     let mut disguised =
         Archive::open(Cursor::new(fixture_version(weft::format::CODEC, 4, 5))).unwrap();
     assert!(disguised.frame(4, 0).is_err());
+}
+
+#[test]
+fn color_field_archives_preserve_old_seeks_and_reject_disguised_new_packets() {
+    let mut current =
+        Archive::open(Cursor::new(fixture_version(weft::format::CODEC, 6, 6))).unwrap();
+    for version in [4, 5] {
+        let mut previous = Archive::open(Cursor::new(fixture_version(
+            weft::format::CODEC,
+            version,
+            version,
+        )))
+        .unwrap();
+        for index in [2, 0, 1, 2] {
+            assert_eq!(
+                current.frame(4, index).unwrap(),
+                previous.frame(4, index).unwrap()
+            );
+        }
+        for chunk in [1, 0] {
+            let mut a = current.video_chunk(4, chunk).unwrap();
+            let mut b = previous.video_chunk(4, chunk).unwrap();
+            loop {
+                let frame = a.next_frame().unwrap();
+                assert_eq!(frame, b.next_frame().unwrap());
+                assert_eq!(a.presentation(), b.presentation());
+                if frame.is_none() {
+                    break;
+                }
+            }
+        }
+        let mut disguised = Archive::open(Cursor::new(fixture_version(
+            weft::format::CODEC,
+            version,
+            6,
+        )))
+        .unwrap();
+        assert!(disguised.frame(4, 0).is_err());
+    }
 }
 
 struct SparseArchive {

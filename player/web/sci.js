@@ -17,7 +17,7 @@ export function codecFormat(video) {
 export function parseHeader(bytes) {
   invalid(bytes.byteLength !== 32);
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
-  invalid(new TextDecoder().decode(bytes.subarray(0, 4)) !== 'SCIV' || ![4, 5].includes(view.getUint16(4, true)), 'Unsupported SCI version.');
+  invalid(new TextDecoder().decode(bytes.subarray(0, 4)) !== 'SCIV' || ![4, 5, 6].includes(view.getUint16(4, true)), 'Unsupported SCI version.');
   const header = {
     version: view.getUint16(4, true), recordBytes: 48,
     audio: view.getUint16(6, true), metadataLength: view.getUint32(8, true),
@@ -33,8 +33,8 @@ export function parseIndex(bytes, header, metadata) {
   const video = metadata.video;
   codecFormat(video);
   const recordBytes = 48;
-  const packetFormat = header.version === 4 ? 'ascii-scene-zlib' : 'ascii-scene-fields-zlib';
-  invalid(![4, 5].includes(header.version) || metadata.version !== header.version || video.packetFormat !== packetFormat || !glyphMasks.has(video.font) || video.cellWidth !== 3 || video.cellHeight !== 4);
+  const packetFormat = header.version === 4 ? 'ascii-scene-zlib' : header.version === 5 ? 'ascii-scene-fields-zlib' : 'ascii-scene-color-fields-zlib';
+  invalid(![4, 5, 6].includes(header.version) || metadata.version !== header.version || video.packetFormat !== packetFormat || !glyphMasks.has(video.font) || video.cellWidth !== 3 || video.cellHeight !== 4);
   invalid(!Number.isFinite(metadata.fps) || metadata.fps < 1 || metadata.fps > 60 || metadata.chunkFrames !== Math.round(metadata.fps) * 1);
   invalid(!Number.isInteger(metadata.fpsNumerator) || !Number.isInteger(metadata.fpsDenominator) || metadata.fpsNumerator < 1 || metadata.fpsNumerator > 240000 || metadata.fpsDenominator < 1 || metadata.fpsDenominator > 10000 || metadata.fps !== metadata.fpsNumerator / metadata.fpsDenominator);
   invalid(!Number.isInteger(metadata.frames) || metadata.frames < 1 || metadata.frames > 1296000 || !Number.isFinite(metadata.duration) || metadata.duration > 21600 || metadata.duration <= 0);
@@ -106,7 +106,7 @@ export function asciiPackets(bytes, record, cellBytes = 28, format = 28) {
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
   const count = record.columns / 3 * (record.rows / 4);
   const version = record.version ?? 4;
-  invalid(![4, 5].includes(version));
+  invalid(![4, 5, 6].includes(version));
   invalid(cellBytes !== 28 || format !== 28 || !Number.isSafeInteger(count) || count < 1 || count > 368640 || !Number.isSafeInteger(record.startUs) || !Number.isSafeInteger(record.endUs) || record.endUs <= record.startUs);
   const packets = [];
   let position = 0;
@@ -120,7 +120,7 @@ export function asciiPackets(bytes, record, cellBytes = 28, format = 28) {
     const length = view.getUint32(position + 5, true);
     position += 9;
     invalid(length === 0 || length > MAX_CHUNK || position + length > bytes.length);
-    invalid(![4, 5, 6, 7, 8, 9].includes(tag) || (version === 4 && tag >= 8) || (packets.length === 0 && [5, 7, 9].includes(tag)) || decoded < 1 || decoded > count * 38 + 1024);
+    invalid(![4, 5, 6, 7, 8, 9, 10, 11].includes(tag) || ((version === 4 && tag >= 8) || (version === 5 && tag >= 10)) || (packets.length === 0 && [5, 7, 9, 11].includes(tag)) || decoded < 1 || decoded > count * 38 + 1024);
     const sourceFrame = record.first + packets.length;
     packets.push({ sourceFrame, tag, decoded, time: time / 1000000, duration: duration / 1000000, end: (time + duration) / 1000000, bytes: bytes.subarray(position, position + length) });
     time += duration; position += length;

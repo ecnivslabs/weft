@@ -4,8 +4,26 @@ use std::io;
 pub const CODEC: &str = "sci-ascii-scene-v1";
 pub const MAPPER: &str = "adaptive-layered-v2";
 pub const FONT: &str = "ascii-3x4-v2";
-pub const VERSION: u16 = 5;
-pub const PACKET_FORMAT: &str = "ascii-scene-fields-zlib";
+pub const VERSION: u16 = 6;
+pub const PACKET_FORMAT: &str = "ascii-scene-color-fields-zlib";
+
+pub fn packet_format(version: u16) -> Option<&'static str> {
+    match version {
+        4 => Some("ascii-scene-zlib"),
+        5 => Some("ascii-scene-fields-zlib"),
+        6 => Some(PACKET_FORMAT),
+        _ => None,
+    }
+}
+
+pub fn supports_tag(version: u16, tag: u8) -> bool {
+    match version {
+        4 => (4..=7).contains(&tag),
+        5 => (4..=9).contains(&tag),
+        6 => (4..=11).contains(&tag),
+        _ => false,
+    }
+}
 
 pub fn validate_video(video: &Value) -> io::Result<()> {
     if video["codec"] == CODEC

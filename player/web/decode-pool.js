@@ -10,7 +10,7 @@ export function decoderModule() {
   return compiled;
 }
 
-export function independent(tag) { return [4, 6, 8].includes(tag); }
+export function independent(tag) { return [4, 6, 8, 10].includes(tag); }
 
 export function partition(packets, position) {
   if (!Array.isArray(packets) || packets.length < 1 || packets.length > 240) throw new Error('Invalid SCI packet sequence.');

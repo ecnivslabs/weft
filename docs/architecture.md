@@ -44,6 +44,6 @@ The local server binds to loopback by default and checks mutation origins and lo
 
 ## Compatibility
 
-SCI carries explicit presentation durations and timed seek records. New archives use internal container version 5; version 4 remains readable and reusable. Both versions retain the scene-v1 codec and fixed reflected ASCII font. Version 5 adds compact streams containing only composition origins and active attributes. Historical containers, codecs and fonts fail explicitly. The local ingestion service regenerates obsolete archives from retained sources.
+SCI carries explicit presentation durations and timed seek records. New archives use internal container version 6; versions 4 and 5 remain readable and reusable. All three versions retain the scene-v1 codec and fixed reflected ASCII font. Version 5 adds compact streams containing only composition origins and active attributes; version 6 adds reversible green-channel color differences without changing reconstructed attributes. Historical containers, codecs and fonts fail explicitly. The local ingestion service regenerates obsolete archives from retained sources.
 
 The normative font is `crates/weft/src/glyphs.json`. Rust and browser tests require identical definitions and reconstruction. [SCI](../formats/SCI.md) is the format contract; [integration](integration.md) describes the API boundaries.

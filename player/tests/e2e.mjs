@@ -103,11 +103,11 @@ try {
   assert.deepEqual(result.queue.map(video => video.status), ['ready', 'ready']);
   const stored = JSON.parse(readFileSync(join(data, 'catalog.json'), 'utf8'));
   for (const video of stored) {
-    assert.equal(video.format, 'sci-v5');
+    assert.equal(video.format, 'sci-v6');
     assert.ok(video.path.endsWith('.sci'));
     const archive = readFileSync(video.path);
     assert.equal(archive.subarray(0, 4).toString(), 'SCIV');
-    assert.equal(archive.readUInt16LE(4), 5);
+    assert.equal(archive.readUInt16LE(4), 6);
   }
   assert.ok(stored.every(video => video.path.startsWith(join(temporary, 'videos', 'sci'))));
   const mediaDirectory = dirname(stored[0].path);
@@ -155,7 +155,7 @@ try {
     }
     variants[height] = bytes;
   }
-  assert.equal(metadata.version, 5);
+  assert.equal(metadata.version, 6);
   assert.equal(metadata.video.codec, 'sci-ascii-scene-v1');
   await verifyRustDecoder(root, temporary, first, stored[0].path, sourceBytes, metadata, records);
   const decoder = await Decoder.open(readFileSync(join(webDirectory, 'decoder.wasm')));

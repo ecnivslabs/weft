@@ -17,7 +17,7 @@ function packet(tag,data,duration=33333){
 
 test('current archive index validates and unsupported containers and profiles fail',()=>{
  assert.equal(parseIndex(index,currentHeader,metadata).size,currentHeader.count);
- for(const version of [1,2,3,6]){const header=archive.slice(0,32);new DataView(header.buffer).setUint16(4,version,true);assert.throws(()=>parseHeader(header),/version/);}
+ for(const version of [1,2,3,7]){const header=archive.slice(0,32);new DataView(header.buffer).setUint16(4,version,true);assert.throws(()=>parseHeader(header),/version/);}
  for(const codec of ['sci-ascii-v1','sci-ascii-v2','sci-ascii-scene-v2','sci-ascii-scene-v3','h264']){
   assert.throws(()=>codecFormat({...video(),codec}),/Unsupported/);
   assert.throws(()=>parseIndex(index,currentHeader,{...metadata,video:{...metadata.video,codec}}));
@@ -51,10 +51,24 @@ test('version 5 validates compact packets while version 4 retains its packet rul
  const record={version:5,columns:3,rows:4,frames:1,first:0,startUs:0,endUs:33333};
  assert.equal(asciiPackets(bytes,record)[0].tag,8);
  assert.throws(()=>asciiPackets(bytes,{...record,version:4}));
- assert.throws(()=>asciiPackets(bytes,{...record,version:6}));
+ assert.equal(asciiPackets(bytes,{...record,version:6})[0].tag,8);
  assert.throws(()=>asciiPackets(packet(9,payload),record));
  const predicted=packet(9,Uint8Array.of(2,1,0,0,0,0,0,0,0,0));
  assert.deepEqual(asciiPackets(new Uint8Array([...bytes,...predicted]),{...record,frames:2,endUs:66666}).map(packet=>packet.tag),[8,9]);
+});
+
+test('version 6 color fields keep older packets and reject new references at chunk starts',()=>{
+ const header={...currentHeader,version:6};
+ const current={...metadata,version:6,video:{...metadata.video,packetFormat:'ascii-scene-color-fields-zlib'}};
+ assert.ok([...parseIndex(index,header,current).values()].every(record=>record.version===6));
+ for(const version of [4,5])assert.throws(()=>parseIndex(index,{...header,version},{...current,version}));
+ const record={version:6,columns:3,rows:4,frames:2,first:0,startUs:0,endUs:66666};
+ const independent=packet(10,Uint8Array.of(0,1,0,0,0,0,0,20,246,10));
+ const temporal=packet(11,Uint8Array.of(2,1,0,0,0,0,0,0,0,0));
+ assert.deepEqual(asciiPackets(new Uint8Array([...independent,...temporal]),record).map(packet=>packet.tag),[10,11]);
+ for(const version of [4,5])assert.throws(()=>asciiPackets(new Uint8Array([...independent,...temporal]),{...record,version}));
+ assert.throws(()=>asciiPackets(temporal,{...record,frames:1,endUs:33333}));
+ assert.throws(()=>asciiPackets(packet(12,new Uint8Array(28)),{...record,frames:1,endUs:33333}));
 });
 
 test('font declares exactly 95 printable symbols with fixed reflected masks',()=>{

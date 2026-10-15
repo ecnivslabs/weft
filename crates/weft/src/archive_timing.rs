@@ -26,10 +26,11 @@ pub(crate) fn validate_metadata(metadata: &Value, audio: u16) -> io::Result<()> 
     crate::format::validate_video(video)?;
     if metadata["timebase"] != 1_000_000
         || metadata["chunkSeconds"] != 1
-        || !matches!(
-            (metadata["version"].as_u64(), video["packetFormat"].as_str()),
-            (Some(4), Some("ascii-scene-zlib")) | (Some(5), Some("ascii-scene-fields-zlib"))
-        )
+        || metadata["version"]
+            .as_u64()
+            .and_then(|version| u16::try_from(version).ok())
+            .and_then(crate::format::packet_format)
+            .is_none_or(|format| video["packetFormat"] != format)
         || video["cellWidth"] != 3
         || video["cellHeight"] != 4
         || video["font"] != "ascii-3x4-v2"

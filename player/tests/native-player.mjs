@@ -36,6 +36,32 @@ function sceneFixture(variant) {
   return { width: columns * 3, height: rows * 4, cells: [...cells], packet: { tag: 6, decoded: data.length, bytes: [...deflateSync(data)] } };
 }
 
+function colorFixtures() {
+  let previous;
+  return [0, 2, 1].map((mode, variant) => {
+    const fixture = sceneFixture(variant);
+    const cells = fixture.cells;
+    const count = cells.length / 28;
+    const fields = [0, 7, 5, 4, 6, 8, 9, 11, 10, 12, 13, 14, 16, 15, 17, 18, 19, 21, 20, 22, 23, 24, 26, 25, 27];
+    const value = (frame, index, channel) => {
+      const green = channel === 4 || channel === 6 ? 5 : channel >= 10 && (channel - 10) % 5 === 0 ? channel + 1 : channel >= 10 && (channel - 10) % 5 === 2 ? channel - 1 : null;
+      return (frame[index * 28 + channel] - (green === null ? 0 : frame[index * 28 + green]) + 256) % 256;
+    };
+    const raw = [mode, count, 0, 0, 0];
+    for (const channel of fields) {
+      let prior = 0;
+      for (let index = 0; index < count; index++) {
+        if (channel >= 8 && (channel - 8) / 5 >= cells[index * 28 + 7]) continue;
+        const current = value(cells, index, channel);
+        const prediction = mode === 1 ? prior : mode === 2 && channel !== 0 && channel !== 7 ? value(previous, index, channel) : 0;
+        raw.push((current - prediction + 256) % 256); prior = current;
+      }
+    }
+    previous = cells;
+    return { ...fixture, reset: mode !== 2, packet: { tag: mode === 2 ? 11 : 10, decoded: raw.length, bytes: [...deflateSync(Uint8Array.from(raw))] } };
+  });
+}
+
 function paintedFixtures() {
   const count = 128 * 24;
   const first = new Uint8Array(count * 28);
@@ -206,8 +232,8 @@ try {
       const worker = new WorkerDecoder({ gpu, nativeInflation });
       const reference = await Decoder.open(module);
       try {
-        for (const [index, fixture] of [fixtures[0], fixtures[1], fixtures[0]].entries()) {
-          const reset = index !== 1;
+        for (const [index, fixture] of fixtures.entries()) {
+          const reset = fixture.reset ?? index !== 1;
           const packet = { ...fixture.packet, bytes: new Uint8Array(fixture.packet.bytes) };
           const expectedCells = reference.decodeCells(packet, fixture.width, fixture.height, 28, reset);
           if (JSON.stringify([...expectedCells]) !== JSON.stringify(fixture.cells)) throw new Error('Scene attributes changed source ASCII cells.');
@@ -222,9 +248,9 @@ try {
         }
       } finally { worker.close(); }
     }
-    return { verified, codec: 'sci-ascii-scene-v1', tag: 6, priorReferenceIgnored: true, seekReset: true };
-  }, [sceneFixture(0), sceneFixture(1)]);
-  assert.equal(sceneVerification.verified, 12);
+    return { verified, codec: 'sci-ascii-scene-v1', tags: [6, 10, 11], priorReferenceIgnored: true, seekReset: true };
+  }, [sceneFixture(0), sceneFixture(1), sceneFixture(0), ...colorFixtures()]);
+  assert.equal(sceneVerification.verified, 24);
   const deferredVerification = await page.evaluate(async fixtures => {
     const {WorkerDecoder}=await import('/worker.js');const {Decoder}=await import('/wasm.js');
     const module=await WebAssembly.compile(await (await fetch('/decoder.wasm')).arrayBuffer());

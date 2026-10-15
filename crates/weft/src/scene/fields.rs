@@ -4,8 +4,41 @@ use std::io;
 const CHANNELS: [usize; 25] = [
     0, 7, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27,
 ];
+const COLOR_CHANNELS: [usize; 25] = [
+    0, 7, 5, 4, 6, 8, 9, 11, 10, 12, 13, 14, 16, 15, 17, 18, 19, 21, 20, 22, 23, 24, 26, 25, 27,
+];
 
-pub(super) fn encode(frame: &[u8], previous: Option<&[u8]>, mode: u8) -> Vec<u8> {
+fn channels<const COLOR: bool>() -> &'static [usize; 25] {
+    if COLOR {
+        &COLOR_CHANNELS
+    } else {
+        &CHANNELS
+    }
+}
+
+fn green(channel: usize) -> Option<usize> {
+    match channel {
+        4 | 6 => Some(5),
+        10..=27 if (channel - 10).is_multiple_of(5) => Some(channel + 1),
+        10..=27 if (channel - 10) % 5 == 2 => Some(channel - 1),
+        _ => None,
+    }
+}
+
+fn value<const COLOR: bool>(cell: &[u8], channel: usize) -> u8 {
+    if COLOR {
+        if let Some(green) = green(channel) {
+            return cell[channel].wrapping_sub(cell[green]);
+        }
+    }
+    cell[channel]
+}
+
+pub(super) fn encode<const COLOR: bool>(
+    frame: &[u8],
+    previous: Option<&[u8]>,
+    mode: u8,
+) -> Vec<u8> {
     let roots: Vec<_> = frame
         .as_chunks::<CELL_BYTES>()
         .0
@@ -16,7 +49,7 @@ pub(super) fn encode(frame: &[u8], previous: Option<&[u8]>, mode: u8) -> Vec<u8>
     let mut output = Vec::with_capacity(5 + roots.len() * 25);
     output.push(mode);
     output.extend_from_slice(&(roots.len() as u32).to_le_bytes());
-    for channel in CHANNELS {
+    for &channel in channels::<COLOR>() {
         let mut prior = 0;
         for &(index, cell) in &roots {
             if channel >= 8 && (channel - 8) / 5 >= usize::from(cell[7]) {
@@ -24,16 +57,46 @@ pub(super) fn encode(frame: &[u8], previous: Option<&[u8]>, mode: u8) -> Vec<u8>
             }
             let prediction = match mode {
                 1 => prior,
-                2 if channel != 0 && channel != 7 => {
-                    previous.unwrap()[index * CELL_BYTES + channel]
-                }
+                2 if channel != 0 && channel != 7 => value::<COLOR>(
+                    &previous.unwrap()[index * CELL_BYTES..(index + 1) * CELL_BYTES],
+                    channel,
+                ),
                 _ => 0,
             };
-            output.push(cell[channel].wrapping_sub(prediction));
-            prior = cell[channel];
+            let current = value::<COLOR>(cell, channel);
+            output.push(current.wrapping_sub(prediction));
+            prior = current;
         }
     }
     output
+}
+
+pub(super) fn decorrelate(data: &mut [u8]) {
+    let count = u32::from_le_bytes(data[1..5].try_into().unwrap()) as usize;
+    let mut active = [0; 4];
+    let mut prior = 0;
+    for &byte in &data[5 + count..5 + count * 2] {
+        let layers = byte.wrapping_add(if data[0] == 1 { prior } else { 0 });
+        for count in &mut active[..usize::from(layers)] {
+            *count += 1;
+        }
+        prior = layers;
+    }
+    let mut offset = 5 + count * 2;
+    // Modulo-256 color differences commute with the field predictors, including temporal residuals.
+    for (prefix, entries) in std::iter::once((0, count)).chain(active.map(|count| (2, count))) {
+        offset += prefix * entries;
+        let (red, rest) = data[offset..offset + entries * 3].split_at_mut(entries);
+        let (green, blue) = rest.split_at_mut(entries);
+        for ((red, green), blue) in red.iter_mut().zip(green).zip(blue) {
+            let original_red = *red;
+            *red = *green;
+            *blue = blue.wrapping_sub(*green);
+            *green = original_red.wrapping_sub(*green);
+        }
+        offset += entries * 3;
+    }
+    debug_assert_eq!(offset, data.len());
 }
 
 pub(super) fn decode_previous(
@@ -48,7 +111,7 @@ pub(super) fn decode_previous(
         return Err(invalid());
     }
     let mode = data[0];
-    if !matches!((tag, mode), (8, 0 | 1) | (9, 2)) {
+    if !matches!((tag, mode), (8 | 10, 0 | 1) | (9 | 11, 2)) {
         return Err(invalid());
     }
     let length = u32::from_le_bytes(data[1..5].try_into().unwrap()) as usize;
@@ -56,21 +119,22 @@ pub(super) fn decode_previous(
     {
         return Err(invalid());
     }
-    match mode {
-        0 => decode::<0>(data, &[], width, height, count, length),
-        1 => decode::<1>(data, &[], width, height, count, length),
-        _ => decode::<2>(
-            data,
-            previous.ok_or_else(invalid)?.validated(width, height)?,
-            width,
-            height,
-            count,
-            length,
-        ),
+    let reference = if mode == 2 {
+        previous.ok_or_else(invalid)?.validated(width, height)?
+    } else {
+        &[]
+    };
+    match (mode, tag >= 10) {
+        (0, false) => decode::<0, false>(data, reference, width, height, count, length),
+        (1, false) => decode::<1, false>(data, reference, width, height, count, length),
+        (2, false) => decode::<2, false>(data, reference, width, height, count, length),
+        (0, true) => decode::<0, true>(data, reference, width, height, count, length),
+        (1, true) => decode::<1, true>(data, reference, width, height, count, length),
+        _ => decode::<2, true>(data, reference, width, height, count, length),
     }
 }
 
-fn decode<const MODE: u8>(
+fn decode<const MODE: u8, const COLOR: bool>(
     data: &[u8],
     previous: &[u8],
     width: usize,
@@ -131,7 +195,7 @@ fn decode<const MODE: u8>(
     }
     let mut position = 5 + length * 2;
     let mut streams: [std::slice::Iter<'_, u8>; 23] = std::array::from_fn(|_| [].iter());
-    for (stream, channel) in streams.iter_mut().zip(&CHANNELS[2..]) {
+    for (stream, channel) in streams.iter_mut().zip(&channels::<COLOR>()[2..]) {
         let entries = if *channel < 8 {
             length
         } else {
@@ -153,18 +217,32 @@ fn decode<const MODE: u8>(
         } else {
             &[]
         };
-        for (field, &channel) in CHANNELS[2..].iter().enumerate() {
-            if channel >= 8 && (channel - 8) / 5 >= usize::from(layers) {
-                continue;
-            }
+        for (field, &channel) in channels::<COLOR>()[2..5 + usize::from(layers) * 5]
+            .iter()
+            .enumerate()
+        {
             let prediction = match MODE {
                 1 => prior[field],
                 2 => reference[channel],
                 _ => 0,
             };
             let value = streams[field].next().unwrap().wrapping_add(prediction);
-            cell[channel] = value;
             prior[field] = value;
+            cell[channel] = value;
+        }
+        if COLOR {
+            // Undo temporal color residuals after adding RGB references, without transforming a copy.
+            for offset in
+                std::iter::once(4).chain((0..usize::from(layers)).map(|layer| 10 + layer * 5))
+            {
+                let green = cell[offset + 1].wrapping_sub(if MODE == 2 {
+                    reference[offset + 1]
+                } else {
+                    0
+                });
+                cell[offset] = cell[offset].wrapping_add(green);
+                cell[offset + 2] = cell[offset + 2].wrapping_add(green);
+            }
         }
         validate_cell(&cell)?;
         let scale = 1 << exponent;
@@ -237,8 +315,17 @@ mod tests {
             for seed in 1..=32 {
                 let frame = composition(width, height, seed);
                 let previous = composition(width, height, seed + 731);
-                for (tag, mode) in [(8, 0), (8, 1), (9, 2)] {
-                    let raw = encode(&frame, Some(&previous), mode);
+                for (tag, mode) in [(8, 0), (8, 1), (9, 2), (10, 0), (10, 1), (11, 2)] {
+                    let raw = if tag >= 10 {
+                        encode::<true>(&frame, Some(&previous), mode)
+                    } else {
+                        encode::<false>(&frame, Some(&previous), mode)
+                    };
+                    if tag >= 10 {
+                        let mut transformed = encode::<false>(&frame, Some(&previous), mode);
+                        decorrelate(&mut transformed);
+                        assert_eq!(transformed, raw);
+                    }
                     let decoded = decode_previous(
                         tag,
                         &raw,
@@ -248,7 +335,7 @@ mod tests {
                     )
                     .unwrap();
                     assert_eq!(decoded, frame);
-                    if tag == 9 {
+                    if [9, 11].contains(&tag) {
                         let owned = super::super::Frame::new(
                             previous.clone(),
                             crate::packet::FrameSpec {
@@ -319,8 +406,12 @@ mod tests {
         assert!(decode_previous(8, &overlap, None, 12, 16).is_err());
         let frame = composition(27, 36, 115);
         let previous = composition(27, 36, 219);
-        for (tag, mode) in [(8, 0), (8, 1), (9, 2)] {
-            let raw = encode(&frame, Some(&previous), mode);
+        for (tag, mode) in [(8, 0), (8, 1), (9, 2), (10, 0), (10, 1), (11, 2)] {
+            let raw = if tag >= 10 {
+                encode::<true>(&frame, Some(&previous), mode)
+            } else {
+                encode::<false>(&frame, Some(&previous), mode)
+            };
             for length in 0..raw.len() {
                 assert!(decode_previous(
                     tag,

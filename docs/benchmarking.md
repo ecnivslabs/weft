@@ -61,11 +61,12 @@ The native `profile` example separates inflation, composition decoding and RGB r
 cargo build -p weft --example repack --release --locked
 cargo run -p weft --example repack --release --locked -- INPUT.sci legacy.sci 4
 cargo run -p weft --example repack --release --locked -- INPUT.sci compact.sci 5
+cargo run -p weft --example repack --release --locked -- INPUT.sci color-fields.sci 6
 node player/tests/packing-benchmark.mjs legacy.sci compact.sci HEIGHT BEFORE.wasm AFTER.wasm cells
 node player/tests/packing-benchmark.mjs legacy.sci compact.sci HEIGHT BEFORE.wasm AFTER.wasm pixels
 ```
 
-Repacking preserves the original fitted ASCII compositions, presentation durations, audio payloads and seek boundaries. It does not download or refit source media. Output paths must not exist. The example rejects output chunks over 16 MiB; it does not silently change seek boundaries. Both versions use the same production level-3 compressor. Its one-run wall time is diagnostic, not controlled encoder-performance evidence.
+Repacking preserves the original fitted ASCII compositions, presentation durations, audio payloads and seek boundaries. It does not download or refit source media. Output paths must not exist. The example rejects output chunks over 16 MiB; it does not silently change seek boundaries. All versions use the same production level-3 compressor. Compare versions 5 and 6 to isolate reversible color-field packing from the earlier compact-field change. Its one-run wall time is diagnostic, not controlled encoder-performance evidence.
 
 The packing runner reads bounded ranges, checks every chunk checksum, alternates one warm-up and five measured passes, and requires identical complete output and presentation hashes. It also checks exact audio bytes and synchronized boundaries. Results include all stored archive bytes and requested media body bytes, with audio, actual metadata and the complete index. Requested body bytes exclude HTTP headers and unrequested padding. The runner reports median decode cost, per-pass p95 frame cost and first-frame decoding; first-frame decoding excludes network and renderer setup and is not startup delay. Use the streaming runner for those costs and sustained playback.
 

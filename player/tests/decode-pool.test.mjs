@@ -13,6 +13,8 @@ test('partition preserves temporal dependency ownership and skips complete past 
   assert.throws(() => partition([packet(7, 0)], 0), /dependency/);
   assert.deepEqual(partition([packet(8, 0), packet(9, 1), packet(7, 2), packet(8, 3), packet(5, 4)], 0).map(item => [item.first, item.last]), [[0, 3], [3, 5]]);
   assert.throws(() => partition([packet(9, 0)], 0), /dependency/);
+  assert.deepEqual(partition([packet(10, 0), packet(11, 1), packet(9, 2), packet(10, 3)], 0).map(item => [item.first, item.last]), [[0, 3], [3, 4]]);
+  assert.throws(() => partition([packet(11, 0)], 0), /dependency/);
 });
 
 test('seek partition uses the exact stored end at fractional frame boundaries', () => {

@@ -32,7 +32,7 @@ Input is packed RGB. Width must be divisible by three, height by four, and the i
 
 `packet::decode` accepts a bounded compressed packet and an explicit `FrameSpec`. Packets need raster dimensions and the fixed font identifier. The expanded 28-byte state is decoder memory, not the transmitted packet size.
 
-`scene::packet` selects version 5 packet candidates. Use `scene::packet_for_version` with version 4 when writing an archive for an older decoder. `format::VERSION` and `format::PACKET_FORMAT` describe the default writer. The archive reader accepts both versions and rejects newer packet tags inside a version 4 archive.
+`scene::packet` selects version 6 packet candidates. Use `scene::packet_for_version` with version 4 or 5 when writing an archive for an older decoder. `format::VERSION` and `format::PACKET_FORMAT` describe the default writer. The archive reader accepts all three versions and rejects packet tags newer than the declared container version.
 
 `scene::Surface` keeps a validated reference and its RGBA reconstruction. `update` reuses unchanged groups and preserves its previous valid state after failed validation. `scene::render_rgba` reconstructs directly into a caller-owned vector.
 

@@ -1500,5 +1500,3051 @@
     "rustc": "1.98.0 (88d9e12ae 2026-08-18)",
     "cargo": "1.98.0 (797e8a9bc 2026-08-05)",
     "baselineCodecRevision": "6f6f3e5ddc8977d12fb0dd68203a1db341eca100"
+  },
+  "colorFields": {
+    "recordedUtc": "2026-10-15T16:31:03.874425+00:00",
+    "baselineRevision": "3e63cfa",
+    "methodology": {
+      "comparison": "Version 5 versus version 6, same fitted scene-v1 ASCII cells, full RGB precision, presentation durations, encoded audio, seek boundaries and production level-3 zlib-rs compressor.",
+      "corpus": "Four complete 1080p excerpts: cartoon 96 events in 4.004 seconds; fossils 96 events in four seconds; weave 240 events in four seconds; detail 120 events in two seconds.",
+      "decode": "One warmup and five alternating measured passes per output mode. Exact full output, presentation and audio hashes required. Timed decoding excludes transport, initialization, hashing and visible presentation.",
+      "encoding": "One warmup and three alternating measured complete 360p encodes. Every pixel and presentation time must match; audio is validated. Encoding comparison does not require identical encoded-audio bytes.",
+      "concurrency": "Final benchmarks ran one at a time without other owned tests, compiles, rendering jobs or conversions. Existing user applications remained running.",
+      "affinity": "Decoder comparisons and initial encoding comparisons were not pinned. Large encoder variation prompted a second complete comparison on physical performance cores 0, 2, 4 and 6. Frequency and governor were unchanged; other applications were not isolated.",
+      "sizes": "Requested media bodies include audio, header, actual metadata and full index. Excludes HTTP headers, decoder assets and unrequested padding. Complete file sizes are separately retained.",
+      "limitations": [
+        "Short complete excerpts do not establish sustained playback or performance on every device.",
+        "No original-source fidelity change. Exact agreement is with existing ASCII output.",
+        "No real-time encoding or stable general encoding-speed improvement established.",
+        "No energy measurement or commercial patent clearance."
+      ]
+    },
+    "identities": {
+      "baselineCli": {
+        "path": "/tmp/weft-normalize-y7uYrr/weft-before",
+        "bytes": 1249576,
+        "sha256": "901d261ee2bf95810d33a0ecdd8635f80314c7d17cc9a83329ba3fbbdbabaa90"
+      },
+      "candidateCli": {
+        "path": "/tmp/weft-normalize-y7uYrr/weft-final-color",
+        "bytes": 1265568,
+        "sha256": "9c74fc3ebef32096326bbecd4feee1e0ca4d6f4d7d798daabf26dba29613573e"
+      },
+      "baselineWasm": {
+        "path": "/tmp/weft-normalize-y7uYrr/baseline-web/decoder.wasm",
+        "bytes": 169044,
+        "sha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3"
+      },
+      "candidateWasm": {
+        "path": "/tmp/weft-normalize-y7uYrr/final-color.wasm",
+        "bytes": 179394,
+        "sha256": "0f446000fc287100e3d28f6a07623b104e2725a040b881c1e9657101e24d2e6f"
+      }
+    },
+    "sources": [
+      {
+        "path": "videos/vvc-comparison/cartoon.sci",
+        "bytes": 27565975,
+        "sha256": "de06a9c12ae82beccc2a17f42ad8549cd62fac68189cbdf81a936a39f0079f40"
+      },
+      {
+        "path": "videos/vvc-comparison/fossils.sci",
+        "bytes": 68155149,
+        "sha256": "bda684dc6d8591fd07d5af28c00e512e3b9e52da254df814602f0def48897547"
+      },
+      {
+        "path": "videos/kinetic-weave/maximum.sci",
+        "bytes": 125134556,
+        "sha256": "eceaf45caa5ac55c279312a13304754c67b9f824e65bdfb6a097f9a3c6e00a65"
+      },
+      {
+        "path": "videos/readme-fidelity.sci",
+        "bytes": 290577041,
+        "sha256": "ce41bee372b49b9ac4d140aa2399ba0885628c5937be3cbbf6e7aa41be13af72"
+      },
+      {
+        "path": "videos/cartoon-sample/source.nut",
+        "bytes": 125682769,
+        "sha256": "822135dd195869f73c83de4f42b43c40c367d054ee501734ab42a4b023f30683"
+      },
+      {
+        "path": "videos/fossils-sample/source.nut",
+        "bytes": 91266141,
+        "sha256": "376e5f3a18f1925fb37b7201c83656f118408f92bf17ec1d1a9bd847f04c75d8"
+      }
+    ],
+    "archives": [
+      {
+        "case": "cartoon",
+        "version": 5,
+        "path": "videos/color-fields/cartoon-v5.sci",
+        "bytes": 27144762,
+        "sha256": "ce711ff594972c78cdf80f5b8863ca7ecb6221a84cc462b449bc092761949641"
+      },
+      {
+        "case": "cartoon",
+        "version": 6,
+        "path": "videos/color-fields/cartoon.sci",
+        "bytes": 26301074,
+        "sha256": "f2baac1830b86f29f017e6b20996fa815220ae8b558ee6851cde9f62ac5986d2"
+      },
+      {
+        "case": "fossils",
+        "version": 5,
+        "path": "videos/color-fields/fossils-v5.sci",
+        "bytes": 66706152,
+        "sha256": "7801e0dcb50fffbf179cb7fd055c3332bdfe571e3d02d7d8a4c30bbb62dcb4c4"
+      },
+      {
+        "case": "fossils",
+        "version": 6,
+        "path": "videos/color-fields/fossils.sci",
+        "bytes": 63336966,
+        "sha256": "161a4d1aeb3cfa8bef2e9774c0b5eadaccd534467bd96ffef2be3d7190698439"
+      },
+      {
+        "case": "weave",
+        "version": 5,
+        "path": "videos/color-fields/weave-v5.sci",
+        "bytes": 106787131,
+        "sha256": "89ca3efedc92c915ec8693c7bd04ece9f847644534c495065c0ed38fbde79f96"
+      },
+      {
+        "case": "weave",
+        "version": 6,
+        "path": "videos/color-fields/weave.sci",
+        "bytes": 99745825,
+        "sha256": "9fc8388b852f4025a502bebb65f395be716d823665d59f991925597d23dfba22"
+      },
+      {
+        "case": "detail",
+        "version": 5,
+        "path": "videos/color-fields/detail-v5.sci",
+        "bytes": 231406141,
+        "sha256": "56d6c5cb747d7869c2e83c18a2dba30d40e9ba199e5d8fc3cf7fb9c73cc95661"
+      },
+      {
+        "case": "detail",
+        "version": 6,
+        "path": "videos/color-fields/detail.sci",
+        "bytes": 204731928,
+        "sha256": "0d08b24f526867f762e049c23bbde575f3bc35d272a9f53532e2dcc502894095"
+      }
+    ],
+    "initialFailedDecoder": {
+      "reason": "Per-field green-channel lookup and repeated color transformation caused large decoding regressions.",
+      "results": [
+        {
+          "case": "cartoon",
+          "host": {
+            "platform": "linux",
+            "arch": "x64",
+            "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+            "node": "v26.11.1"
+          },
+          "height": 1080,
+          "mode": "cells",
+          "warmups": 1,
+          "measuredIterations": 5,
+          "frames": 96,
+          "timeline": [
+            1920,
+            1080,
+            96,
+            4.004,
+            24000,
+            1001
+          ],
+          "outputAndTimingSha256": "f86d93c07ccf9eba1de44c4209d6529ae9fa5af3002d42aea39acd82813193c8",
+          "audioAndTimingSha256": "5030193ef92266b0d70bc2d8d465b9435b68fc43f72b6d6f00282eb52df6d171",
+          "results": [
+            {
+              "path": "videos/color-fields/cartoon-v5.sci",
+              "version": 5,
+              "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+              "archiveBytes": 27144762,
+              "transferredMediaBytes": 27141517,
+              "tags": {
+                "5": 67,
+                "7": 18,
+                "8": 5,
+                "9": 6
+              },
+              "milliseconds": [
+                1295.4923659999995,
+                1267.880904000006,
+                1342.5011410000025,
+                1205.1304159999836,
+                1384.6620270000094
+              ],
+              "p95Milliseconds": [
+                40.640628000000106,
+                40.693521999999575,
+                43.49638799999957,
+                38.372167999998055,
+                57.90258299999914
+              ],
+              "medianMillisecondsPerFrame": 13.494712145833327,
+              "medianP95Milliseconds": 40.693521999999575,
+              "medianFirstFrameMilliseconds": 78.17354200000045
+            },
+            {
+              "path": "videos/color-fields/cartoon-v6.sci",
+              "version": 6,
+              "moduleSha256": "735f2dafd3fa72b887065fb66f7dcbda0bea9faebe65f326474a3cd273b79be3",
+              "archiveBytes": 26301074,
+              "transferredMediaBytes": 26297835,
+              "tags": {
+                "5": 66,
+                "7": 15,
+                "10": 5,
+                "11": 10
+              },
+              "milliseconds": [
+                1501.8281429999997,
+                1652.3932869999935,
+                1596.3813080000054,
+                1711.632227000031,
+                1532.9994990000232
+              ],
+              "p95Milliseconds": [
+                58.40741200000048,
+                74.3839820000012,
+                66.52980599999864,
+                73.87794000000213,
+                64.94332500000019
+              ],
+              "medianMillisecondsPerFrame": 16.62897195833339,
+              "medianP95Milliseconds": 66.52980599999864,
+              "medianFirstFrameMilliseconds": 78.28324500000053
+            }
+          ],
+          "transferredBytesSavedPercent": 3.108455581167402,
+          "medianDecodeChangePercent": 23.225836747231465,
+          "p95DecodeChangePercent": 63.48991861652904
+        },
+        {
+          "case": "cartoon",
+          "host": {
+            "platform": "linux",
+            "arch": "x64",
+            "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+            "node": "v26.11.1"
+          },
+          "height": 1080,
+          "mode": "pixels",
+          "warmups": 1,
+          "measuredIterations": 5,
+          "frames": 96,
+          "timeline": [
+            1920,
+            1080,
+            96,
+            4.004,
+            24000,
+            1001
+          ],
+          "outputAndTimingSha256": "212b27c0577550988eda192fb2292dfb1d071022423d579097512b9e7076d794",
+          "audioAndTimingSha256": "5030193ef92266b0d70bc2d8d465b9435b68fc43f72b6d6f00282eb52df6d171",
+          "results": [
+            {
+              "path": "videos/color-fields/cartoon-v5.sci",
+              "version": 5,
+              "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+              "archiveBytes": 27144762,
+              "transferredMediaBytes": 27141517,
+              "tags": {
+                "5": 67,
+                "7": 18,
+                "8": 5,
+                "9": 6
+              },
+              "milliseconds": [
+                1624.1689879999867,
+                1536.4116840000097,
+                1657.7171870000093,
+                1555.6296940000138,
+                1569.524309999997
+              ],
+              "p95Milliseconds": [
+                56.733642999999574,
+                56.36679800000093,
+                52.331614000002446,
+                45.90190799999982,
+                44.226747000000614
+              ],
+              "medianMillisecondsPerFrame": 16.34921156249997,
+              "medianP95Milliseconds": 52.331614000002446,
+              "medianFirstFrameMilliseconds": 92.68245099999967
+            },
+            {
+              "path": "videos/color-fields/cartoon-v6.sci",
+              "version": 6,
+              "moduleSha256": "735f2dafd3fa72b887065fb66f7dcbda0bea9faebe65f326474a3cd273b79be3",
+              "archiveBytes": 26301074,
+              "transferredMediaBytes": 26297835,
+              "tags": {
+                "5": 66,
+                "7": 15,
+                "10": 5,
+                "11": 10
+              },
+              "milliseconds": [
+                1853.3905879999957,
+                1949.2720550000067,
+                1884.852474000012,
+                1939.50763,
+                1835.8256959999962
+              ],
+              "p95Milliseconds": [
+                66.87459299999955,
+                72.70192099999986,
+                75.6201629999996,
+                70.0580689999988,
+                63.45692799999961
+              ],
+              "medianMillisecondsPerFrame": 19.633879937500126,
+              "medianP95Milliseconds": 70.0580689999988,
+              "medianFirstFrameMilliseconds": 89.14376799999991
+            }
+          ],
+          "transferredBytesSavedPercent": 3.108455581167402,
+          "medianDecodeChangePercent": 20.090683654336992,
+          "p95DecodeChangePercent": 33.873319863582886
+        },
+        {
+          "case": "fossils",
+          "host": {
+            "platform": "linux",
+            "arch": "x64",
+            "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+            "node": "v26.11.1"
+          },
+          "height": 1080,
+          "mode": "cells",
+          "warmups": 1,
+          "measuredIterations": 5,
+          "frames": 96,
+          "timeline": [
+            1920,
+            1080,
+            96,
+            4,
+            24,
+            1
+          ],
+          "outputAndTimingSha256": "8d653bc15331dccb7b5a0fa2dec8f0ed9d653fb0f2094d09e5098791ac8b5140",
+          "audioAndTimingSha256": "c9356fbd9f3905e0f743fc7a6535aebc7fd73e6f4f2867ee45694d510a80fd40",
+          "results": [
+            {
+              "path": "videos/color-fields/fossils-v5.sci",
+              "version": 5,
+              "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+              "archiveBytes": 66706152,
+              "transferredMediaBytes": 66702865,
+              "tags": {
+                "8": 5,
+                "9": 91
+              },
+              "milliseconds": [
+                2404.7729429999927,
+                2352.8184519999886,
+                2310.127938000005,
+                2216.452875999992,
+                2399.356909999973
+              ],
+              "p95Milliseconds": [
+                35.987504999999146,
+                37.783997000000454,
+                35.038172000000486,
+                35.86111600000004,
+                34.78881099999853
+              ],
+              "medianMillisecondsPerFrame": 24.508525541666547,
+              "medianP95Milliseconds": 35.86111600000004,
+              "medianFirstFrameMilliseconds": 38.7678190000006
+            },
+            {
+              "path": "videos/color-fields/fossils-v6.sci",
+              "version": 6,
+              "moduleSha256": "735f2dafd3fa72b887065fb66f7dcbda0bea9faebe65f326474a3cd273b79be3",
+              "archiveBytes": 63336966,
+              "transferredMediaBytes": 63333685,
+              "tags": {
+                "10": 5,
+                "11": 91
+              },
+              "milliseconds": [
+                3717.4961260000036,
+                3564.099320000012,
+                3487.5256560000016,
+                3768.488469,
+                3481.176485999982
+              ],
+              "p95Milliseconds": [
+                57.06542799999988,
+                52.428225999999995,
+                50.97947500000009,
+                57.57470500000636,
+                49.057935999997426
+              ],
+              "medianMillisecondsPerFrame": 37.12603458333346,
+              "medianP95Milliseconds": 52.428225999999995,
+              "medianFirstFrameMilliseconds": 39.923641999999745
+            }
+          ],
+          "transferredBytesSavedPercent": 5.051027418387499,
+          "medianDecodeChangePercent": 51.48212208937697,
+          "p95DecodeChangePercent": 46.19797666084886
+        },
+        {
+          "case": "fossils",
+          "host": {
+            "platform": "linux",
+            "arch": "x64",
+            "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+            "node": "v26.11.1"
+          },
+          "height": 1080,
+          "mode": "pixels",
+          "warmups": 1,
+          "measuredIterations": 5,
+          "frames": 96,
+          "timeline": [
+            1920,
+            1080,
+            96,
+            4,
+            24,
+            1
+          ],
+          "outputAndTimingSha256": "6d812aa18826371a47cfdddd0e41c71b9b750b12c9c8958cf51ea29d65e9bd80",
+          "audioAndTimingSha256": "c9356fbd9f3905e0f743fc7a6535aebc7fd73e6f4f2867ee45694d510a80fd40",
+          "results": [
+            {
+              "path": "videos/color-fields/fossils-v5.sci",
+              "version": 5,
+              "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+              "archiveBytes": 66706152,
+              "transferredMediaBytes": 66702865,
+              "tags": {
+                "8": 5,
+                "9": 91
+              },
+              "milliseconds": [
+                2914.0038289999993,
+                2976.4176049999915,
+                3080.806016999999,
+                3050.0180569999793,
+                3053.556585000042
+              ],
+              "p95Milliseconds": [
+                43.777139000001625,
+                42.567761999998766,
+                45.862086000001,
+                45.32155100000091,
+                45.512181999998575
+              ],
+              "medianMillisecondsPerFrame": 31.771021427083117,
+              "medianP95Milliseconds": 45.32155100000091,
+              "medianFirstFrameMilliseconds": 76.22643099999914
+            },
+            {
+              "path": "videos/color-fields/fossils-v6.sci",
+              "version": 6,
+              "moduleSha256": "735f2dafd3fa72b887065fb66f7dcbda0bea9faebe65f326474a3cd273b79be3",
+              "archiveBytes": 63336966,
+              "transferredMediaBytes": 63333685,
+              "tags": {
+                "10": 5,
+                "11": 91
+              },
+              "milliseconds": [
+                4208.067722,
+                4371.82920400002,
+                4373.316673999991,
+                4353.167721000005,
+                4234.479810999961
+              ],
+              "p95Milliseconds": [
+                59.10893699999906,
+                66.01567599999908,
+                60.43910199999664,
+                64.72963500000333,
+                59.11086900000373
+              ],
+              "medianMillisecondsPerFrame": 45.345497093750055,
+              "medianP95Milliseconds": 60.43910199999664,
+              "medianFirstFrameMilliseconds": 53.63018799999554
+            }
+          ],
+          "transferredBytesSavedPercent": 5.051027418387499,
+          "medianDecodeChangePercent": 42.725965540079926,
+          "p95DecodeChangePercent": 33.35620839630009
+        }
+      ]
+    },
+    "groupedReferenceScreening": [
+      {
+        "case": "cartoon",
+        "host": {
+          "platform": "linux",
+          "arch": "x64",
+          "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+          "node": "v26.11.1"
+        },
+        "height": 1080,
+        "mode": "cells",
+        "warmups": 1,
+        "measuredIterations": 5,
+        "frames": 96,
+        "timeline": [
+          1920,
+          1080,
+          96,
+          4.004,
+          24000,
+          1001
+        ],
+        "outputAndTimingSha256": "f86d93c07ccf9eba1de44c4209d6529ae9fa5af3002d42aea39acd82813193c8",
+        "audioAndTimingSha256": "5030193ef92266b0d70bc2d8d465b9435b68fc43f72b6d6f00282eb52df6d171",
+        "results": [
+          {
+            "path": "videos/color-fields/cartoon-v5.sci",
+            "version": 5,
+            "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+            "archiveBytes": 27144762,
+            "transferredMediaBytes": 27141517,
+            "tags": {
+              "5": 67,
+              "7": 18,
+              "8": 5,
+              "9": 6
+            },
+            "milliseconds": [
+              1461.3439389999985,
+              1357.1897239999962,
+              1393.3709870000075,
+              1328.5495149999933,
+              1400.958174999978
+            ],
+            "p95Milliseconds": [
+              52.455886000000646,
+              42.41770799999995,
+              54.1353909999998,
+              46.43882200000007,
+              53.88161599999876
+            ],
+            "medianMillisecondsPerFrame": 14.514281114583412,
+            "medianP95Milliseconds": 52.455886000000646,
+            "medianFirstFrameMilliseconds": 70.76612599999862
+          },
+          {
+            "path": "videos/color-fields/cartoon-v6.sci",
+            "version": 6,
+            "moduleSha256": "9c08bad834e034ed2886cbdf70cbe25c590e7cc3ce9faec2a2399620334d1d17",
+            "archiveBytes": 26301074,
+            "transferredMediaBytes": 26297835,
+            "tags": {
+              "5": 66,
+              "7": 15,
+              "10": 5,
+              "11": 10
+            },
+            "milliseconds": [
+              1310.5823169999994,
+              1396.3481109999993,
+              1369.0171279999868,
+              1492.7123259999971,
+              1369.082524999998
+            ],
+            "p95Milliseconds": [
+              45.16059600000062,
+              47.58817600000111,
+              40.99454799999876,
+              54.03398399999787,
+              43.32688699999926
+            ],
+            "medianMillisecondsPerFrame": 14.261276302083312,
+            "medianP95Milliseconds": 45.16059600000062,
+            "medianFirstFrameMilliseconds": 51.95859999999993
+          }
+        ],
+        "transferredBytesSavedPercent": 3.108455581167402,
+        "medianDecodeChangePercent": -1.7431439456267017,
+        "p95DecodeChangePercent": -13.907476465081404
+      },
+      {
+        "case": "fossils",
+        "host": {
+          "platform": "linux",
+          "arch": "x64",
+          "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+          "node": "v26.11.1"
+        },
+        "height": 1080,
+        "mode": "cells",
+        "warmups": 1,
+        "measuredIterations": 5,
+        "frames": 96,
+        "timeline": [
+          1920,
+          1080,
+          96,
+          4,
+          24,
+          1
+        ],
+        "outputAndTimingSha256": "8d653bc15331dccb7b5a0fa2dec8f0ed9d653fb0f2094d09e5098791ac8b5140",
+        "audioAndTimingSha256": "c9356fbd9f3905e0f743fc7a6535aebc7fd73e6f4f2867ee45694d510a80fd40",
+        "results": [
+          {
+            "path": "videos/color-fields/fossils-v5.sci",
+            "version": 5,
+            "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+            "archiveBytes": 66706152,
+            "transferredMediaBytes": 66702865,
+            "tags": {
+              "8": 5,
+              "9": 91
+            },
+            "milliseconds": [
+              2395.947071999999,
+              2414.2159319999937,
+              2399.0572020000036,
+              2298.7841710000066,
+              2406.2345140000252
+            ],
+            "p95Milliseconds": [
+              36.17356599999948,
+              38.226668000001155,
+              35.723635999998805,
+              32.792027999999846,
+              37.69513400000142
+            ],
+            "medianMillisecondsPerFrame": 24.990179187500036,
+            "medianP95Milliseconds": 36.17356599999948,
+            "medianFirstFrameMilliseconds": 41.49036100000376
+          },
+          {
+            "path": "videos/color-fields/fossils-v6.sci",
+            "version": 6,
+            "moduleSha256": "9c08bad834e034ed2886cbdf70cbe25c590e7cc3ce9faec2a2399620334d1d17",
+            "archiveBytes": 63336966,
+            "transferredMediaBytes": 63333685,
+            "tags": {
+              "10": 5,
+              "11": 91
+            },
+            "milliseconds": [
+              2417.7486520000148,
+              2459.7750739999938,
+              2493.8660210000053,
+              2391.399742999969,
+              2422.7905609999907
+            ],
+            "p95Milliseconds": [
+              34.51666600000044,
+              37.87377199999901,
+              35.780539000003046,
+              33.737284000002546,
+              34.64798200000223
+            ],
+            "medianMillisecondsPerFrame": 25.237401677083238,
+            "medianP95Milliseconds": 34.64798200000223,
+            "medianFirstFrameMilliseconds": 39.76192999999694
+          }
+        ],
+        "transferredBytesSavedPercent": 5.051027418387499,
+        "medianDecodeChangePercent": 0.9892785791102421,
+        "p95DecodeChangePercent": -4.2174000760590635
+      }
+    ],
+    "subsequentFailedDecoders": [
+      {
+        "implementation": "Grouped RGB reference transformation and complete field loop; some p95 gates fail.",
+        "results": [
+          {
+            "case": "cartoon",
+            "host": {
+              "platform": "linux",
+              "arch": "x64",
+              "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+              "node": "v26.11.1"
+            },
+            "height": 1080,
+            "mode": "cells",
+            "warmups": 1,
+            "measuredIterations": 5,
+            "frames": 96,
+            "timeline": [
+              1920,
+              1080,
+              96,
+              4.004,
+              24000,
+              1001
+            ],
+            "outputAndTimingSha256": "f86d93c07ccf9eba1de44c4209d6529ae9fa5af3002d42aea39acd82813193c8",
+            "audioAndTimingSha256": "5030193ef92266b0d70bc2d8d465b9435b68fc43f72b6d6f00282eb52df6d171",
+            "results": [
+              {
+                "path": "videos/color-fields/cartoon-v5.sci",
+                "version": 5,
+                "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+                "archiveBytes": 27144762,
+                "transferredMediaBytes": 27141517,
+                "tags": {
+                  "5": 67,
+                  "7": 18,
+                  "8": 5,
+                  "9": 6
+                },
+                "milliseconds": [
+                  793.9869250000002,
+                  761.4407569999985,
+                  811.6402409999955,
+                  763.5505109999976,
+                  790.9317180000053
+                ],
+                "p95Milliseconds": [
+                  26.92315099999996,
+                  26.941929000000528,
+                  28.075010999999904,
+                  27.293619000000035,
+                  27.409699000001638
+                ],
+                "medianMillisecondsPerFrame": 8.238872062500056,
+                "medianP95Milliseconds": 27.293619000000035,
+                "medianFirstFrameMilliseconds": 40.29323999999906
+              },
+              {
+                "path": "videos/color-fields/cartoon.sci",
+                "version": 6,
+                "moduleSha256": "95281b06c18657782891654ff03b08b3f35aaebd3cf1b2941ea0c478f2ae61df",
+                "archiveBytes": 26301074,
+                "transferredMediaBytes": 26297835,
+                "tags": {
+                  "5": 66,
+                  "7": 15,
+                  "10": 5,
+                  "11": 10
+                },
+                "milliseconds": [
+                  786.8674419999984,
+                  834.0480480000078,
+                  811.6099970000032,
+                  842.8229659999997,
+                  782.7567030000009
+                ],
+                "p95Milliseconds": [
+                  27.54937199999995,
+                  29.644953999999416,
+                  29.092445999999654,
+                  29.550164000000223,
+                  28.219301999999516
+                ],
+                "medianMillisecondsPerFrame": 8.454270802083366,
+                "medianP95Milliseconds": 29.092445999999654,
+                "medianFirstFrameMilliseconds": 30.88613499999974
+              }
+            ],
+            "transferredBytesSavedPercent": 3.108455581167402,
+            "medianDecodeChangePercent": 2.6144202501179326,
+            "p95DecodeChangePercent": 6.590650364100181
+          },
+          {
+            "case": "fossils",
+            "host": {
+              "platform": "linux",
+              "arch": "x64",
+              "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+              "node": "v26.11.1"
+            },
+            "height": 1080,
+            "mode": "cells",
+            "warmups": 1,
+            "measuredIterations": 5,
+            "frames": 96,
+            "timeline": [
+              1920,
+              1080,
+              96,
+              4,
+              24,
+              1
+            ],
+            "outputAndTimingSha256": "8d653bc15331dccb7b5a0fa2dec8f0ed9d653fb0f2094d09e5098791ac8b5140",
+            "audioAndTimingSha256": "c9356fbd9f3905e0f743fc7a6535aebc7fd73e6f4f2867ee45694d510a80fd40",
+            "results": [
+              {
+                "path": "videos/color-fields/fossils-v5.sci",
+                "version": 5,
+                "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+                "archiveBytes": 66706152,
+                "transferredMediaBytes": 66702865,
+                "tags": {
+                  "8": 5,
+                  "9": 91
+                },
+                "milliseconds": [
+                  1386.9334190000018,
+                  1388.8216359999906,
+                  1430.4516919999933,
+                  1402.9947740000043,
+                  1417.7024460000102
+                ],
+                "p95Milliseconds": [
+                  17.096388999999363,
+                  17.9478509999999,
+                  17.9112499999992,
+                  17.69694100000015,
+                  18.876295000001846
+                ],
+                "medianMillisecondsPerFrame": 14.614528895833379,
+                "medianP95Milliseconds": 17.9112499999992,
+                "medianFirstFrameMilliseconds": 29.46929000000091
+              },
+              {
+                "path": "videos/color-fields/fossils.sci",
+                "version": 6,
+                "moduleSha256": "95281b06c18657782891654ff03b08b3f35aaebd3cf1b2941ea0c478f2ae61df",
+                "archiveBytes": 63336966,
+                "transferredMediaBytes": 63333685,
+                "tags": {
+                  "10": 5,
+                  "11": 91
+                },
+                "milliseconds": [
+                  1426.784921000005,
+                  1426.3998370000008,
+                  1467.1285349999907,
+                  1450.672572000005,
+                  1421.0022929999905
+                ],
+                "p95Milliseconds": [
+                  17.26574299999993,
+                  17.8629949999995,
+                  17.83462800000052,
+                  17.941732999999658,
+                  17.777077999999165
+                ],
+                "medianMillisecondsPerFrame": 14.862342927083384,
+                "medianP95Milliseconds": 17.83462800000052,
+                "medianFirstFrameMilliseconds": 19.767665999999736
+              }
+            ],
+            "transferredBytesSavedPercent": 5.051027418387499,
+            "medianDecodeChangePercent": 1.6956689676165926,
+            "p95DecodeChangePercent": -0.4277870053663646
+          },
+          {
+            "case": "weave",
+            "host": {
+              "platform": "linux",
+              "arch": "x64",
+              "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+              "node": "v26.11.1"
+            },
+            "height": 1080,
+            "mode": "cells",
+            "warmups": 1,
+            "measuredIterations": 5,
+            "frames": 240,
+            "timeline": [
+              1920,
+              1080,
+              240,
+              4,
+              60,
+              1
+            ],
+            "outputAndTimingSha256": "47ef3467c48f3c4ef38be4b690cdacd0f2cae047b62ed6483c93d8b29f1121ca",
+            "audioAndTimingSha256": "7a677611ffcf81dd1bd7b5e290b2639e2d218d02896844754b916629dcd618a8",
+            "results": [
+              {
+                "path": "videos/color-fields/weave-v5.sci",
+                "version": 5,
+                "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+                "archiveBytes": 106787131,
+                "transferredMediaBytes": 106783847,
+                "tags": {
+                  "8": 240
+                },
+                "milliseconds": [
+                  2024.3557029999902,
+                  1958.3115559999987,
+                  1997.6780949999884,
+                  2042.5845489999883,
+                  2033.5163019999964
+                ],
+                "p95Milliseconds": [
+                  9.567347999998674,
+                  9.251393999998982,
+                  9.321811000001617,
+                  9.922975999998016,
+                  9.7521310000011
+                ],
+                "medianMillisecondsPerFrame": 8.434815429166626,
+                "medianP95Milliseconds": 9.567347999998674,
+                "medianFirstFrameMilliseconds": 16.02161200000046
+              },
+              {
+                "path": "videos/color-fields/weave.sci",
+                "version": 6,
+                "moduleSha256": "95281b06c18657782891654ff03b08b3f35aaebd3cf1b2941ea0c478f2ae61df",
+                "archiveBytes": 99745825,
+                "transferredMediaBytes": 99742546,
+                "tags": {
+                  "10": 240
+                },
+                "milliseconds": [
+                  1999.4047709999986,
+                  1956.4590869999975,
+                  1923.6540210000094,
+                  1996.944352000024,
+                  1977.8657950000197
+                ],
+                "p95Milliseconds": [
+                  9.912727000000814,
+                  9.18731900000057,
+                  9.108242999998765,
+                  10.112849999997707,
+                  9.472609000000375
+                ],
+                "medianMillisecondsPerFrame": 8.241107479166748,
+                "medianP95Milliseconds": 9.472609000000375,
+                "medianFirstFrameMilliseconds": 10.425992000000406
+              }
+            ],
+            "transferredBytesSavedPercent": 6.5939757723843755,
+            "medianDecodeChangePercent": -2.2965286155528397,
+            "p95DecodeChangePercent": -0.990232611987274
+          },
+          {
+            "case": "detail",
+            "host": {
+              "platform": "linux",
+              "arch": "x64",
+              "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+              "node": "v26.11.1"
+            },
+            "height": 1080,
+            "mode": "cells",
+            "warmups": 1,
+            "measuredIterations": 5,
+            "frames": 120,
+            "timeline": [
+              1920,
+              1080,
+              120,
+              2,
+              60,
+              1
+            ],
+            "outputAndTimingSha256": "2bfb4adf08d029395fb860f93f9c6125ce508e0e03d078963528f08f8e5a0463",
+            "audioAndTimingSha256": "0c8bbff0deaca514abd127d52118c0a64f39683949c9500df67b8965fcba3beb",
+            "results": [
+              {
+                "path": "videos/color-fields/detail-v5.sci",
+                "version": 5,
+                "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+                "archiveBytes": 231406141,
+                "transferredMediaBytes": 231402869,
+                "tags": {
+                  "8": 120
+                },
+                "milliseconds": [
+                  3112.5425510000023,
+                  3249.761254000012,
+                  3187.0463349999736,
+                  3241.6128529999696,
+                  3233.3038949999827
+                ],
+                "p95Milliseconds": [
+                  27.645501000000877,
+                  34.90410499999962,
+                  28.267594000000827,
+                  29.072587999999087,
+                  29.106612000003224
+                ],
+                "medianMillisecondsPerFrame": 26.944199124999855,
+                "medianP95Milliseconds": 29.072587999999087,
+                "medianFirstFrameMilliseconds": 38.91027899999972
+              },
+              {
+                "path": "videos/color-fields/detail.sci",
+                "version": 6,
+                "moduleSha256": "95281b06c18657782891654ff03b08b3f35aaebd3cf1b2941ea0c478f2ae61df",
+                "archiveBytes": 204731928,
+                "transferredMediaBytes": 204728662,
+                "tags": {
+                  "10": 120
+                },
+                "milliseconds": [
+                  2941.075603000004,
+                  3016.2251580000084,
+                  2968.551701000015,
+                  3229.3168810000207,
+                  2997.5462139999872
+                ],
+                "p95Milliseconds": [
+                  28.080136000000493,
+                  26.78106200000184,
+                  27.165625999998156,
+                  38.064063999998325,
+                  27.184220000002824
+                ],
+                "medianMillisecondsPerFrame": 24.97955178333323,
+                "medianP95Milliseconds": 27.184220000002824,
+                "medianFirstFrameMilliseconds": 25.769563000001654
+              }
+            ],
+            "transferredBytesSavedPercent": 11.52717211989277,
+            "medianDecodeChangePercent": -7.291541056953344,
+            "p95DecodeChangePercent": -6.495355693811367
+          },
+          {
+            "case": "cartoon",
+            "host": {
+              "platform": "linux",
+              "arch": "x64",
+              "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+              "node": "v26.11.1"
+            },
+            "height": 1080,
+            "mode": "pixels",
+            "warmups": 1,
+            "measuredIterations": 5,
+            "frames": 96,
+            "timeline": [
+              1920,
+              1080,
+              96,
+              4.004,
+              24000,
+              1001
+            ],
+            "outputAndTimingSha256": "212b27c0577550988eda192fb2292dfb1d071022423d579097512b9e7076d794",
+            "audioAndTimingSha256": "5030193ef92266b0d70bc2d8d465b9435b68fc43f72b6d6f00282eb52df6d171",
+            "results": [
+              {
+                "path": "videos/color-fields/cartoon-v5.sci",
+                "version": 5,
+                "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+                "archiveBytes": 27144762,
+                "transferredMediaBytes": 27141517,
+                "tags": {
+                  "5": 67,
+                  "7": 18,
+                  "8": 5,
+                  "9": 6
+                },
+                "milliseconds": [
+                  1087.0351290000099,
+                  1023.4359519999998,
+                  1083.900182000003,
+                  1025.1044769999971,
+                  1082.550626000011
+                ],
+                "p95Milliseconds": [
+                  32.047905999999784,
+                  30.134172000000035,
+                  31.841463999999178,
+                  31.924254999999903,
+                  33.10515799999848
+                ],
+                "medianMillisecondsPerFrame": 11.276569020833449,
+                "medianP95Milliseconds": 31.924254999999903,
+                "medianFirstFrameMilliseconds": 61.10020900000018
+              },
+              {
+                "path": "videos/color-fields/cartoon.sci",
+                "version": 6,
+                "moduleSha256": "95281b06c18657782891654ff03b08b3f35aaebd3cf1b2941ea0c478f2ae61df",
+                "archiveBytes": 26301074,
+                "transferredMediaBytes": 26297835,
+                "tags": {
+                  "5": 66,
+                  "7": 15,
+                  "10": 5,
+                  "11": 10
+                },
+                "milliseconds": [
+                  1072.8656659999974,
+                  1086.3451330000025,
+                  1027.2109959999962,
+                  1106.568433999997,
+                  1052.1999850000248
+                ],
+                "p95Milliseconds": [
+                  33.381234000000404,
+                  32.42256599999928,
+                  30.79469599999902,
+                  32.817369999998846,
+                  32.693998000002466
+                ],
+                "medianMillisecondsPerFrame": 11.175684020833307,
+                "medianP95Milliseconds": 32.693998000002466,
+                "medianFirstFrameMilliseconds": 46.99164700000074
+              }
+            ],
+            "transferredBytesSavedPercent": 3.108455581167402,
+            "medianDecodeChangePercent": -0.8946426862085133,
+            "p95DecodeChangePercent": 2.411154152234918
+          },
+          {
+            "case": "fossils",
+            "host": {
+              "platform": "linux",
+              "arch": "x64",
+              "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+              "node": "v26.11.1"
+            },
+            "height": 1080,
+            "mode": "pixels",
+            "warmups": 1,
+            "measuredIterations": 5,
+            "frames": 96,
+            "timeline": [
+              1920,
+              1080,
+              96,
+              4,
+              24,
+              1
+            ],
+            "outputAndTimingSha256": "6d812aa18826371a47cfdddd0e41c71b9b750b12c9c8958cf51ea29d65e9bd80",
+            "audioAndTimingSha256": "c9356fbd9f3905e0f743fc7a6535aebc7fd73e6f4f2867ee45694d510a80fd40",
+            "results": [
+              {
+                "path": "videos/color-fields/fossils-v5.sci",
+                "version": 5,
+                "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+                "archiveBytes": 66706152,
+                "transferredMediaBytes": 66702865,
+                "tags": {
+                  "8": 5,
+                  "9": 91
+                },
+                "milliseconds": [
+                  2062.4327569999987,
+                  3329.8006630000127,
+                  3574.6870359999884,
+                  3507.6476210000037,
+                  3673.430826000047
+                ],
+                "p95Milliseconds": [
+                  28.328535000000556,
+                  49.27477100000033,
+                  49.446210000001884,
+                  48.89426399999866,
+                  50.42122100000415
+                ],
+                "medianMillisecondsPerFrame": 36.53799605208337,
+                "medianP95Milliseconds": 49.27477100000033,
+                "medianFirstFrameMilliseconds": 45.344514000000345
+              },
+              {
+                "path": "videos/color-fields/fossils.sci",
+                "version": 6,
+                "moduleSha256": "95281b06c18657782891654ff03b08b3f35aaebd3cf1b2941ea0c478f2ae61df",
+                "archiveBytes": 63336966,
+                "transferredMediaBytes": 63333685,
+                "tags": {
+                  "10": 5,
+                  "11": 91
+                },
+                "milliseconds": [
+                  2144.5973209999993,
+                  3528.476561000016,
+                  3886.9186489999993,
+                  3743.761387999948,
+                  3511.4900050000288
+                ],
+                "p95Milliseconds": [
+                  34.51975500000026,
+                  53.66218200000003,
+                  54.264687000002596,
+                  54.73652999999467,
+                  48.953481999997166
+                ],
+                "medianMillisecondsPerFrame": 36.7549641770835,
+                "medianP95Milliseconds": 53.66218200000003,
+                "medianFirstFrameMilliseconds": 58.564784999998665
+              }
+            ],
+            "transferredBytesSavedPercent": 5.051027418387499,
+            "medianDecodeChangePercent": 0.5938150649829055,
+            "p95DecodeChangePercent": 8.903970350262359
+          },
+          {
+            "case": "weave",
+            "host": {
+              "platform": "linux",
+              "arch": "x64",
+              "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+              "node": "v26.11.1"
+            },
+            "height": 1080,
+            "mode": "pixels",
+            "warmups": 1,
+            "measuredIterations": 5,
+            "frames": 240,
+            "timeline": [
+              1920,
+              1080,
+              240,
+              4,
+              60,
+              1
+            ],
+            "outputAndTimingSha256": "7e585d21be5082a775c25d722c0a5eea713e885832df4554c0cb180d30cdd5b5",
+            "audioAndTimingSha256": "7a677611ffcf81dd1bd7b5e290b2639e2d218d02896844754b916629dcd618a8",
+            "results": [
+              {
+                "path": "videos/color-fields/weave-v5.sci",
+                "version": 5,
+                "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+                "archiveBytes": 106787131,
+                "transferredMediaBytes": 106783847,
+                "tags": {
+                  "8": 240
+                },
+                "milliseconds": [
+                  3533.719054000034,
+                  3492.615333999969,
+                  3456.847429999958,
+                  3893.297022000035,
+                  3811.3911579999403
+                ],
+                "p95Milliseconds": [
+                  18.556486999998015,
+                  17.63116099999752,
+                  16.307670000001963,
+                  23.16950099999667,
+                  19.843528999990667
+                ],
+                "medianMillisecondsPerFrame": 14.723829391666808,
+                "medianP95Milliseconds": 18.556486999998015,
+                "medianFirstFrameMilliseconds": 31.08811500000229
+              },
+              {
+                "path": "videos/color-fields/weave.sci",
+                "version": 6,
+                "moduleSha256": "95281b06c18657782891654ff03b08b3f35aaebd3cf1b2941ea0c478f2ae61df",
+                "archiveBytes": 99745825,
+                "transferredMediaBytes": 99742546,
+                "tags": {
+                  "10": 240
+                },
+                "milliseconds": [
+                  3360.6770170000163,
+                  3445.829775000024,
+                  3533.3348310000074,
+                  3839.5186090000134,
+                  3859.801167000056
+                ],
+                "p95Milliseconds": [
+                  18.060084000000643,
+                  18.3711789999943,
+                  20.83506699999998,
+                  20.380332000000635,
+                  21.2407549999989
+                ],
+                "medianMillisecondsPerFrame": 14.72222846250003,
+                "medianP95Milliseconds": 20.380332000000635,
+                "medianFirstFrameMilliseconds": 21.2407549999989
+              }
+            ],
+            "transferredBytesSavedPercent": 6.5939757723843755,
+            "medianDecodeChangePercent": -0.010873048880088998,
+            "p95DecodeChangePercent": 9.828611417682742
+          },
+          {
+            "case": "detail",
+            "host": {
+              "platform": "linux",
+              "arch": "x64",
+              "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+              "node": "v26.11.1"
+            },
+            "height": 1080,
+            "mode": "pixels",
+            "warmups": 1,
+            "measuredIterations": 5,
+            "frames": 120,
+            "timeline": [
+              1920,
+              1080,
+              120,
+              2,
+              60,
+              1
+            ],
+            "outputAndTimingSha256": "25b8ef9455b4e1af8dc2deaf13a8a9f79c30d4446414ead93907893feb6077c8",
+            "audioAndTimingSha256": "0c8bbff0deaca514abd127d52118c0a64f39683949c9500df67b8965fcba3beb",
+            "results": [
+              {
+                "path": "videos/color-fields/detail-v5.sci",
+                "version": 5,
+                "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+                "archiveBytes": 231406141,
+                "transferredMediaBytes": 231402869,
+                "tags": {
+                  "8": 120
+                },
+                "milliseconds": [
+                  5900.950790000039,
+                  6034.267312000018,
+                  5890.59746400002,
+                  7265.779804999896,
+                  8365.280916000047
+                ],
+                "p95Milliseconds": [
+                  62.02703699999984,
+                  60.488038000003144,
+                  58.535124000001815,
+                  101.92107899999246,
+                  86.91900700000406
+                ],
+                "medianMillisecondsPerFrame": 50.285560933333485,
+                "medianP95Milliseconds": 62.02703699999984,
+                "medianFirstFrameMilliseconds": 72.4950659999995
+              },
+              {
+                "path": "videos/color-fields/detail.sci",
+                "version": 6,
+                "moduleSha256": "95281b06c18657782891654ff03b08b3f35aaebd3cf1b2941ea0c478f2ae61df",
+                "archiveBytes": 204731928,
+                "transferredMediaBytes": 204728662,
+                "tags": {
+                  "10": 120
+                },
+                "milliseconds": [
+                  5589.39402399999,
+                  5654.901042000056,
+                  5466.919854,
+                  8158.852933000046,
+                  8106.081383000041
+                ],
+                "p95Milliseconds": [
+                  58.65039000000252,
+                  57.17657300000428,
+                  52.611787999994704,
+                  88.30270299999393,
+                  85.55091799999354
+                ],
+                "medianMillisecondsPerFrame": 47.12417535000046,
+                "medianP95Milliseconds": 58.65039000000252,
+                "medianFirstFrameMilliseconds": 63.61791000000085
+              }
+            ],
+            "transferredBytesSavedPercent": 11.52717211989277,
+            "medianDecodeChangePercent": -6.286865503050187,
+            "p95DecodeChangePercent": -5.443830889418965
+          }
+        ]
+      },
+      {
+        "implementation": "Direct correction against RGB references; complete field loop still causes a 5.65 percent fossils cell median regression.",
+        "results": [
+          {
+            "case": "cartoon",
+            "host": {
+              "platform": "linux",
+              "arch": "x64",
+              "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+              "node": "v26.11.1"
+            },
+            "height": 1080,
+            "mode": "cells",
+            "warmups": 1,
+            "measuredIterations": 5,
+            "frames": 96,
+            "timeline": [
+              1920,
+              1080,
+              96,
+              4.004,
+              24000,
+              1001
+            ],
+            "outputAndTimingSha256": "f86d93c07ccf9eba1de44c4209d6529ae9fa5af3002d42aea39acd82813193c8",
+            "audioAndTimingSha256": "5030193ef92266b0d70bc2d8d465b9435b68fc43f72b6d6f00282eb52df6d171",
+            "results": [
+              {
+                "path": "videos/color-fields/cartoon-v5.sci",
+                "version": 5,
+                "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+                "archiveBytes": 27144762,
+                "transferredMediaBytes": 27141517,
+                "tags": {
+                  "5": 67,
+                  "7": 18,
+                  "8": 5,
+                  "9": 6
+                },
+                "milliseconds": [
+                  1563.805695999995,
+                  1373.5332460000081,
+                  1433.8607609999908,
+                  1378.281995000012,
+                  1535.8774689999773
+                ],
+                "p95Milliseconds": [
+                  51.87147600000026,
+                  49.89166800000021,
+                  54.210118000000875,
+                  45.54155499999979,
+                  51.544214999998076
+                ],
+                "medianMillisecondsPerFrame": 14.936049593749905,
+                "medianP95Milliseconds": 51.544214999998076,
+                "medianFirstFrameMilliseconds": 71.97162799999933
+              },
+              {
+                "path": "videos/color-fields/cartoon.sci",
+                "version": 6,
+                "moduleSha256": "49af55267a3a36fbd43ff7d0434f0e7f5e4a9d3254d03acd30d4bcf755060e0a",
+                "archiveBytes": 26301074,
+                "transferredMediaBytes": 26297835,
+                "tags": {
+                  "5": 66,
+                  "7": 15,
+                  "10": 5,
+                  "11": 10
+                },
+                "milliseconds": [
+                  1466.581811,
+                  1539.3310810000075,
+                  1429.3212629999998,
+                  1555.5322649999944,
+                  1480.5059459999866
+                ],
+                "p95Milliseconds": [
+                  48.04207200000019,
+                  58.00990300000012,
+                  49.654225000000224,
+                  51.60062299999845,
+                  50.8768799999998
+                ],
+                "medianMillisecondsPerFrame": 15.42193693749986,
+                "medianP95Milliseconds": 50.8768799999998,
+                "medianFirstFrameMilliseconds": 56.70899999999983
+              }
+            ],
+            "transferredBytesSavedPercent": 3.108455581167402,
+            "medianDecodeChangePercent": 3.2531181735850456,
+            "p95DecodeChangePercent": -1.2946845732315415
+          },
+          {
+            "case": "fossils",
+            "host": {
+              "platform": "linux",
+              "arch": "x64",
+              "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+              "node": "v26.11.1"
+            },
+            "height": 1080,
+            "mode": "cells",
+            "warmups": 1,
+            "measuredIterations": 5,
+            "frames": 96,
+            "timeline": [
+              1920,
+              1080,
+              96,
+              4,
+              24,
+              1
+            ],
+            "outputAndTimingSha256": "8d653bc15331dccb7b5a0fa2dec8f0ed9d653fb0f2094d09e5098791ac8b5140",
+            "audioAndTimingSha256": "c9356fbd9f3905e0f743fc7a6535aebc7fd73e6f4f2867ee45694d510a80fd40",
+            "results": [
+              {
+                "path": "videos/color-fields/fossils-v5.sci",
+                "version": 5,
+                "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+                "archiveBytes": 66706152,
+                "transferredMediaBytes": 66702865,
+                "tags": {
+                  "8": 5,
+                  "9": 91
+                },
+                "milliseconds": [
+                  1758.9053870000007,
+                  1661.893081000013,
+                  1709.82859499997,
+                  1594.9540299999935,
+                  1649.4140600000173
+                ],
+                "p95Milliseconds": [
+                  23.2040190000007,
+                  21.51195000000007,
+                  22.657917000000452,
+                  20.504938999998558,
+                  21.693191999998817
+                ],
+                "medianMillisecondsPerFrame": 17.3113862604168,
+                "medianP95Milliseconds": 21.693191999998817,
+                "medianFirstFrameMilliseconds": 38.301455999997415
+              },
+              {
+                "path": "videos/color-fields/fossils.sci",
+                "version": 6,
+                "moduleSha256": "49af55267a3a36fbd43ff7d0434f0e7f5e4a9d3254d03acd30d4bcf755060e0a",
+                "archiveBytes": 63336966,
+                "transferredMediaBytes": 63333685,
+                "tags": {
+                  "10": 5,
+                  "11": 91
+                },
+                "milliseconds": [
+                  1887.9846560000015,
+                  1753.279507000003,
+                  1692.8498370000016,
+                  1771.86485000002,
+                  1755.7385259999974
+                ],
+                "p95Milliseconds": [
+                  27.348097000000053,
+                  21.698920999999245,
+                  21.362912000000506,
+                  24.24116100000174,
+                  22.65039500000057
+                ],
+                "medianMillisecondsPerFrame": 18.288942979166638,
+                "medianP95Milliseconds": 22.65039500000057,
+                "medianFirstFrameMilliseconds": 34.65654600000016
+              }
+            ],
+            "transferredBytesSavedPercent": 5.051027418387499,
+            "medianDecodeChangePercent": 5.6469002773340105,
+            "p95DecodeChangePercent": 4.4124580651930145
+          },
+          {
+            "case": "weave",
+            "host": {
+              "platform": "linux",
+              "arch": "x64",
+              "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+              "node": "v26.11.1"
+            },
+            "height": 1080,
+            "mode": "cells",
+            "warmups": 1,
+            "measuredIterations": 5,
+            "frames": 240,
+            "timeline": [
+              1920,
+              1080,
+              240,
+              4,
+              60,
+              1
+            ],
+            "outputAndTimingSha256": "47ef3467c48f3c4ef38be4b690cdacd0f2cae047b62ed6483c93d8b29f1121ca",
+            "audioAndTimingSha256": "7a677611ffcf81dd1bd7b5e290b2639e2d218d02896844754b916629dcd618a8",
+            "results": [
+              {
+                "path": "videos/color-fields/weave-v5.sci",
+                "version": 5,
+                "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+                "archiveBytes": 106787131,
+                "transferredMediaBytes": 106783847,
+                "tags": {
+                  "8": 240
+                },
+                "milliseconds": [
+                  2262.2399309999983,
+                  2191.783744999979,
+                  2363.7093350000687,
+                  2282.315551999971,
+                  2262.950073
+                ],
+                "p95Milliseconds": [
+                  10.63526599999932,
+                  10.570787999999084,
+                  12.72666499999832,
+                  10.736146999999619,
+                  10.642833999998402
+                ],
+                "medianMillisecondsPerFrame": 9.4289586375,
+                "medianP95Milliseconds": 10.642833999998402,
+                "medianFirstFrameMilliseconds": 17.572690999999395
+              },
+              {
+                "path": "videos/color-fields/weave.sci",
+                "version": 6,
+                "moduleSha256": "49af55267a3a36fbd43ff7d0434f0e7f5e4a9d3254d03acd30d4bcf755060e0a",
+                "archiveBytes": 99745825,
+                "transferredMediaBytes": 99742546,
+                "tags": {
+                  "10": 240
+                },
+                "milliseconds": [
+                  2231.9340699999975,
+                  2219.9057539999994,
+                  2147.7462870000127,
+                  2156.1730369999823,
+                  2186.957301000024
+                ],
+                "p95Milliseconds": [
+                  11.067990999999893,
+                  10.3202429999983,
+                  10.555304999998043,
+                  10.154146000000765,
+                  10.360012000004645
+                ],
+                "medianMillisecondsPerFrame": 9.1123220875001,
+                "medianP95Milliseconds": 10.360012000004645,
+                "medianFirstFrameMilliseconds": 11.802222999998776
+              }
+            ],
+            "transferredBytesSavedPercent": 6.5939757723843755,
+            "medianDecodeChangePercent": -3.358128529067894,
+            "p95DecodeChangePercent": -2.6573936978985135
+          },
+          {
+            "case": "detail",
+            "host": {
+              "platform": "linux",
+              "arch": "x64",
+              "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+              "node": "v26.11.1"
+            },
+            "height": 1080,
+            "mode": "cells",
+            "warmups": 1,
+            "measuredIterations": 5,
+            "frames": 120,
+            "timeline": [
+              1920,
+              1080,
+              120,
+              2,
+              60,
+              1
+            ],
+            "outputAndTimingSha256": "2bfb4adf08d029395fb860f93f9c6125ce508e0e03d078963528f08f8e5a0463",
+            "audioAndTimingSha256": "0c8bbff0deaca514abd127d52118c0a64f39683949c9500df67b8965fcba3beb",
+            "results": [
+              {
+                "path": "videos/color-fields/detail-v5.sci",
+                "version": 5,
+                "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+                "archiveBytes": 231406141,
+                "transferredMediaBytes": 231402869,
+                "tags": {
+                  "8": 120
+                },
+                "milliseconds": [
+                  3467.2780519999815,
+                  3572.957375999995,
+                  3542.847790999971,
+                  3448.5058189999545,
+                  3288.911272999969
+                ],
+                "p95Milliseconds": [
+                  32.99305599999934,
+                  32.32597100000203,
+                  31.054669999997714,
+                  30.22558000000572,
+                  29.13834499999939
+                ],
+                "medianMillisecondsPerFrame": 28.893983766666512,
+                "medianP95Milliseconds": 31.054669999997714,
+                "medianFirstFrameMilliseconds": 41.66793099999995
+              },
+              {
+                "path": "videos/color-fields/detail.sci",
+                "version": 6,
+                "moduleSha256": "49af55267a3a36fbd43ff7d0434f0e7f5e4a9d3254d03acd30d4bcf755060e0a",
+                "archiveBytes": 204731928,
+                "transferredMediaBytes": 204728662,
+                "tags": {
+                  "10": 120
+                },
+                "milliseconds": [
+                  3257.5353899999955,
+                  3356.3365459999986,
+                  3264.3599610000056,
+                  3145.734257999982,
+                  3222.2800560000323
+                ],
+                "p95Milliseconds": [
+                  29.26412899999923,
+                  29.497253999998065,
+                  28.567348999997193,
+                  28.861814000003505,
+                  28.210966999999073
+                ],
+                "medianMillisecondsPerFrame": 27.14612824999996,
+                "medianP95Milliseconds": 28.861814000003505,
+                "medianFirstFrameMilliseconds": 28.32643800000369
+              }
+            ],
+            "transferredBytesSavedPercent": 11.52717211989277,
+            "medianDecodeChangePercent": -6.049202251864494,
+            "p95DecodeChangePercent": -7.061276130109806
+          },
+          {
+            "case": "cartoon",
+            "host": {
+              "platform": "linux",
+              "arch": "x64",
+              "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+              "node": "v26.11.1"
+            },
+            "height": 1080,
+            "mode": "pixels",
+            "warmups": 1,
+            "measuredIterations": 5,
+            "frames": 96,
+            "timeline": [
+              1920,
+              1080,
+              96,
+              4.004,
+              24000,
+              1001
+            ],
+            "outputAndTimingSha256": "212b27c0577550988eda192fb2292dfb1d071022423d579097512b9e7076d794",
+            "audioAndTimingSha256": "5030193ef92266b0d70bc2d8d465b9435b68fc43f72b6d6f00282eb52df6d171",
+            "results": [
+              {
+                "path": "videos/color-fields/cartoon-v5.sci",
+                "version": 5,
+                "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+                "archiveBytes": 27144762,
+                "transferredMediaBytes": 27141517,
+                "tags": {
+                  "5": 67,
+                  "7": 18,
+                  "8": 5,
+                  "9": 6
+                },
+                "milliseconds": [
+                  1104.5816910000012,
+                  1043.519308,
+                  1135.6322739999923,
+                  1092.3249590000069,
+                  1117.9605539999975
+                ],
+                "p95Milliseconds": [
+                  34.2473229999996,
+                  31.02781799999957,
+                  34.4095269999998,
+                  34.12667599999986,
+                  33.5165049999996
+                ],
+                "medianMillisecondsPerFrame": 11.506059281250012,
+                "medianP95Milliseconds": 34.12667599999986,
+                "medianFirstFrameMilliseconds": 64.01448100000016
+              },
+              {
+                "path": "videos/color-fields/cartoon.sci",
+                "version": 6,
+                "moduleSha256": "49af55267a3a36fbd43ff7d0434f0e7f5e4a9d3254d03acd30d4bcf755060e0a",
+                "archiveBytes": 26301074,
+                "transferredMediaBytes": 26297835,
+                "tags": {
+                  "5": 66,
+                  "7": 15,
+                  "10": 5,
+                  "11": 10
+                },
+                "milliseconds": [
+                  1085.877296000001,
+                  1132.9627560000035,
+                  1120.2462549999927,
+                  1137.0497139999861,
+                  1078.7058409999845
+                ],
+                "p95Milliseconds": [
+                  31.241235999999844,
+                  36.15382899999895,
+                  35.86172699999952,
+                  35.332031999998435,
+                  34.55789999999979
+                ],
+                "medianMillisecondsPerFrame": 11.669231822916592,
+                "medianP95Milliseconds": 35.332031999998435,
+                "medianFirstFrameMilliseconds": 49.11351999999897
+              }
+            ],
+            "transferredBytesSavedPercent": 3.108455581167402,
+            "medianDecodeChangePercent": 1.4181444548306832,
+            "p95DecodeChangePercent": 3.532005285245421
+          },
+          {
+            "case": "fossils",
+            "host": {
+              "platform": "linux",
+              "arch": "x64",
+              "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+              "node": "v26.11.1"
+            },
+            "height": 1080,
+            "mode": "pixels",
+            "warmups": 1,
+            "measuredIterations": 5,
+            "frames": 96,
+            "timeline": [
+              1920,
+              1080,
+              96,
+              4,
+              24,
+              1
+            ],
+            "outputAndTimingSha256": "6d812aa18826371a47cfdddd0e41c71b9b750b12c9c8958cf51ea29d65e9bd80",
+            "audioAndTimingSha256": "c9356fbd9f3905e0f743fc7a6535aebc7fd73e6f4f2867ee45694d510a80fd40",
+            "results": [
+              {
+                "path": "videos/color-fields/fossils-v5.sci",
+                "version": 5,
+                "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+                "archiveBytes": 66706152,
+                "transferredMediaBytes": 66702865,
+                "tags": {
+                  "8": 5,
+                  "9": 91
+                },
+                "milliseconds": [
+                  1900.3637789999939,
+                  1885.6367100000061,
+                  1864.2683970000107,
+                  1968.9693400000324,
+                  1949.549632999995
+                ],
+                "p95Milliseconds": [
+                  24.98267599999963,
+                  24.672841000001426,
+                  24.582574000000022,
+                  27.072603000000527,
+                  26.780253999997512
+                ],
+                "medianMillisecondsPerFrame": 19.795456031249937,
+                "medianP95Milliseconds": 24.98267599999963,
+                "medianFirstFrameMilliseconds": 41.85497299999952
+              },
+              {
+                "path": "videos/color-fields/fossils.sci",
+                "version": 6,
+                "moduleSha256": "49af55267a3a36fbd43ff7d0434f0e7f5e4a9d3254d03acd30d4bcf755060e0a",
+                "archiveBytes": 63336966,
+                "transferredMediaBytes": 63333685,
+                "tags": {
+                  "10": 5,
+                  "11": 91
+                },
+                "milliseconds": [
+                  1900.4223569999967,
+                  1943.0940939999946,
+                  1946.6189679999788,
+                  1886.6759280000188,
+                  1881.5727799999986
+                ],
+                "p95Milliseconds": [
+                  25.157510000000002,
+                  25.551494999999704,
+                  25.258990000000267,
+                  24.99366000000009,
+                  24.351263000000472
+                ],
+                "medianMillisecondsPerFrame": 19.796066218749967,
+                "medianP95Milliseconds": 25.157510000000002,
+                "medianFirstFrameMilliseconds": 30.18447400000059
+              }
+            ],
+            "transferredBytesSavedPercent": 5.051027418387499,
+            "medianDecodeChangePercent": 0.0030824624553504876,
+            "p95DecodeChangePercent": 0.6998209479255779
+          },
+          {
+            "case": "weave",
+            "host": {
+              "platform": "linux",
+              "arch": "x64",
+              "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+              "node": "v26.11.1"
+            },
+            "height": 1080,
+            "mode": "pixels",
+            "warmups": 1,
+            "measuredIterations": 5,
+            "frames": 240,
+            "timeline": [
+              1920,
+              1080,
+              240,
+              4,
+              60,
+              1
+            ],
+            "outputAndTimingSha256": "7e585d21be5082a775c25d722c0a5eea713e885832df4554c0cb180d30cdd5b5",
+            "audioAndTimingSha256": "7a677611ffcf81dd1bd7b5e290b2639e2d218d02896844754b916629dcd618a8",
+            "results": [
+              {
+                "path": "videos/color-fields/weave-v5.sci",
+                "version": 5,
+                "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+                "archiveBytes": 106787131,
+                "transferredMediaBytes": 106783847,
+                "tags": {
+                  "8": 240
+                },
+                "milliseconds": [
+                  2941.780362000023,
+                  2950.3535420000153,
+                  2913.5614910000113,
+                  2910.1964480000024,
+                  2907.1699720000543
+                ],
+                "p95Milliseconds": [
+                  13.444824000000153,
+                  13.513273000000481,
+                  13.371831999997084,
+                  13.543048999999883,
+                  13.364910000003874
+                ],
+                "medianMillisecondsPerFrame": 12.13983954583338,
+                "medianP95Milliseconds": 13.444824000000153,
+                "medianFirstFrameMilliseconds": 28.563028999999005
+              },
+              {
+                "path": "videos/color-fields/weave.sci",
+                "version": 6,
+                "moduleSha256": "49af55267a3a36fbd43ff7d0434f0e7f5e4a9d3254d03acd30d4bcf755060e0a",
+                "archiveBytes": 99745825,
+                "transferredMediaBytes": 99742546,
+                "tags": {
+                  "10": 240
+                },
+                "milliseconds": [
+                  2822.642957999995,
+                  2872.047607000026,
+                  2823.7125469999846,
+                  2853.0692499999714,
+                  2814.301505999989
+                ],
+                "p95Milliseconds": [
+                  12.863246999999319,
+                  13.4278779999986,
+                  13.098027000000002,
+                  13.36757700000453,
+                  12.954118999994535
+                ],
+                "medianMillisecondsPerFrame": 11.76546894583327,
+                "medianP95Milliseconds": 13.098027000000002,
+                "medianFirstFrameMilliseconds": 17.988846000000194
+              }
+            ],
+            "transferredBytesSavedPercent": 6.5939757723843755,
+            "medianDecodeChangePercent": -3.0838183535020547,
+            "p95DecodeChangePercent": -2.579408997842947
+          },
+          {
+            "case": "detail",
+            "host": {
+              "platform": "linux",
+              "arch": "x64",
+              "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+              "node": "v26.11.1"
+            },
+            "height": 1080,
+            "mode": "pixels",
+            "warmups": 1,
+            "measuredIterations": 5,
+            "frames": 120,
+            "timeline": [
+              1920,
+              1080,
+              120,
+              2,
+              60,
+              1
+            ],
+            "outputAndTimingSha256": "25b8ef9455b4e1af8dc2deaf13a8a9f79c30d4446414ead93907893feb6077c8",
+            "audioAndTimingSha256": "0c8bbff0deaca514abd127d52118c0a64f39683949c9500df67b8965fcba3beb",
+            "results": [
+              {
+                "path": "videos/color-fields/detail-v5.sci",
+                "version": 5,
+                "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+                "archiveBytes": 231406141,
+                "transferredMediaBytes": 231402869,
+                "tags": {
+                  "8": 120
+                },
+                "milliseconds": [
+                  4227.392428000003,
+                  4113.022754000009,
+                  4101.278123000033,
+                  4089.8082170000343,
+                  4095.183867999949
+                ],
+                "p95Milliseconds": [
+                  37.127535999999964,
+                  35.81654100000014,
+                  36.05829600000288,
+                  35.69397499999468,
+                  35.579656000001705
+                ],
+                "medianMillisecondsPerFrame": 34.17731769166694,
+                "medianP95Milliseconds": 35.81654100000014,
+                "medianFirstFrameMilliseconds": 50.57621800000197
+              },
+              {
+                "path": "videos/color-fields/detail.sci",
+                "version": 6,
+                "moduleSha256": "49af55267a3a36fbd43ff7d0434f0e7f5e4a9d3254d03acd30d4bcf755060e0a",
+                "archiveBytes": 204731928,
+                "transferredMediaBytes": 204728662,
+                "tags": {
+                  "10": 120
+                },
+                "milliseconds": [
+                  4287.990685000001,
+                  3910.604667000007,
+                  3874.1592249999594,
+                  3923.0079420000257,
+                  3863.6815560000105
+                ],
+                "p95Milliseconds": [
+                  39.252269000000524,
+                  33.92584599999827,
+                  33.64502500000526,
+                  34.49546199999895,
+                  33.90643500000442
+                ],
+                "medianMillisecondsPerFrame": 32.58837222500006,
+                "medianP95Milliseconds": 33.92584599999827,
+                "medianFirstFrameMilliseconds": 36.61167700000078
+              }
+            ],
+            "transferredBytesSavedPercent": 11.52717211989277,
+            "medianDecodeChangePercent": -4.649122792495497,
+            "p95DecodeChangePercent": -5.278831922942706
+          }
+        ]
+      }
+    ],
+    "finalDecoder": {
+      "implementation": "Gather only the validated active attribute prefix. Correct color residuals directly against RGB references without copying and transforming a reference cell.",
+      "gate": {
+        "maximumAllowedMedianRegressionPercent": 5,
+        "maximumAllowedP95RegressionPercent": 5,
+        "passed": true
+      },
+      "results": [
+        {
+          "case": "cartoon",
+          "host": {
+            "platform": "linux",
+            "arch": "x64",
+            "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+            "node": "v26.11.1"
+          },
+          "height": 1080,
+          "mode": "cells",
+          "warmups": 1,
+          "measuredIterations": 5,
+          "frames": 96,
+          "timeline": [
+            1920,
+            1080,
+            96,
+            4.004,
+            24000,
+            1001
+          ],
+          "outputAndTimingSha256": "f86d93c07ccf9eba1de44c4209d6529ae9fa5af3002d42aea39acd82813193c8",
+          "audioAndTimingSha256": "5030193ef92266b0d70bc2d8d465b9435b68fc43f72b6d6f00282eb52df6d171",
+          "results": [
+            {
+              "path": "videos/color-fields/cartoon-v5.sci",
+              "version": 5,
+              "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+              "archiveBytes": 27144762,
+              "transferredMediaBytes": 27141517,
+              "tags": {
+                "5": 67,
+                "7": 18,
+                "8": 5,
+                "9": 6
+              },
+              "milliseconds": [
+                811.5585149999979,
+                773.9157240000022,
+                813.2914150000079,
+                766.6947590000036,
+                817.9335899999951
+              ],
+              "p95Milliseconds": [
+                28.60335000000032,
+                28.3663719999995,
+                29.22349899999972,
+                27.59711900000002,
+                29.450638000000254
+              ],
+              "medianMillisecondsPerFrame": 8.453734531249978,
+              "medianP95Milliseconds": 28.60335000000032,
+              "medianFirstFrameMilliseconds": 42.347467000000506
+            },
+            {
+              "path": "videos/color-fields/cartoon.sci",
+              "version": 6,
+              "moduleSha256": "0f446000fc287100e3d28f6a07623b104e2725a040b881c1e9657101e24d2e6f",
+              "archiveBytes": 26301074,
+              "transferredMediaBytes": 26297835,
+              "tags": {
+                "5": 66,
+                "7": 15,
+                "10": 5,
+                "11": 10
+              },
+              "milliseconds": [
+                767.1323960000032,
+                799.5898019999995,
+                768.6171360000008,
+                810.4011679999894,
+                770.1255509999937
+              ],
+              "p95Milliseconds": [
+                28.310721000000285,
+                28.65846099999999,
+                28.342631999999867,
+                27.70429999999942,
+                28.229151999999885
+              ],
+              "medianMillisecondsPerFrame": 8.022141156249935,
+              "medianP95Milliseconds": 28.310721000000285,
+              "medianFirstFrameMilliseconds": 31.397612999999183
+            }
+          ],
+          "transferredBytesSavedPercent": 3.108455581167402,
+          "medianDecodeChangePercent": -5.105357560077383,
+          "p95DecodeChangePercent": -1.0230584879044935
+        },
+        {
+          "case": "fossils",
+          "host": {
+            "platform": "linux",
+            "arch": "x64",
+            "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+            "node": "v26.11.1"
+          },
+          "height": 1080,
+          "mode": "cells",
+          "warmups": 1,
+          "measuredIterations": 5,
+          "frames": 96,
+          "timeline": [
+            1920,
+            1080,
+            96,
+            4,
+            24,
+            1
+          ],
+          "outputAndTimingSha256": "8d653bc15331dccb7b5a0fa2dec8f0ed9d653fb0f2094d09e5098791ac8b5140",
+          "audioAndTimingSha256": "c9356fbd9f3905e0f743fc7a6535aebc7fd73e6f4f2867ee45694d510a80fd40",
+          "results": [
+            {
+              "path": "videos/color-fields/fossils-v5.sci",
+              "version": 5,
+              "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+              "archiveBytes": 66706152,
+              "transferredMediaBytes": 66702865,
+              "tags": {
+                "8": 5,
+                "9": 91
+              },
+              "milliseconds": [
+                1384.1338580000074,
+                1417.0526089999985,
+                1431.367755999996,
+                1349.435088999995,
+                1322.7949800000024
+              ],
+              "p95Milliseconds": [
+                17.777647000000798,
+                18.145932000000357,
+                18.155393000000913,
+                17.023457999999664,
+                17.016702999997506
+              ],
+              "medianMillisecondsPerFrame": 14.418061020833411,
+              "medianP95Milliseconds": 17.777647000000798,
+              "medianFirstFrameMilliseconds": 28.75468699999692
+            },
+            {
+              "path": "videos/color-fields/fossils.sci",
+              "version": 6,
+              "moduleSha256": "0f446000fc287100e3d28f6a07623b104e2725a040b881c1e9657101e24d2e6f",
+              "archiveBytes": 63336966,
+              "transferredMediaBytes": 63333685,
+              "tags": {
+                "10": 5,
+                "11": 91
+              },
+              "milliseconds": [
+                1260.6798660000027,
+                1271.7424809999993,
+                1283.7636599999933,
+                1229.7975589999896,
+                1194.8563770000037
+              ],
+              "p95Milliseconds": [
+                15.516560000000027,
+                16.598237000000154,
+                16.616299999999683,
+                15.818271000000095,
+                14.816569000002346
+              ],
+              "medianMillisecondsPerFrame": 13.132081937500027,
+              "medianP95Milliseconds": 15.818271000000095,
+              "medianFirstFrameMilliseconds": 17.117589999999836
+            }
+          ],
+          "transferredBytesSavedPercent": 5.051027418387499,
+          "medianDecodeChangePercent": -8.919223475855775,
+          "p95DecodeChangePercent": -11.021571077435699
+        },
+        {
+          "case": "weave",
+          "host": {
+            "platform": "linux",
+            "arch": "x64",
+            "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+            "node": "v26.11.1"
+          },
+          "height": 1080,
+          "mode": "cells",
+          "warmups": 1,
+          "measuredIterations": 5,
+          "frames": 240,
+          "timeline": [
+            1920,
+            1080,
+            240,
+            4,
+            60,
+            1
+          ],
+          "outputAndTimingSha256": "47ef3467c48f3c4ef38be4b690cdacd0f2cae047b62ed6483c93d8b29f1121ca",
+          "audioAndTimingSha256": "7a677611ffcf81dd1bd7b5e290b2639e2d218d02896844754b916629dcd618a8",
+          "results": [
+            {
+              "path": "videos/color-fields/weave-v5.sci",
+              "version": 5,
+              "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+              "archiveBytes": 106787131,
+              "transferredMediaBytes": 106783847,
+              "tags": {
+                "8": 240
+              },
+              "milliseconds": [
+                1816.3709649999992,
+                1754.656923999988,
+                1732.523629000014,
+                1729.8610260000241,
+                1725.7358950000416
+              ],
+              "p95Milliseconds": [
+                8.40026299999954,
+                8.08970699999918,
+                8.172595000000001,
+                8.175019000002067,
+                8.03860799999893
+              ],
+              "medianMillisecondsPerFrame": 7.218848454166724,
+              "medianP95Milliseconds": 8.172595000000001,
+              "medianFirstFrameMilliseconds": 14.742036999999982
+            },
+            {
+              "path": "videos/color-fields/weave.sci",
+              "version": 6,
+              "moduleSha256": "0f446000fc287100e3d28f6a07623b104e2725a040b881c1e9657101e24d2e6f",
+              "archiveBytes": 99745825,
+              "transferredMediaBytes": 99742546,
+              "tags": {
+                "10": 240
+              },
+              "milliseconds": [
+                1692.6783859999941,
+                1643.2700400000103,
+                1611.549956000019,
+                1654.1898719999372,
+                1596.5252430000328
+              ],
+              "p95Milliseconds": [
+                7.863819000000149,
+                7.687455000001137,
+                7.398805000000721,
+                7.913466999998491,
+                7.425209000000905
+              ],
+              "medianMillisecondsPerFrame": 6.846958500000043,
+              "medianP95Milliseconds": 7.687455000001137,
+              "medianFirstFrameMilliseconds": 9.035626000000775
+            }
+          ],
+          "transferredBytesSavedPercent": 6.5939757723843755,
+          "medianDecodeChangePercent": -5.15165204710768,
+          "p95DecodeChangePercent": -5.936180613365327
+        },
+        {
+          "case": "detail",
+          "host": {
+            "platform": "linux",
+            "arch": "x64",
+            "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+            "node": "v26.11.1"
+          },
+          "height": 1080,
+          "mode": "cells",
+          "warmups": 1,
+          "measuredIterations": 5,
+          "frames": 120,
+          "timeline": [
+            1920,
+            1080,
+            120,
+            2,
+            60,
+            1
+          ],
+          "outputAndTimingSha256": "2bfb4adf08d029395fb860f93f9c6125ce508e0e03d078963528f08f8e5a0463",
+          "audioAndTimingSha256": "0c8bbff0deaca514abd127d52118c0a64f39683949c9500df67b8965fcba3beb",
+          "results": [
+            {
+              "path": "videos/color-fields/detail-v5.sci",
+              "version": 5,
+              "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+              "archiveBytes": 231406141,
+              "transferredMediaBytes": 231402869,
+              "tags": {
+                "8": 120
+              },
+              "milliseconds": [
+                2912.8889990000043,
+                2860.760056999985,
+                2935.2792569999838,
+                3029.8029019999994,
+                3014.505075999965
+              ],
+              "p95Milliseconds": [
+                25.398762999999235,
+                24.98595899999782,
+                25.622083999998722,
+                27.056382999999187,
+                26.374159999999392
+              ],
+              "medianMillisecondsPerFrame": 24.460660474999866,
+              "medianP95Milliseconds": 25.622083999998722,
+              "medianFirstFrameMilliseconds": 36.33261299999867
+            },
+            {
+              "path": "videos/color-fields/detail.sci",
+              "version": 6,
+              "moduleSha256": "0f446000fc287100e3d28f6a07623b104e2725a040b881c1e9657101e24d2e6f",
+              "archiveBytes": 204731928,
+              "transferredMediaBytes": 204728662,
+              "tags": {
+                "10": 120
+              },
+              "milliseconds": [
+                2481.807127999995,
+                2581.449653999989,
+                2542.2765690000087,
+                2606.856520999998,
+                2649.3980879999654
+              ],
+              "p95Milliseconds": [
+                23.77627399999983,
+                23.37033800000063,
+                22.699673999999504,
+                23.367403999996895,
+                23.57017099999939
+              ],
+              "medianMillisecondsPerFrame": 21.51208044999991,
+              "medianP95Milliseconds": 23.37033800000063,
+              "medianFirstFrameMilliseconds": 21.581881999998586
+            }
+          ],
+          "transferredBytesSavedPercent": 11.52717211989277,
+          "medianDecodeChangePercent": -12.054376160502967,
+          "p95DecodeChangePercent": -8.788301529251896
+        },
+        {
+          "case": "cartoon",
+          "host": {
+            "platform": "linux",
+            "arch": "x64",
+            "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+            "node": "v26.11.1"
+          },
+          "height": 1080,
+          "mode": "pixels",
+          "warmups": 1,
+          "measuredIterations": 5,
+          "frames": 96,
+          "timeline": [
+            1920,
+            1080,
+            96,
+            4.004,
+            24000,
+            1001
+          ],
+          "outputAndTimingSha256": "212b27c0577550988eda192fb2292dfb1d071022423d579097512b9e7076d794",
+          "audioAndTimingSha256": "5030193ef92266b0d70bc2d8d465b9435b68fc43f72b6d6f00282eb52df6d171",
+          "results": [
+            {
+              "path": "videos/color-fields/cartoon-v5.sci",
+              "version": 5,
+              "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+              "archiveBytes": 27144762,
+              "transferredMediaBytes": 27141517,
+              "tags": {
+                "5": 67,
+                "7": 18,
+                "8": 5,
+                "9": 6
+              },
+              "milliseconds": [
+                1597.8041020000028,
+                1534.2168069999989,
+                1614.432068999984,
+                1608.2372400000022,
+                1698.4789479999672
+              ],
+              "p95Milliseconds": [
+                45.63172599999962,
+                39.53768200000013,
+                46.69529799999873,
+                40.207102000000305,
+                55.468863999998575
+              ],
+              "medianMillisecondsPerFrame": 16.752471250000024,
+              "medianP95Milliseconds": 45.63172599999962,
+              "medianFirstFrameMilliseconds": 79.80330800000047
+            },
+            {
+              "path": "videos/color-fields/cartoon.sci",
+              "version": 6,
+              "moduleSha256": "0f446000fc287100e3d28f6a07623b104e2725a040b881c1e9657101e24d2e6f",
+              "archiveBytes": 26301074,
+              "transferredMediaBytes": 26297835,
+              "tags": {
+                "5": 66,
+                "7": 15,
+                "10": 5,
+                "11": 10
+              },
+              "milliseconds": [
+                1209.5074799999975,
+                1567.327595000006,
+                1541.3903630000132,
+                1675.3554670000049,
+                1552.2334019999835
+              ],
+              "p95Milliseconds": [
+                29.688478000000032,
+                50.682362999999896,
+                39.55397399999856,
+                46.60701899999913,
+                49.561061000000336
+              ],
+              "medianMillisecondsPerFrame": 16.169097937499828,
+              "medianP95Milliseconds": 46.60701899999913,
+              "medianFirstFrameMilliseconds": 66.32009400000243
+            }
+          ],
+          "transferredBytesSavedPercent": 3.108455581167402,
+          "medianDecodeChangePercent": -3.4823119753164544,
+          "p95DecodeChangePercent": 2.1373134121631
+        },
+        {
+          "case": "fossils",
+          "host": {
+            "platform": "linux",
+            "arch": "x64",
+            "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+            "node": "v26.11.1"
+          },
+          "height": 1080,
+          "mode": "pixels",
+          "warmups": 1,
+          "measuredIterations": 5,
+          "frames": 96,
+          "timeline": [
+            1920,
+            1080,
+            96,
+            4,
+            24,
+            1
+          ],
+          "outputAndTimingSha256": "6d812aa18826371a47cfdddd0e41c71b9b750b12c9c8958cf51ea29d65e9bd80",
+          "audioAndTimingSha256": "c9356fbd9f3905e0f743fc7a6535aebc7fd73e6f4f2867ee45694d510a80fd40",
+          "results": [
+            {
+              "path": "videos/color-fields/fossils-v5.sci",
+              "version": 5,
+              "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+              "archiveBytes": 66706152,
+              "transferredMediaBytes": 66702865,
+              "tags": {
+                "8": 5,
+                "9": 91
+              },
+              "milliseconds": [
+                2560.735121000007,
+                1760.2835149999955,
+                1731.6098230000207,
+                1709.8399299999874,
+                1725.2238330000073
+              ],
+              "p95Milliseconds": [
+                39.53321699999833,
+                23.996673999999985,
+                23.230610999999044,
+                22.231244999999035,
+                22.467995999999403
+              ],
+              "medianMillisecondsPerFrame": 18.037602322916882,
+              "medianP95Milliseconds": 23.230610999999044,
+              "medianFirstFrameMilliseconds": 39.333652000001166
+            },
+            {
+              "path": "videos/color-fields/fossils.sci",
+              "version": 6,
+              "moduleSha256": "0f446000fc287100e3d28f6a07623b104e2725a040b881c1e9657101e24d2e6f",
+              "archiveBytes": 63336966,
+              "transferredMediaBytes": 63333685,
+              "tags": {
+                "10": 5,
+                "11": 91
+              },
+              "milliseconds": [
+                2687.571682000006,
+                1636.8079290000096,
+                1612.796101,
+                1619.9934200000062,
+                1587.0495950000295
+              ],
+              "p95Milliseconds": [
+                43.565168999999514,
+                21.009330000000773,
+                21.47465899999952,
+                21.14530399999785,
+                19.90587500000038
+              ],
+              "medianMillisecondsPerFrame": 16.874931458333396,
+              "medianP95Milliseconds": 21.14530399999785,
+              "medianFirstFrameMilliseconds": 36.26593600000069
+            }
+          ],
+          "transferredBytesSavedPercent": 5.051027418387499,
+          "medianDecodeChangePercent": -6.445817153349176,
+          "p95DecodeChangePercent": -8.976548227686653
+        },
+        {
+          "case": "weave",
+          "host": {
+            "platform": "linux",
+            "arch": "x64",
+            "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+            "node": "v26.11.1"
+          },
+          "height": 1080,
+          "mode": "pixels",
+          "warmups": 1,
+          "measuredIterations": 5,
+          "frames": 240,
+          "timeline": [
+            1920,
+            1080,
+            240,
+            4,
+            60,
+            1
+          ],
+          "outputAndTimingSha256": "7e585d21be5082a775c25d722c0a5eea713e885832df4554c0cb180d30cdd5b5",
+          "audioAndTimingSha256": "7a677611ffcf81dd1bd7b5e290b2639e2d218d02896844754b916629dcd618a8",
+          "results": [
+            {
+              "path": "videos/color-fields/weave-v5.sci",
+              "version": 5,
+              "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+              "archiveBytes": 106787131,
+              "transferredMediaBytes": 106783847,
+              "tags": {
+                "8": 240
+              },
+              "milliseconds": [
+                2726.4884049999946,
+                2586.4053710000044,
+                2792.1823289999556,
+                2486.6223279999867,
+                4324.683432999998
+              ],
+              "p95Milliseconds": [
+                12.709208000000217,
+                11.7733810000027,
+                15.007825000000594,
+                11.363300000004529,
+                26.906998999998905
+              ],
+              "medianMillisecondsPerFrame": 11.360368354166644,
+              "medianP95Milliseconds": 12.709208000000217,
+              "medianFirstFrameMilliseconds": 30.99586900000031
+            },
+            {
+              "path": "videos/color-fields/weave.sci",
+              "version": 6,
+              "moduleSha256": "0f446000fc287100e3d28f6a07623b104e2725a040b881c1e9657101e24d2e6f",
+              "archiveBytes": 99745825,
+              "transferredMediaBytes": 99742546,
+              "tags": {
+                "10": 240
+              },
+              "milliseconds": [
+                2516.9868919999926,
+                2411.8604770000056,
+                2416.909690000015,
+                2344.7945019999825,
+                3409.3696280000368
+              ],
+              "p95Milliseconds": [
+                12.393003999999564,
+                11.12934099999984,
+                11.469163999998273,
+                10.675441999999748,
+                22.700002999998105
+              ],
+              "medianMillisecondsPerFrame": 10.07045704166673,
+              "medianP95Milliseconds": 11.469163999998273,
+              "medianFirstFrameMilliseconds": 15.763230000000476
+            }
+          ],
+          "transferredBytesSavedPercent": 6.5939757723843755,
+          "medianDecodeChangePercent": -11.354484927654774,
+          "p95DecodeChangePercent": -9.757051737621437
+        },
+        {
+          "case": "detail",
+          "host": {
+            "platform": "linux",
+            "arch": "x64",
+            "cpu": "12th Gen Intel(R) Core(TM) i5-12500H",
+            "node": "v26.11.1"
+          },
+          "height": 1080,
+          "mode": "pixels",
+          "warmups": 1,
+          "measuredIterations": 5,
+          "frames": 120,
+          "timeline": [
+            1920,
+            1080,
+            120,
+            2,
+            60,
+            1
+          ],
+          "outputAndTimingSha256": "25b8ef9455b4e1af8dc2deaf13a8a9f79c30d4446414ead93907893feb6077c8",
+          "audioAndTimingSha256": "0c8bbff0deaca514abd127d52118c0a64f39683949c9500df67b8965fcba3beb",
+          "results": [
+            {
+              "path": "videos/color-fields/detail-v5.sci",
+              "version": 5,
+              "moduleSha256": "56b83a5517e70a2be5d0b0a954fda0baeb9ab3781a573952d93db22d699940e3",
+              "archiveBytes": 231406141,
+              "transferredMediaBytes": 231402869,
+              "tags": {
+                "8": 120
+              },
+              "milliseconds": [
+                7325.575997999978,
+                5705.932370999944,
+                4254.25479600003,
+                4192.337031000032,
+                4187.673844000019
+              ],
+              "p95Milliseconds": [
+                78.10682199999792,
+                67.24849800000084,
+                36.57739999999467,
+                37.01754200000141,
+                36.899675000007846
+              ],
+              "medianMillisecondsPerFrame": 35.45212330000025,
+              "medianP95Milliseconds": 37.01754200000141,
+              "medianFirstFrameMilliseconds": 55.438334999998915
+            },
+            {
+              "path": "videos/color-fields/detail.sci",
+              "version": 6,
+              "moduleSha256": "0f446000fc287100e3d28f6a07623b104e2725a040b881c1e9657101e24d2e6f",
+              "archiveBytes": 204731928,
+              "transferredMediaBytes": 204728662,
+              "tags": {
+                "10": 120
+              },
+              "milliseconds": [
+                5909.859175999991,
+                4032.2407879999882,
+                3936.5318780000453,
+                3754.7349810000233,
+                3740.758512000022
+              ],
+              "p95Milliseconds": [
+                68.91325000000143,
+                36.728674999998475,
+                34.6974379999956,
+                32.493287000004784,
+                33.36476699999912
+              ],
+              "medianMillisecondsPerFrame": 32.80443231666705,
+              "medianP95Milliseconds": 34.6974379999956,
+              "medianFirstFrameMilliseconds": 46.92232099999819
+            }
+          ],
+          "transferredBytesSavedPercent": 11.52717211989277,
+          "medianDecodeChangePercent": -7.468356580304425,
+          "p95DecodeChangePercent": -6.267579840946014
+        }
+      ]
+    },
+    "encoding": {
+      "preliminary": {
+        "candidateSha256": "ba6f75efd9ad14036d206597d3e3da86114d13f5e311f255e1e92bcf049ab6cf",
+        "results": [
+          {
+            "case": "cartoon",
+            "height": 360,
+            "warmups": 1,
+            "measuredIterations": 3,
+            "presentationSha256": "b9fc9525e40bb1f1536c174b9bafed472ad05eeea1b8c6013f6096ffdb4deb23",
+            "timeline": [
+              639,
+              360,
+              96,
+              24000,
+              1001,
+              4.004
+            ],
+            "results": [
+              {
+                "binary": "/tmp/weft-normalize-y7uYrr/weft-before",
+                "seconds": [
+                  17.273558111,
+                  17.139806201,
+                  16.943513506000002
+                ],
+                "bytes": 3883512,
+                "medianSeconds": 17.139806201
+              },
+              {
+                "binary": "/home/izel/dev/weft/target/release/weft",
+                "seconds": [
+                  17.280498292000004,
+                  17.227490307999993,
+                  17.565772216
+                ],
+                "bytes": 3845037,
+                "medianSeconds": 17.280498292000004
+              }
+            ]
+          },
+          {
+            "case": "fossils",
+            "height": 360,
+            "warmups": 1,
+            "measuredIterations": 3,
+            "presentationSha256": "fb684d297bff01cb1028c465d649944855d0af0cbbc891eefd7d9a0ac242cd83",
+            "timeline": [
+              639,
+              360,
+              96,
+              24,
+              1,
+              4
+            ],
+            "results": [
+              {
+                "binary": "/tmp/weft-normalize-y7uYrr/weft-before",
+                "seconds": [
+                  18.040535736,
+                  17.972742524,
+                  18.765759225000018
+                ],
+                "bytes": 9179865,
+                "medianSeconds": 18.040535736
+              },
+              {
+                "binary": "/home/izel/dev/weft/target/release/weft",
+                "seconds": [
+                  18.054558781,
+                  17.884478648000005,
+                  18.398196171000002
+                ],
+                "bytes": 8859609,
+                "medianSeconds": 18.054558781
+              }
+            ]
+          }
+        ]
+      },
+      "finalUnpinned": [
+        {
+          "case": "cartoon",
+          "height": 360,
+          "warmups": 1,
+          "measuredIterations": 3,
+          "presentationSha256": "b9fc9525e40bb1f1536c174b9bafed472ad05eeea1b8c6013f6096ffdb4deb23",
+          "timeline": [
+            639,
+            360,
+            96,
+            24000,
+            1001,
+            4.004
+          ],
+          "results": [
+            {
+              "binary": "/tmp/weft-normalize-y7uYrr/weft-before",
+              "seconds": [
+                16.098789620999995,
+                17.167801028000003,
+                11.067426894000004
+              ],
+              "bytes": 3883512,
+              "medianSeconds": 16.098789620999995
+            },
+            {
+              "binary": "/tmp/weft-normalize-y7uYrr/weft-final-color",
+              "seconds": [
+                11.531300931000006,
+                15.478509571000002,
+                11.262799417000002
+              ],
+              "bytes": 3845037,
+              "medianSeconds": 11.531300931000006
+            }
+          ]
+        },
+        {
+          "case": "fossils",
+          "height": 360,
+          "warmups": 1,
+          "measuredIterations": 3,
+          "presentationSha256": "fb684d297bff01cb1028c465d649944855d0af0cbbc891eefd7d9a0ac242cd83",
+          "timeline": [
+            639,
+            360,
+            96,
+            24,
+            1,
+            4
+          ],
+          "results": [
+            {
+              "binary": "/tmp/weft-normalize-y7uYrr/weft-before",
+              "seconds": [
+                11.959148165999999,
+                19.05290165800001,
+                11.664975441999996
+              ],
+              "bytes": 9179865,
+              "medianSeconds": 11.959148165999999
+            },
+            {
+              "binary": "/tmp/weft-normalize-y7uYrr/weft-final-color",
+              "seconds": [
+                11.606173924999998,
+                20.015392545999987,
+                19.220074482000012
+              ],
+              "bytes": 8859609,
+              "medianSeconds": 19.220074482000012
+            }
+          ]
+        }
+      ],
+      "finalPinned": [
+        {
+          "case": "cartoon",
+          "height": 360,
+          "warmups": 1,
+          "measuredIterations": 3,
+          "presentationSha256": "b9fc9525e40bb1f1536c174b9bafed472ad05eeea1b8c6013f6096ffdb4deb23",
+          "timeline": [
+            639,
+            360,
+            96,
+            24000,
+            1001,
+            4.004
+          ],
+          "results": [
+            {
+              "binary": "/tmp/weft-normalize-y7uYrr/weft-before",
+              "seconds": [
+                11.419238650999999,
+                11.31111580800001,
+                13.986683719000007
+              ],
+              "bytes": 3883512,
+              "medianSeconds": 11.419238650999999
+            },
+            {
+              "binary": "/tmp/weft-normalize-y7uYrr/weft-final-color",
+              "seconds": [
+                16.153065440000002,
+                11.615427482,
+                11.750978055
+              ],
+              "bytes": 3845037,
+              "medianSeconds": 11.750978055
+            }
+          ],
+          "cpuAffinity": [
+            0,
+            2,
+            4,
+            6
+          ]
+        },
+        {
+          "case": "fossils",
+          "height": 360,
+          "warmups": 1,
+          "measuredIterations": 3,
+          "presentationSha256": "fb684d297bff01cb1028c465d649944855d0af0cbbc891eefd7d9a0ac242cd83",
+          "timeline": [
+            639,
+            360,
+            96,
+            24,
+            1,
+            4
+          ],
+          "results": [
+            {
+              "binary": "/tmp/weft-normalize-y7uYrr/weft-before",
+              "seconds": [
+                13.832271673000003,
+                14.023347924000001,
+                19.670707898000007
+              ],
+              "bytes": 9179865,
+              "medianSeconds": 14.023347924000001
+            },
+            {
+              "binary": "/tmp/weft-normalize-y7uYrr/weft-final-color",
+              "seconds": [
+                13.860138063000006,
+                14.781133359,
+                20.202340553000003
+              ],
+              "bytes": 8859609,
+              "medianSeconds": 14.781133359
+            }
+          ],
+          "cpuAffinity": [
+            0,
+            2,
+            4,
+            6
+          ]
+        }
+      ],
+      "interpretation": "Unpinned wall times vary substantially, including a 60.71 percent fossils median increase. Pinning both binaries to the same physical performance cores yields 2.91 percent and 5.40 percent median increases. No encoding-speed win is claimed. The 360p archives are 0.99 percent and 3.49 percent smaller."
+    },
+    "vvcComparison": [
+      {
+        "name": "cartoon",
+        "path": "videos/color-fields/cartoon.sci",
+        "version": 6,
+        "archiveBytes": 26301074,
+        "archiveSha256": "f2baac1830b86f29f017e6b20996fa815220ae8b558ee6851cde9f62ac5986d2",
+        "mediaBodyBytes": 26297835,
+        "reconstructionSha256": "4bee5b34c8daf62cf5c8254c3a8140c2b05bfe00a0abcf026261ab91895e2d14",
+        "timelineSha256": "06b36c3918db754e3102c262ae9d3d49d1bdebb1007d7a7713978b2fdd72365d",
+        "encodedAudioSha256": "9315d3b7e772f33932adc4010e1837fa2de719fee810cad5584f75b443a7d485",
+        "mp4": {
+          "path": "videos/vvc-comparison/cartoon.mp4",
+          "bytes": 2197216,
+          "sha256": "b0bf321dd5ad10764113acbc8a37948d0713cfd341f825bf8de26f63d07ac6c8"
+        },
+        "ratioArchiveToMp4": 11.970181356771478,
+        "ratioMediaBodiesToMp4": 11.968707218589342,
+        "psnr": 35.57513030042639,
+        "ssim": 0.987282,
+        "comparisonReused": "Existing audited VVC outputs; exact SCI RGB, presentation and encoded audio hashes match the original comparison."
+      },
+      {
+        "name": "fossils",
+        "path": "videos/color-fields/fossils.sci",
+        "version": 6,
+        "archiveBytes": 63336966,
+        "archiveSha256": "161a4d1aeb3cfa8bef2e9774c0b5eadaccd534467bd96ffef2be3d7190698439",
+        "mediaBodyBytes": 63333685,
+        "reconstructionSha256": "26421104d6388f37f83b62d857314003ba345f420023cf9939ac71e1e111c5a7",
+        "timelineSha256": "cbd4bbc4e85c1d9aaed1a6c70137d8c3b1450ec26b01de05ee833c78a7fe4c0b",
+        "encodedAudioSha256": "e252c30497bb832514d72b2fa0b318ef05177fbf0626f87bdca3a46ae2b8fd47",
+        "mp4": {
+          "path": "videos/vvc-comparison/fossils.mp4",
+          "bytes": 9397604,
+          "sha256": "16203aff7ba5758a286f7c59d963a9e9451536e1a7531b3ef4ddf2dcfb52e1c2"
+        },
+        "ratioArchiveToMp4": 6.739693011112194,
+        "ratioMediaBodiesToMp4": 6.739343879567601,
+        "psnr": 41.149228230186274,
+        "ssim": 0.996569,
+        "comparisonReused": "Existing audited VVC outputs; exact SCI RGB, presentation and encoded audio hashes match the original comparison."
+      }
+    ],
+    "validation": {
+      "rustTestsIncludingDoctest": 55,
+      "javascriptTests": 75,
+      "releaseWorkspaceTestsPassed": true,
+      "clippyWarningsDeniedPassed": true,
+      "formatPassed": true,
+      "nativeBrowserPassed": true,
+      "nativeColorPacketsVerified": 24,
+      "nativeColorPacketTags": [
+        6,
+        10,
+        11
+      ],
+      "nativeInflationAndCpuGpuPixelsVerified": true,
+      "endToEndVersion6IngestionPlaybackAndCachePassed": true,
+      "oldVersions4And5RemainSupported": true,
+      "sourceVideoFallback": false
+    },
+    "sourcesSha256": {
+      "Cargo.toml": "d5e09c3b6b0f17f99a82fb921047d92aa954752691c56934bfaec089b6a6fbb5",
+      "Cargo.lock": "7701eaab5d4f7e7ecd171456807660e08e3896401982de3c669a259c233394fa",
+      "crates/weft/src/scene/fields.rs": "2cab534a7c6cd63125d1a1aa20f6204af01e204873fb290b4ead166f510e7b7c",
+      "crates/weft/src/scene/compress.rs": "b503a8e5545d662bef9b80cc70574a08daef72de86ad064914710a44322411f8",
+      "crates/weft/src/scene/packet.rs": "652260ed7fadcb6abac16fdc8df65fbec7df59e10f113b64585d720e25484d19",
+      "crates/weft/src/format.rs": "956a4edc4725de1f045cab02e4234a41fd98dc877323e43cdbb2bfd1c44169d9",
+      "crates/weft/src/archive.rs": "f2a1591589712d80061880027f5dad21368b61ec0565470057b0b9ae4ca72bc9",
+      "crates/weft/src/archive_timing.rs": "8d1f6bc8651c52b4020abda97eebc43ed3fa6b629a22d01756921f59a535ad87",
+      "crates/weft/src/packet.rs": "2470cb899b888bef3204dc1419d9db81c1b9665e9b864153a8890dab2b0101d9",
+      "player/web/sci.js": "ba3823c942e89176b95d0ad6f5bd8c2666481f8b0a1f3d3ca9b18e9fa34f9fba",
+      "player/web/decode-pool.js": "3071d82af96126aa93a35a06eb9ab4686f452834880ce8a3206f43715b93716d",
+      "player/tests/packing-benchmark.mjs": "26287eb5b3c556434c388640dd67ffdea976d135b81469c7245001d04833f14d",
+      "player/tests/encode-benchmark.mjs": "b841e3e4c3560d50e37eed2e67bd714bd8dfbee8cd17def467a36556634954cf",
+      "player/tests/streaming-benchmark.mjs": "007831101c306e665b54e38729eb7cd07ad560068d1f88d6a1c899cdff8012cc"
+    }
   }
 }

@@ -12,11 +12,12 @@ test('compact fields preserve cells and pixels through WASM and native inflation
   const next = Uint8Array.of(2, 1, 0, 0, 0, 0, 1, 1, 2, 3, 0, 0, 4, 5, 6);
   const expected = new Uint8Array(28);
   expected[3] = 32; expected.set([10, 20, 30, 1, 35, 3, 40, 50, 60], 4);
-  for (const mode of [0, 1]) for (const method of ['decode', 'decodeNative', 'decodeCells', 'decodeCellsNative']) {
+  for (const color of [false, true]) for (const mode of [0, 1]) for (const method of ['decode', 'decodeNative', 'decodeCells', 'decodeCellsNative']) {
     const decoder = await Decoder.open(module);
-    const literal = first.slice(); literal[0] = mode;
-    const before = { tag: 8, decoded: literal.length, bytes: deflateSync(literal) };
-    const after = { tag: 9, decoded: next.length, bytes: deflateSync(next) };
+    const literal = color ? Uint8Array.of(0, 1, 0, 0, 0, 0, 1, 20, 246, 10, 35, 3, 50, 246, 10) : first.slice(); literal[0] = mode;
+    const difference = color ? Uint8Array.of(2, 1, 0, 0, 0, 0, 1, 2, 255, 1, 0, 0, 5, 255, 1) : next;
+    const before = { tag: color ? 10 : 8, decoded: literal.length, bytes: deflateSync(literal) };
+    const after = { tag: color ? 11 : 9, decoded: difference.length, bytes: deflateSync(difference) };
     const reference = await Decoder.open(module);
     const expectedPixels = reference.decode(packet(expected), 3, 4, 28, true);
     const actual = await decoder[method](before, 3, 4, 28, true);
